@@ -1,0 +1,111 @@
+#myCanvas {
+	border: 1px solid black;
+	border-style: solid;
+	background-color: gray;
+	position: relative;
+	left: 50px;
+}
+
+#controlButtons {
+	margin: 0 auto;
+	position: center;
+}
+
+#colorpicker1{
+	float: center;
+    margin: 0 auto;
+}
+form {
+	margin: 0 auto;
+	text-align: left;
+	width: 250px;
+}
+#color1{
+	text-align: left;
+	width: 250px;
+
+}
+body {
+	font-family: "Lucida Grande", "Lucida Unicode", "Lucida Sans", sans-serif;
+	background-color: #ebebeb;
+}
+p {
+	clear: both;
+}
+table{
+	overflow-y: scroll;
+	height: 100px
+	display: block;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+
+.top-left{
+	margin: 0 auto;
+  width: 12.5%;
+  text-align: center;
+  
+}
+.top-right {
+  width: 12.5%;
+  text-align: center;
+  
+}
+
+.top-center {
+  width: 75%;
+  text-align: center;
+}
+
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.right {
+  width: 25%;
+  text-align: center;
+  
+}
+.left {
+	width: 25%
+	
+}
+.left-left{
+	text-align: right;
+	width: 12.5%
+}
+
+.left-rigt{
+	text-align: left;
+	width: 12.5%
+}
+
+.middle {
+  width: 50%;
+	text-align: center;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+ @viewport {
+  width: device-width ;
+  zoom: 1.0 ;
+} 
+

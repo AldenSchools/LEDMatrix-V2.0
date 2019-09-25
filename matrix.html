@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	
+	
+	
+	<script type="text/javascript" src="src/main.js"></script>
+	<script type="text/javascript" src="src/login.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" ></script>
+	<script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="src/farbtastic.js"></script>
+	
+	<!--[if IE]><script type="text/javascript" src="http://explorercanvas.googlecode.com/svn/tags/m3/excanvas.compiled.js"></script><![endif]-->
+	<title>LED Matrix</title>
+	
+	
+	<!--Interactivity Scripts-->
+	<script type="text/javascript" charset="utf-8">
+	 $(function () {
+	   $('#colorpicker1').farbtastic('#color1');
+	
+	 });
+	</script>
+</head>
+
+<body>
+
+<body>
+
+
+
+ <div id="main-container"> 
+
+
+	
+	<div class="row">
+		<div class="column top-left">
+			<h4 id="username"></h4>
+		</div>
+			
+		<div class="column top-center">
+				
+		</div>
+			
+		<div class="column top-right">
+			<button id="logoutbtn" onclick="logout('e')" >Logout</button>
+		</div>
+	</div>
+	
+	
+	
+	<div class="row">
+		<div class="column left" >
+			<div class="column left-left"></div>
+			
+			<div class="column left-right">
+				<div id="colorpicker1"></div>
+				<form ><input type="text" id="color1" /></form>
+			
+				<div class="row" id = "controlButtons">
+					<button onclick="clearAllTiles()">Clear All Tiles</button>
+					<button onclick="sendData()">Color Matrix</button>
+				</div>
+				<button onclick="saveSketch()" >Save Sketch</button>
+			</div>
+			
+		</div>
+		
+		
+	
+		<div class="column middle" >
+			<canvas id='myCanvas' width='686' height='686'></canvas>
+			
+		</div>
+	
+	
+		<div class="column right" >
+			<div id="savesSketches">
+				<b>Current data in the system ...</b>
+				<table id="tableData"  border="1" cellpadding="2">
+					<tr>
+						<td><b>Saved Sketches</b></td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+				&nbsp;
+			<table style="height: 100px; overflow: auto"></table>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="row">
+		<div class="column bottom-left">
+				
+		</div>
+			
+		<div class="column bottom-center">
+				
+		</div>
+			
+		<div class="column bottom-right">
+				
+		</div>
+			
+	</div>
+	
+	
+
+</div>
+	
+	
+	<script type="text/javascript" src="src/main.js"></script>
+	<script type="text/javascript" src="src/login.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+
+
+</body>
+
+</html>

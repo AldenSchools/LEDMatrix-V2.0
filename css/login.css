@@ -1,0 +1,327 @@
+body{
+    margin: 0;
+    padding: 0;
+    background: url(../images/alden.jpg);
+    background-size: cover;
+    background-position: center;
+    font-family: sans-serif;
+}
+
+
+
+
+.login-box{
+    width: 320px;
+    height: 600px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+}
+.register-box{
+    width: 320px;
+    height: 455px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+}
+.register-admin-box{
+    width: 320px;
+    height: 550px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+}
+.forgot-box{
+    width: 320px;
+    height: 475px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+}
+
+
+
+
+.avatar{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}
+
+h1{
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+
+
+
+
+
+.login-box p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+.register-box p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+.register-admin-box p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+.forgot-box p{
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+
+
+
+
+
+.login-box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.register-box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.register-admin-box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.forgot-box input{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+
+
+
+
+
+.login-box input[type="text"], input[type="password"]
+{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.register-box input[type="text"], input[type="password"]
+{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+.register-admin-box input[type="text"], input[type="password"]
+{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+.forgot-box input[type="text"], input[type="password"]
+{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+}
+
+
+
+
+
+
+
+
+.login-box input[type="submit"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #fb2525;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.register-box input[type="submit"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #fb2525;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.register-admin-box input[type="submit"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #fb2525;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+.forgot-box input[type="submit"]
+{
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #fb2525;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+.login-box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
+}
+
+.register-box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
+}
+
+.register-admin-box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
+}
+
+.forgot-box input[type="submit"]:hover
+{
+    cursor: pointer;
+    background: #ffc107;
+    color: #000;
+}
+
+
+
+
+
+
+
+
+.login-box a{
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+}
+
+.register-box a{
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+}
+
+.register-admin-box a{
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+}
+
+.forgot-box a{
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+}
+
+
+
+
+
+
+.login-box  a:hover
+{
+    color: #FFD700;
+}
+.register-box a:hover
+{
+    color: #FFD700;
+}
+.register-admin-box a:hover
+{
+    color: #FFD700;
+}
+.forgot-box a:hover
+{
+    color: #FFD700;
+}
+
+/* Change styles for span and cancel button on extra small screens 
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}*/

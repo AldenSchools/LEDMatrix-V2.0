@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <script type="text/javascript" charset="utf-8" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="src/main.js"></script>
+  <!--[if IE]><script type="text/javascript" src="http://explorercanvas.googlecode.com/svn/tags/m3/excanvas.compiled.js"></script><![endif]-->
+	<title>LED Matrix</title>
+	
+
+
+</head>
+
+
+<body>
+
+
+<div class="forgot-box">
+    <img src="images/avatar3.png" class="avatar" />
+        <h1> Welcome to Makerspace</h1>
+        <h2>Lost Your Password?</h2>
+        <form class="forgot-pass-form" action="/cgi-bin/login.py" method="get">
+			<p style="color: red; font-weight: normal" id="bad-username-forgot"></p>
+			<p style="font-weight: normal" id="user-pass"></p>
+			</br>
+            <p>Enter Your Username</p>
+            <input type="text" name="user-name" placeholder="Enter Username" required>
+            
+            
+            
+            <input type="hidden" name="form-type" value="forgot-pass">
+            <input type="submit" onclick="" value="Get Password">
+            <a href="index.html">Login</a><br>
+            
+        </form>
+</div>
+
+	<script type="text/javascript" src="src/login.js"></script>
+	<script type="text/javascript" src="src/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+
+
+
+</body>
+
+</html>
