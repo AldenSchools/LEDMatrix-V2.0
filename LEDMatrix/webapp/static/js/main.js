@@ -1,234 +1,69 @@
-var canvas;
-var ctx;
-
-var WIDTH = 1200;
-var HEIGHT = 800;
-
-tileW = 40;
-tileH = 40;
-
-tileRowCount = 16;
-tileColumnCount = 16;
+/**
+ * Author: LEDMatrix Team - 2019
+ * Description: Originally created for Alden schools
+ * 
+ * Please consider sharing any cool additons to this project! :)
+ */
 
 
-boundX = 0;
-boundY = 0;
-var dataString = "";
-var currentUserName = "";
 
-function getCurrentUser(){
-	let sessionType = sessionStorage.getItem("session0");
-	let sessionSuccess = sessionStorage.getItem("session1");
-	console.log("session-type " + sessionType);
-	console.log("session-success " + sessionSuccess);
-	
-	if(sessionType  == "login" &&  sessionSuccess == "true"){
-		currentUserName = sessionStorage.getItem("session2");
-		document.getElementById("username").innerHTML = "Hello, "+sessionStorage.getItem("session2");
-	}
-	
+/**
+ * Waits till the page to load then calls 'documentReady function'
+ * Some common ways to do this are: 
+ * 		$(function() { ... });
+ * 	or
+ * 		$(document).ready(function() { ... });
+ * 		
+ */
+$(document).ready(documentReady);
+
+function documentReady(jQuery) {
+
+    var colorPicker = new iro.ColorPicker('#color-picker');
+
+    var gridWidth = 686;
+    var gridHeight = 686;
+
+    var ledsPerRow = 16;
+    var ledsPerCol = 16;
+
+
+    var canvas = $('#led-matrix-grid');
+    canvas.attr({ width: gridWidth, height: gridHeight });
+
+    var context = canvas.get(0).getContext("2d");
+
+    createGrid(context, gridWidth, gridHeight, ledsPerRow, ledsPerCol);
 }
 
-function addRows() {
-	var sessionType = sessionStorage.getItem("session0");
-	var sessionSuccess = sessionStorage.getItem("session1");
-	let count = 0
-	
-	if(sessionType  == "login" &&  sessionSuccess == "true"){
-		count = Number(sessionStorage.getItem("session3"));
-		sessionCnt = 4;
-		for(i=0; i<count; i++){
-			var sketchName = sessionStorage.getItem("session"+String(sessionCnt));
-			
-			var table = document.getElementById("tableData");
-			var rowCount = table.rows.length;
-			var row = table.insertRow(rowCount);
- 
-    
-			row.insertCell(0).innerHTML= sketchName;
-			row.insertCell(1).innerHTML= '<input type="button" value = "Load" onClick="deletsRow(this)">';
-			row.insertCell(2).innerHTML= '<input type="button" value = "Delete" onClick="deleteRow(this)">';
-			sessionCnt++;
-		}
-	}
- 
-}
- 
-function deleteRow(obj) {
-      
-    var index = obj.parentNode.parentNode.rowIndex;
-    var table = document.getElementById("tableData");
-    table.deleteRow(index);
-    
-}
+/**
+ * Creates/draws a grid 
+ * @param {Context} context  The drawing context, used to draw on a canvas
+ * @param {Number} totalGridWidth The total witdth of the grid/canvas
+ * @param {Number} totalGridHeight The total height of the grid/canvas
+ * @param {Number} boxesPerRow The number of boxes/rectangles you want on each row
+ * @param {Number} boxesPerCol The number of boxes/rectangles you want on each column
+ */
+function createGrid(context, totalGridWidth, totalGridHeight, boxesPerRow, boxesPerCol) {
 
-function loadMatrix(){
-	for(c = 0; c < tileColumnCount; c++){
-		for(r = 0; r < tileRowCount; r++){
-			tiles[c][r].state = 'e';
-		}
-	}
-	
-}
+    //The number of steps we want to skip on each iteration
+    //used to make the boxes for each row and column.
+    var xStep = totalGridWidth / boxesPerRow;
+    var yStep = totalGridHeight / boxesPerCol;
 
-function saveSketch(){
-	var state = ""
-	for(c = 0; c < tileColumnCount; c++){
-		for(r = 0; r < tileRowCount; r++){
-			state += tiles[c][r].state;
-		}
-	}
-	console.log("Matrix state: "+ state);
-}
-
-var tiles = [];
-for(c = 0; c < tileColumnCount; c++){
-	tiles[c] = [];
-	for(r = 0; r < tileRowCount; r++){
-		tiles[c][r] = {x: c*(tileW+3), y: r*(tileH+3), state: 'e'};
-	}
-}
-
-function rect(x,y,w,h,state){
-	if(state == 'e'){
-		ctx.fillStyle = '#AAAAAA';
-	}
-	else{
-		ctx.fillStyle = state;
-	}
-	ctx.beginPath();
-	ctx.rect(x,y,w,h);
-	ctx.closePath();
-	ctx.fill();
-}
-
-function clear(){
-	ctx.clearRect(0,0,WIDTH,HEIGHT);
-}
-
-function clearAllTiles(){
-	for(c = 0; c < tileColumnCount; c++){
-		for(r = 0; r < tileRowCount; r++){
-			tiles[c][r].state = 'e';
-		}
-	}
-	
-}
-
-
-
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
+    //creates 'boxesPerRow + 1' vertical lines each having a witdth of xStep
+    for (var x = 0; x <= totalGridWidth; x += xStep) {
+        context.moveTo(x, 0);
+        context.lineTo(x, totalGridHeight);
     }
-  }
+
+    //creates 'boxesPerCol + 1' Horozontal lines each having a height of yStep
+    for (var y = 0; y <= totalGridHeight; y += yStep) {
+        context.moveTo(0, y);
+        context.lineTo(totalGridWidth, y);
+    }
+
+    //Chooses a color for the lines and then actually draws them to the canvas
+    context.strokeStyle = "black";
+    context.stroke();
 }
-
-
-function sendData(){		
-	for(r = (tileRowCount-1); r >= 0; r--){
-		var rev = 0;
-		for(c = 0; c < tileColumnCount; c++){
-			//This line is to make sure data gets sent in the order
-			//of how the matrix lights are wired
-			if( r % 2 == 0) c = tileColumnCount - 1 - rev;
-			
-			//Turn RGB to GRB(since the matrix uses GRB)
-			var x = tiles[c][r].state;
-			x = x.slice(1,7);
-			x = parseInt(x, 16);
-			x = (x & 0x0000FF) | ((x & 0xFF0000) >>> 8) | ((x & 0x00FF00) << 8);	
-
-			var ledString = x.toString(16);
-			while(ledString.length < 6) ledString = '0' + ledString;
-			dataString = dataString + ledString;
-			c = rev++;
-		}
-	}
-			$.ajax({
-			 	type: "POST",
-			      	url: "/cgi-bin/pytest.py",
-				data: {param: dataString},
-			     context: document.body
-			});	
-}
-
-
-function draw(){
-	clear();
-	
-	for(c = 0; c < tileColumnCount; c++){
-		for(r = 0; r < tileRowCount; r++){
-			rect(tiles[c][r].x, tiles[c][r].y, tileW, tileH, tiles[c][r].state);
-		}
-	}
-}
-
-function init(){
-	canvas = document.getElementById("myCanvas");
-	ctx = canvas.getContext("2d");
-	getCurrentUser();
-	addRows()
-	return setInterval(draw, 10);
-}
-
-function myMove(e){
-	x = e.pageX - canvas.offsetLeft;
-	y = e.pageY - canvas.offsetTop;
-	
-	for(c=0; c < tileColumnCount; c++){
-		for(r=0; r<tileRowCount; r++){
-			if(c*(tileW+3) < x && x < c*(tileW+3)+tileW && r*(tileH+3) < y && y < r*(tileH+3)+tileH){
-				currentState = document.getElementById("color1").value;
-				if((tiles[c][r].state == "e" || tiles[c][r].state != currentState) && (c != boundX || r != boundY)){
-					tiles[c][r].state = document.getElementById("color1").value;
-					boundX = c;
-					boundY = r;
-				}
-				else if(tiles[c][r].state == currentState  && (c != boundX || r != boundY)){
-					tiles[c][r].state = 'e';
-					boundX = c;
-					boundY = r;
-					
-				}
-			}
-		}
-	}
-}
-
-
-function myDown(e){
-	canvas.onmousemove = myMove;
-	
-	x = e.pageX - canvas.offsetLeft;
-	y = e.pageY - canvas.offsetTop;
-	
-	for(c=0; c < tileColumnCount; c++){
-		for(r=0; r<tileRowCount; r++){
-			if(c*(tileW+3) < x && x < c*(tileW+3)+tileW && r*(tileH+3) < y && y < r*(tileH+3)+tileH){
-				currentState = document.getElementById("color1").value;
-				if((tiles[c][r].state == "e" || tiles[c][r].state != currentState) && (c != boundX || r != boundY)){
-					tiles[c][r].state = document.getElementById("color1").value;
-					boundX = c;
-					boundY = r;
-				}
-				else if(tiles[c][r].state == currentState  && (c != boundX || r != boundY)){
-					tiles[c][r].state = "e";
-					boundX = c;
-					bounxY = r;
-				}
-				
-			}
-		}
-	}
-}
-
-function myUp(){
-	canvas.onmousemove = null;
-}
-	
-init();
-canvas.onmousedown = myDown;
-canvas.onmouseup = myUp;
