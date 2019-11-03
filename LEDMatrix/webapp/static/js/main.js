@@ -198,24 +198,47 @@ function setupEventHandlers(globalVars) {
 
     globalVars.canvas.mouseup({ globalVars: globalVars }, mouseUpOnGrid);
 
-    globalVars.canvas.mousemove({ isMouseDown: globalVars.isMouseDown }, mouseMoveOnGrid);
+    globalVars.canvas.mousemove({ globalVars: globalVars }, mouseMoveOnGrid);
 }
 
 
 function mouseDownOnGrid(event) {
     event.data.globalVars.setMouseDown(true);
-    if (event.data.globalVars._debug) debugInfo("mouseDownOnGrid: Changed isMouseDown", event.data.globalVars);
-
-
-    var gridProp = event.data.globalVars.gridProp;
     var canvas = event.data.globalVars.canvas;
-    var colorPicker = event.data.globalVars.colorPicker;
 
     var mouseX = event.pageX - canvas.offset().left;
     var mouseY = event.pageY - canvas.offset().top;
 
 
     console.log("mouseDownOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+
+    colorCanvasOnMousePos(mouseX, mouseY, event.data.globalVars);
+
+
+}
+
+function mouseUpOnGrid(event) {
+    if (event.data.globalVars.isMouseDown()) event.data.globalVars.setMouseDown(false);
+
+}
+
+function mouseMoveOnGrid(event) {
+
+    var canvas = event.data.globalVars.canvas;
+
+    var mouseX = event.pageX - canvas.offset().left;
+    var mouseY = event.pageY - canvas.offset().top;
+
+
+    console.log("mouseMoveOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+
+    if (event.data.globalVars.isMouseDown()) colorCanvasOnMousePos(mouseX, mouseY, event.data.globalVars);
+}
+
+function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
+    var gridProp = globalVars.gridProp;
+    var colorPicker = globalVars.colorPicker;
+
 
     var grid = gridProp.grid;
     for (var r = 0; r < grid.length; r++) {
@@ -228,20 +251,10 @@ function mouseDownOnGrid(event) {
 
             if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
                 console.log("row: " + r + "Col: " + c);
-                event.data.globalVars.setGridColor(r, c, colorPicker.color.hexString)
+                globalVars.setGridColor(r, c, colorPicker.color.hexString);
             }
         }
     }
-
-
-}
-
-function mouseUpOnGrid(event) {
-
-}
-
-function mouseMoveOnGrid(event) {
-
 }
 
 
