@@ -15,10 +15,11 @@ canvas {
     border: 2px solid black;
 }
 
-.debug-box {
+
+/* .debug-box {
     background: rgba(0, 0, 255, 0.7);
     border: 10px, solid, red;
     position: absolute;
     z-index: 9;
     text-align: center;
-}
+} */

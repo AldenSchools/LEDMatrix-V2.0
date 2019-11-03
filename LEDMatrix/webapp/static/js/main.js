@@ -25,6 +25,7 @@
 "use strict"
 $(function() {
 
+
     var gridWidth = 686;
     var gridHeight = 686;
     var boxesPerRow = 16;
@@ -199,6 +200,8 @@ function setupEventHandlers(globalVars) {
     globalVars.canvas.mouseup({ globalVars: globalVars }, mouseUpOnGrid);
 
     globalVars.canvas.mousemove({ globalVars: globalVars }, mouseMoveOnGrid);
+
+    globalVars.canvas.mouseout({ globalVars: globalVars }, mouseOutOfGrid);
 }
 
 
@@ -209,8 +212,14 @@ function mouseDownOnGrid(event) {
     var mouseX = event.pageX - canvas.offset().left;
     var mouseY = event.pageY - canvas.offset().top;
 
+    if (event.data.globalVars._debug) {
+        $('#debug-mouseX').text(" Mouse X = " + mouseX + "px");
+        $('#debug-mouseX').text(" Mouse Y = " + mouseY + "px");
+        console.log("mouseDownOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+    }
 
-    console.log("mouseDownOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+
+
 
     colorCanvasOnMousePos(mouseX, mouseY, event.data.globalVars);
 
@@ -229,10 +238,25 @@ function mouseMoveOnGrid(event) {
     var mouseX = event.pageX - canvas.offset().left;
     var mouseY = event.pageY - canvas.offset().top;
 
+    if (event.data.globalVars._debug) {
+        $('#debug-mouseX').text(" Mouse X = " + mouseX + "px");
+        $('#debug-mouseX').text(" Mouse Y = " + mouseY + "px");
+        console.log("mouseMoveOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
 
-    console.log("mouseMoveOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+    }
+
+
 
     if (event.data.globalVars.isMouseDown()) colorCanvasOnMousePos(mouseX, mouseY, event.data.globalVars);
+}
+
+function mouseOutOfGrid(event) {
+    if (event.data.globalVars._debug) {
+        $('#debug-mouseX').text(" Mouse X = N/A");
+        $('#debug-mouseX').text(" Mouse Y = N/A");
+        $('#debug-row-col').text(" Clicked Pos (Row = N/A, Col = N/A)");
+        //$('debug-color').text(" Color of last colored box(hex) = " + globalVars.colorPicker.color.hexString);
+    }
 }
 
 function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
@@ -252,28 +276,11 @@ function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
             if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
                 console.log("row: " + r + "Col: " + c);
                 globalVars.setGridColor(r, c, colorPicker.color.hexString);
+                if (globalVars._debug) {
+                    $('#debug-row-col').text(" Clicked Pos (Row = " + r + ", Col = " + c);
+                    $('#debug-color').text(" Color of last colored box(hex) = " + colorPicker.color.hexString);
+                }
             }
         }
     }
-}
-
-
-
-
-
-/***********DEBUG STUFF *********/
-
-function debugInfo(debugMessage, globalVars) {
-    console.log(debugMessage +
-        "\nIs Mouse Down = " + globalVars.isMouseDown() +
-        "\nGrid Width = " + globalVars.gridProp.gridWidth +
-        "\nGrid Heigt = " + globalVars.gridProp.gridHeight +
-        "\nBoxes Per Grid Row = " + globalVars.gridProp.boxesPerRow +
-        "\nBoxes Per Grid Column = " + globalVars.gridProp.boxesPerCol +
-        "\nBox With = " + globalVars.gridProp.boxWidth +
-        "\nBox Height = " + globalVars.gridProp.boxHeight +
-        "\nGrid Data Structure: ");
-    console.log(globalVars.gridProp.grid);
-
-
 }
