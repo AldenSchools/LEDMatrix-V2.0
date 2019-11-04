@@ -210,15 +210,28 @@ function setupEventHandlers(globalVars) {
 function startMouseEventHandler(globalVars) {
 
     var isMouseDown = false;
+
     var canvas = globalVars.canvas;
+    var colorPicker = globalVars.colorPicker;
+
+    var gridProp = globalVars.gridProp;
+    var grid = gridProp.grid;
+
+    var lastColoredRow = 0;
+    var lastColoredCol = 0;
+
+    var lastBoxStartX = -1;
+    var lastBoxEndX = -1;
+    var lastBoxStartY = -1;
+    var lastBoxEndY = -1;
 
     var mouseX;
     var mouseY;
 
-    globalVars.canvas.mousedown(mouseDownOnGrid);
-    globalVars.canvas.mouseup(mouseUpOnGrid);
-    globalVars.canvas.mousemove(mouseMoveOnGrid);
-    globalVars.canvas.mouseout(mouseOutOfGrid);
+    canvas.mousedown(mouseDownOnGrid);
+    canvas.mouseup(mouseUpOnGrid);
+    canvas.mousemove(mouseMoveOnGrid);
+    canvas.mouseout(mouseOutOfGrid);
 
 
 
@@ -241,13 +254,20 @@ function startMouseEventHandler(globalVars) {
         mouseX = event.pageX - canvas.offset().left;
         mouseY = event.pageY - canvas.offset().top;
 
-        if (isMouseDown) colorCanvasOnMousePos(mouseX, mouseY, globalVars);
+        var isInLastBox = mouseX >= lastBoxStartX && mouseX <= lastBoxEndX && mouseY >= lastBoxStartY && mouseY <= lastBoxEndY;
+        if (lastBoxStartX === -1 && lastBoxStartY === -1 && lastBoxEndX === -1 && lastBoxEndY === -1) isInLastBox = false;
+
+        if (isMouseDown && !isInLastBox) colorCanvasOnMousePos(mouseX, mouseY, globalVars);
 
         updateExtraMouseDebugInfo();
     }
 
     function mouseUpOnGrid(event) {
         if (isMouseDown) isMouseDown = false;
+        lastBoxStartX = -1;
+        lastBoxEndX = -1;
+        lastBoxStartY = -1;
+        lastBoxEndY = -1;
 
     }
 
@@ -256,44 +276,66 @@ function startMouseEventHandler(globalVars) {
             $('#debug-mouseX-canvas').text("(Canvas)Mouse X: n/a");
             $('#debug-mouseY-canvas').text("(Canvas)Mouse Y: n/a");
         }
+
+        if (isMouseDown) isMouseDown = false;
+        lastBoxStartX = -1;
+        lastBoxEndX = -1;
+        lastBoxStartY = -1;
+        lastBoxEndY = -1;
     }
+
+
+    function colorCanvasOnMousePos() {
+
+        for (var row = 0; row < grid.length; row++) {
+            for (var col = 0; col < grid[row].length; col++) {
+                var boxStartX = grid[row][col].boxStartX;
+                var boxEndX = boxStartX + gridProp.boxWidth;
+
+                var boxStartY = grid[row][col].boxStartY;
+                var boxEndY = boxStartY + gridProp.boxHeight;
+
+                if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
+
+                    globalVars.setGridColor(row, col, colorPicker.color.hexString);
+
+                    lastColoredRow = row;
+                    lastColoredCol = col;
+
+                    lastBoxStartX = boxStartX;
+                    lastBoxEndX = boxEndX;
+
+                    lastBoxStartY = boxStartY;
+                    lastBoxEndY = boxEndY;
+
+                }
+
+            }
+        }
+
+    }
+
+
 
     function updateExtraMouseDebugInfo() {
         if (globalVars._debug) {
             $('#debug-mouseX-canvas').text("(Canvas)Mouse X: " + mouseX + "px");
             $('#debug-mouseY-canvas').text("(Canvas)Mouse Y: " + mouseY + "px");
+            $('#debug-row-col-canvas').text("(Canvas)Clicked: (Row: " + lastColoredRow + ", Col: " + lastColoredCol + ")");
+            console.log("(Canvas)Clicked: (Row: ", lastColoredRow, ", Col: ", lastColoredCol, ")");
             console.log(" (Canvas)Mouse X: ", mouseX, "\n", "(Canvas)Mouse Y: ", mouseY);
         }
     }
-}
 
-function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
-    var gridProp = globalVars.gridProp;
-    var colorPicker = globalVars.colorPicker;
-
-
-    var grid = gridProp.grid;
-    for (var r = 0; r < grid.length; r++) {
-        for (var c = 0; c < grid[r].length; c++) {
-            var boxStartX = grid[r][c].boxStartX;
-            var boxEndX = boxStartX + gridProp.boxWidth;
-
-            var boxStartY = grid[r][c].boxStartY;
-            var boxEndY = boxStartY + gridProp.boxHeight;
-
-            if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
-
-                globalVars.setGridColor(r, c, colorPicker.color.hexString);
-
-                if (globalVars._debug) {
-                    $('#debug-row-col-canvas').text("(Canvas)Clicked: (Row: " + r + ", Col: " + c + ")");
-                    console.log("(Canvas)Clicked: (Row: ", r, ", Col: ", c, ")");
-                }
-            }
-        }
-    }
 }
 
 
 
-/****** DEBUG STUFF */
+
+/**On a Click of the Canvas
+ *  We know:
+ *      -what value the color picker has
+ *      -cordinate of the mouse with respect to canvas and document
+ *      -can find out current row and col we are in (but we are trying to avoid doing this multiple times when mouse is in same box area will make it slow)
+ *      
+ * */
