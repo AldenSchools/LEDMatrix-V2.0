@@ -54,8 +54,6 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
 
     var context = canvas.get(0).getContext("2d");
 
-    var mouseDown = false;
-
 
 
     var boxWidth = gridWidth / boxesPerRow;
@@ -84,18 +82,12 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
 
     }
 
-    function setMouseDown(value) { mouseDown = value; }
-
-    function isMouseDown() { return mouseDown; }
-
     return {
         colorPicker: colorPicker,
         canvas: canvas,
         context: context,
         gridProp: gridProp,
         setGridColor: setGridColor,
-        isMouseDown: isMouseDown,
-        setMouseDown: setMouseDown,
         _debug: _debug
     };
 }
@@ -292,7 +284,3 @@ function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
 
 
 /****** DEBUG STUFF */
-
-function updateDebugInfo(mouseX, mouseY, row, col, colorString) {
-
-}

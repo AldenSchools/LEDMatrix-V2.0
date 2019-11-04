@@ -36,12 +36,12 @@ function showDebugInfoOnPage(htmlelementsObject) {
 
     $("body").prepend(debugBox);
 
-    dragElement(debugBox);
+    //dragElement(debugBox);
+    debugBox.draggable();
 }
 
 function debugInfo(debugMessage, globalVars) {
     console.log(debugMessage +
-        "\nIs Mouse Down = " + globalVars.isMouseDown() +
         "\nGrid Width = " + globalVars.gridProp.gridWidth +
         "\nGrid Heigt = " + globalVars.gridProp.gridHeight +
         "\nBoxes Per Grid Row = " + globalVars.gridProp.boxesPerRow +
@@ -52,7 +52,7 @@ function debugInfo(debugMessage, globalVars) {
     console.log(globalVars.gridProp.grid);
 
 
-    var elem1 = $('<p>', { class: "my-1 font-weight-bold" }).text("Mouse Down on Canvas = " + globalVars.isMouseDown());
+    //var elem1 = $('<p>', { class: "my-1 font-weight-bold" }).text("Mouse Down on Canvas = " + globalVars.isMouseDown());
     var elem2 = $('<p>', { class: "my-1 font-weight-bold" }).text("Grid Width = " + globalVars.gridProp.gridWidth);
     var elem3 = $('<p>', { class: "my-1 font-weight-bold" }).text("Grid Heigt = " + globalVars.gridProp.gridHeight);
     var elem4 = $('<p>', { class: "my-1 font-weight-bold" }).text("Boxes Per Grid Row = " + globalVars.gridProp.boxesPerRow);
@@ -65,7 +65,7 @@ function debugInfo(debugMessage, globalVars) {
     var elem15 = $('<p>', { id: "debug-color", class: "my-1 font-weight-bold" }).text(" Last box clicked color(hex) = " + globalVars.colorPicker.color.hexString);
 
     showDebugInfoOnPage({
-        peram1: elem1,
+        //peram1: elem1,
         peram2: elem2,
         peram3: elem3,
         peram4: elem4,
