@@ -39,7 +39,7 @@ $(function() {
     setupEventHandlers(globalVars);
 
 
-    if (globalVars._debug) debugInfo("Debug Inital", globalVars);
+
 
 
 });
@@ -78,8 +78,23 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
         context.rect(grid[row][col].boxStartX, grid[row][col].boxStartY, boxWidth, boxHeight);
         context.closePath();
         context.fill();
+    }
 
+    var getDebugInfo = function() {
 
+        return {
+            "Color Picker: ": colorPicker.color.hexString,
+            "Grid Width: ": gridWidth,
+            "Grid Height: ": gridHeight,
+            "Boxes per rows: ": boxesPerRow,
+            "boxes per column: ": boxesPerCol,
+            "Box width: ": boxWidth,
+            "Box height: ": boxHeight
+        };
+    }
+
+    if (_debug) {
+        showDebugInfo(getDebugInfo);
     }
 
     return {
@@ -88,7 +103,8 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
         context: context,
         gridProp: gridProp,
         setGridColor: setGridColor,
-        _debug: _debug
+        _debug: _debug,
+        getDebugInfo: getDebugInfo
     };
 }
 
@@ -212,14 +228,9 @@ function startMouseEventHandler(globalVars) {
         mouseX = event.pageX - canvas.offset().left;
         mouseY = event.pageY - canvas.offset().top;
 
-        if (globalVars._debug) {
-            $('#debug-mouseX').text("Mouse X = " + mouseX + "px");
-            $('#debug-mouseY').text("Mouse Y = " + mouseY + "px");
-
-        }
-        console.log("mouseDownOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
-
         colorCanvasOnMousePos(mouseX, mouseY, globalVars);
+
+        updateExtraMouseDebugInfo();
     }
 
 
@@ -230,14 +241,9 @@ function startMouseEventHandler(globalVars) {
         mouseX = event.pageX - canvas.offset().left;
         mouseY = event.pageY - canvas.offset().top;
 
-        if (globalVars._debug) {
-            $('#debug-mouseX').text("Mouse X = " + mouseX + "px");
-            $('#debug-mouseY').text("Mouse Y = " + mouseY + "px");
-
-            console.log("mouseMoveOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
-        }
-
         if (isMouseDown) colorCanvasOnMousePos(mouseX, mouseY, globalVars);
+
+        updateExtraMouseDebugInfo();
     }
 
     function mouseUpOnGrid(event) {
@@ -247,10 +253,16 @@ function startMouseEventHandler(globalVars) {
 
     function mouseOutOfGrid(event) {
         if (globalVars._debug) {
-            $('#debug-mouseX').text("Mouse X = n/a");
-            $('#debug-mouseY').text("Mouse Y = n/a");
-            $('#debug-row-col').text("Clicked (Row = n/a, Col = n/a)");
-            //$('debug-color').text(" Color of last colored box(hex) = " + globalVars.colorPicker.color.hexString);
+            $('#debug-mouseX-canvas').text("(Canvas)Mouse X: n/a");
+            $('#debug-mouseY-canvas').text("(Canvas)Mouse Y: n/a");
+        }
+    }
+
+    function updateExtraMouseDebugInfo() {
+        if (globalVars._debug) {
+            $('#debug-mouseX-canvas').text("(Canvas)Mouse X: " + mouseX + "px");
+            $('#debug-mouseY-canvas').text("(Canvas)Mouse Y: " + mouseY + "px");
+            console.log(" (Canvas)Mouse X: ", mouseX, "\n", "(Canvas)Mouse Y: ", mouseY);
         }
     }
 }
@@ -270,11 +282,12 @@ function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
             var boxEndY = boxStartY + gridProp.boxHeight;
 
             if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
-                console.log("Row: " + r + "Col: " + c);
+
                 globalVars.setGridColor(r, c, colorPicker.color.hexString);
+
                 if (globalVars._debug) {
-                    $('#debug-row-col').text("Clicked (Row = " + r + ", Col = " + c + ")");
-                    $('#debug-color').text("Last box clicked color(hex) = " + colorPicker.color.hexString);
+                    $('#debug-row-col-canvas').text("(Canvas)Clicked: (Row: " + r + ", Col: " + c + ")");
+                    console.log("(Canvas)Clicked: (Row: ", r, ", Col: ", c, ")");
                 }
             }
         }

@@ -1,192 +1,123 @@
 "use strict"
 $(function() {
-    var _watch = null;
-    var test = null;
-    setInterval(function() {
-        if (_watch !== test) {
-            _watch = test;
-            console.log('Variable changed.', test);
-        }
-    }, 100);
+
 });
 
-function showDebugInfoOnPage(htmlelementsObject) {
-    var htmlelements = Object.values(htmlelementsObject);
+function showDebugInfo(debugInfoObjFunc) {
 
-    var debugBox = $('<div>', { "class": "debug-box d-block" });
+    var debugInfoObj = debugInfoObjFunc();
 
-    debugBox.css({
-        "background": "lightblue",
-        "border": "10px solid rgba(255, 0, 0, 0.4)",
-        "position": "absolute",
-        "z-index": "9",
-        "width": "250"
-    });
-    var debugBoxTitleDiv = $('<div>', { class: "font-weight-bold", id: "debug-title" }).text("DEBUG");
-    debugBoxTitleDiv.css("text-align", "center");
-    debugBox.append(debugBoxTitleDiv);
+    var debugBox = createDebugBox();
+
+    var debugText = Object.keys(debugInfoObj);
+    var debugVars = Object.values(debugInfoObj);
+
+    var watchVars = updateWatchVars();
 
 
+    showDebugInfoOnPage();
+    showDebugInfoOnConsole("Initial");
+    extraDebugInfoOnPage();
+    extraDebugInfoOnConsole();
 
 
-    for (var i = 0; i < htmlelements.length; i++) {
-        debugBox.append(htmlelements[i]);
-    }
+    function showDebugInfoOnPage() {
 
-
-    $("body").prepend(debugBox);
-
-    //dragElement(debugBox);
-    debugBox.draggable();
-}
-
-function debugInfo(debugMessage, globalVars) {
-    console.log(debugMessage +
-        "\nGrid Width = " + globalVars.gridProp.gridWidth +
-        "\nGrid Heigt = " + globalVars.gridProp.gridHeight +
-        "\nBoxes Per Grid Row = " + globalVars.gridProp.boxesPerRow +
-        "\nBoxes Per Grid Column = " + globalVars.gridProp.boxesPerCol +
-        "\nBox With = " + globalVars.gridProp.boxWidth +
-        "\nBox Height = " + globalVars.gridProp.boxHeight +
-        "\nGrid Data Structure: ");
-    console.log(globalVars.gridProp.grid);
-
-
-    //var elem1 = $('<p>', { class: "my-1 font-weight-bold" }).text("Mouse Down on Canvas = " + globalVars.isMouseDown());
-    var elem2 = $('<p>', { class: "my-1 font-weight-bold" }).text("Grid Width = " + globalVars.gridProp.gridWidth);
-    var elem3 = $('<p>', { class: "my-1 font-weight-bold" }).text("Grid Heigt = " + globalVars.gridProp.gridHeight);
-    var elem4 = $('<p>', { class: "my-1 font-weight-bold" }).text("Boxes Per Grid Row = " + globalVars.gridProp.boxesPerRow);
-    var elem5 = $('<p>', { class: "my-1 font-weight-bold" }).text("Boxes Per Grid Column = " + globalVars.gridProp.boxesPerCol);
-    var elem6 = $('<p>', { class: "my-1 font-weight-bold" }).text("Box With = " + globalVars.gridProp.boxWidth);
-    var elem7 = $('<p>', { class: "my-1 font-weight-bold" }).text("Box Height = " + globalVars.gridProp.boxHeight);
-    var elem10 = $('<p>', { id: "debug-mouseX", class: "my-1 font-weight-bold" }).text(" Mouse X = n/a");
-    var elem11 = $('<p>', { id: "debug-mouseY", class: "my-1 font-weight-bold" }).text(" Mouse Y = n/a");
-    var elem12 = $('<p>', { id: "debug-row-col", class: "my-1 font-weight-bold" }).text(" Clicked (Row = n/a, Col = n/a)");
-    var elem15 = $('<p>', { id: "debug-color", class: "my-1 font-weight-bold" }).text(" Last box clicked color(hex) = " + globalVars.colorPicker.color.hexString);
-
-    showDebugInfoOnPage({
-        //peram1: elem1,
-        peram2: elem2,
-        peram3: elem3,
-        peram4: elem4,
-        peram5: elem5,
-        peram6: elem6,
-        peram7: elem7,
-        // peram8: elem8,
-        // peram9: elem9,
-        peram10: elem10,
-        peram11: elem11,
-        peram12: elem12,
-        // peram13: elem13,
-        // peram14: elem14,
-        peram15: elem15
-    });
-
-
-
-}
-
-
-/** 
- * This section of code is originally from modifies to fit my needs 
- * https://www.kirupa.com/html5/drag.htm
- * */
-function dragElement(element) {
-
-
-    var elementChildren = element.find('*');
-
-    var dragActive = false;
-
-    var mouseX;
-    var mouseY;
-    var startMouseX;
-    var startMouseY;
-    var offsetX = 0;
-    var offsetY = 0;
-
-    element.mousedown(dragStart);
-    //container.touchstart(dragStart);
-
-    element.mousemove(drag);
-    //container.touchmove(drag);
-
-    element.mouseup(dragEnd);
-    //container.touchEnd(dragEnd);
-
-    element.mouseout(dragEnd);
-
-
-    function dragStart(event) {
-        event = event || window.event;
-        //event.preventDefault();
-
-        // get the mouse cursor position at startup:
-        if (event.type === "mousedown") {
-            startMouseX = event.clientX - offsetX;
-            startMouseY = event.clientY - offsetY;
-            console.log("mousedown");
-        } else {
-            //startMouseX = event.touches[0].clientX - offsetX;
-            //startMouseY = event.touches[0].clientY - offsetY;
+        for (var i = 0; i < debugText.length; i++) {
+            var pElem = $('<p>', { class: "my-1 font-weight-bold debug-main-auto-gen" }).text(debugText[i] + debugVars[i]);
+            $("#debug-box-main").append(pElem)
         }
 
-        elementChildren.attr("unselectable", "on");
-        elementChildren.onselectstart = false;
-        elementChildren.mousedown = false;
-
-
-
-
-
-        dragActive = true;
-        console.log(dragActive);
     }
 
-    function drag(event) {
-        // event = event || window.event;
-        //event.preventDefault();
+    function showDebugInfoOnConsole(debugMessage) {
 
-        // calculate the new cursor position:
-        console.log(dragActive);
-        if (dragActive) {
+        console.log(debugMessage);
+        for (var i = 0; i < debugText.length; i++) {
+            console.log(debugText[i], debugVars[i]);
+        }
+        console.log("\n");
+    }
 
-            if (event.type === "mousemove") {
-                mouseX = event.clientX - startMouseX;
-                mouseY = event.clientY - startMouseY;
-                console.log("dragging");
-            } else {
-                //mouseX = event.touches[0].clientX - startMouseX;
-                //mouseY = event.touches[0].clientY - startMouseY;
+    function createDebugBox() {
+        var debugBox = $('<div>', { "class": "debug-box d-block" });
+
+        debugBox.css({
+            "background": "lightblue",
+            "border": "10px solid rgba(255, 0, 0, 0.4)",
+            "position": "absolute",
+            "z-index": "9",
+            "width": "250"
+        });
+        var debugBoxTitle = $('<div>', { class: "", id: "debug-title-div" });
+        var title = $('<h4>', { class: "font-weight-bold", id: "debug-title" }).text("DEBUG BOX");
+        title.css("text-align", "center");
+        debugBoxTitle.append(title);
+
+        var debugBoxMain = $('<div>', { class: "", id: "debug-box-main" });
+        var debugBoxExtra = $('<div>', { class: "", id: "debug-box-extras" });
+
+
+        debugBox.append(debugBoxTitle);
+        debugBox.append(debugBoxMain);
+        debugBox.append(debugBoxExtra);
+
+        $("body").prepend(debugBox);
+        debugBox.draggable();
+
+        return debugBox;
+    }
+
+    function updateWatchVars() {
+        var watchVars = [];
+        for (var i = 0; i < debugVars.length; i++) {
+            var x = debugVars[i];
+            watchVars[i] = x;
+        }
+        return watchVars;
+    }
+
+    function refreshVars() {
+        debugInfoObj = debugInfoObjFunc();
+        debugText = Object.keys(debugInfoObj);
+        debugVars = Object.values(debugInfoObj);
+    }
+
+    function refreshVarsOnPage() {
+        //debugBox.remove('.debug-auto-gen');
+        $(".debug-main-auto-gen").remove();
+        showDebugInfoOnPage();
+    }
+
+
+
+
+    setInterval(intervalChange, 100);
+
+    function intervalChange() {
+        refreshVars();
+        for (var i = 0; i < watchVars.length; i++) {
+            if (watchVars[i] !== debugVars[i]) {
+                watchVars[i] = debugVars[i];
+                console.log("Variable '" + debugText[i] + "' changed to: ", debugVars[i]);
+                refreshVarsOnPage();
             }
-
-            offsetX = mouseX;
-            offsetY = mouseY;
-
-            var transform = "translate3d(" + mouseX + "px, " + mouseY + "px, 0)";
-            element.css("transform", transform);
-
-
         }
+    }
 
 
+    function extraDebugInfoOnPage() {
+        var pElem1 = $('<p>', { id: "debug-mouseX-canvas", class: "my-1 font-weight-bold" }).text("(Canvas)Mouse X: n/a");
+        var pElem2 = $('<p>', { id: "debug-mouseY-canvas", class: "my-1 font-weight-bold" }).text("(Canvas)Mouse Y: n/a");
+        var pElem3 = $('<p>', { id: "debug-row-col-canvas", class: "my-1 font-weight-bold" }).text("(Canvas)Clicked: (Row: n/a, Col: n/a)");
+        $("#debug-box-extras").append(pElem1);
+        $("#debug-box-extras").append(pElem2);
+        $("#debug-box-extras").append(pElem3);
+    }
 
-        // set the element's new position:
+    function extraDebugInfoOnConsole() {
 
     }
 
-    function dragEnd() {
-        // stop moving when mouse button is released:
-        startMouseX = mouseX;
-        startMouseY = mouseY;
 
-        dragActive = false;
-        console.log("end drag");
-        console.log(dragActive);
-
-        elementChildren.attr("unselectable", "off");
-        elementChildren.onselectstart = true;
-        elementChildren.mousedown = true;
-
-    }
 }
