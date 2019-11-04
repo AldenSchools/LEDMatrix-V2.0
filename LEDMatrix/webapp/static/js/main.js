@@ -104,7 +104,6 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
         gridProp: gridProp,
         setGridColor: setGridColor,
         _debug: _debug,
-        getDebugInfo: getDebugInfo
     };
 }
 
@@ -296,8 +295,8 @@ function startMouseEventHandler(globalVars) {
                 var boxEndY = boxStartY + gridProp.boxHeight;
 
                 if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
-
-                    globalVars.setGridColor(row, col, colorPicker.color.hexString);
+                    var newColor = colorPicker.color.hexString;
+                    if (grid.color !== newColor) globalVars.setGridColor(row, col, newColor);
 
                     lastColoredRow = row;
                     lastColoredCol = col;
@@ -307,6 +306,7 @@ function startMouseEventHandler(globalVars) {
 
                     lastBoxStartY = boxStartY;
                     lastBoxEndY = boxEndY;
+                    break;
 
                 }
 
@@ -328,14 +328,3 @@ function startMouseEventHandler(globalVars) {
     }
 
 }
-
-
-
-
-/**On a Click of the Canvas
- *  We know:
- *      -what value the color picker has
- *      -cordinate of the mouse with respect to canvas and document
- *      -can find out current row and col we are in (but we are trying to avoid doing this multiple times when mouse is in same box area will make it slow)
- *      
- * */
