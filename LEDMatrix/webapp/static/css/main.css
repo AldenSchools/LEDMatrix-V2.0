@@ -12,7 +12,7 @@ body {
 
 canvas {
     background: #ffffff;
-    border: 2px solid black;
+    border: 5px solid black;
 }
 
 .debug-box {

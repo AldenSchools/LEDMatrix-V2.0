@@ -26,16 +26,17 @@
 $(function() {
 
 
-    var gridWidth = 686;
-    var gridHeight = 686;
+    var gridWidth = 800;
+    var gridHeight = 800;
     var boxesPerRow = 16;
     var boxesPerCol = 16;
+    var gridLineWidth = 10;
     var _debug = true;
 
-    var globalVars = initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug);
+    var globalVars = initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, _debug);
 
 
-    drawGrid(globalVars.context, globalVars.gridProp);
+    drawGrid(globalVars);
     setupEventHandlers(globalVars);
 
 
@@ -45,7 +46,7 @@ $(function() {
 });
 
 
-function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
+function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, _debug) {
 
     var colorPicker = new iro.ColorPicker('#color-picker');
 
@@ -56,9 +57,9 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
 
 
 
-    var boxWidth = gridWidth / boxesPerRow;
-    var boxHeight = gridHeight / boxesPerCol;
-    var grid = initGridDataStruct(boxesPerRow, boxesPerCol, boxWidth, boxHeight);
+    var boxWidth = (gridWidth / boxesPerRow) - gridLineWidth;
+    var boxHeight = (gridHeight / boxesPerCol) - gridLineWidth;
+    var grid = initGridDataStruct(boxesPerRow, boxesPerCol, boxWidth, boxHeight, gridLineWidth);
     var gridProp = {
         grid: grid,
         gridWidth: gridWidth,
@@ -66,7 +67,8 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
         boxesPerRow: boxesPerRow,
         boxesPerCol: boxesPerCol,
         boxWidth: boxWidth,
-        boxHeight: boxHeight
+        boxHeight: boxHeight,
+        gridLineWidth: gridLineWidth
     };
 
     function setGridColor(row, col, newColor) {
@@ -95,6 +97,7 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
 
     if (_debug) {
         showDebugInfo(getDebugInfo);
+        console.log(" Grid: ", grid);
     }
 
     return {
@@ -115,28 +118,30 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, _debug) {
  * @param {Number} boxesPerRow The number of boxes/rectangles you want on each row
  * @param {Number} boxesPerCol The number of boxes/rectangles you want on each column
  */
-function drawGrid(context, gridProp) {
+function drawGrid(globalVars) {
+    var context = globalVars.context;
+    var gridProp = globalVars.gridProp;
 
     //used to calculate the width and height of each box in the grid given the total height and with of our grid. 
 
 
     /*creates 'boxesPerRow + 1' vertical lines each having a witdth of boxWidth,
       each iteration we move by one 'boxWidth' unit to the right.*/
-    for (var x = 0; x <= gridProp.gridWidth; x += gridProp.boxWidth) {
+    for (var x = 0; x <= gridProp.gridWidth; x += gridProp.boxWidth + gridProp.gridLineWidth) {
         context.moveTo(x, 0);
         context.lineTo(x, gridProp.gridHeight);
     }
 
     /*creates 'boxesPerCol + 1' Horozontal lines each having a height of boxHeight,
       each iteration we move by one 'boxHeight' unit down. */
-    for (var y = 0; y <= gridProp.gridHeight; y += gridProp.boxHeight) {
+    for (var y = 0; y <= gridProp.gridHeight; y += gridProp.boxHeight + gridProp.gridLineWidth) {
         context.moveTo(0, y);
         context.lineTo(gridProp.gridWidth, y);
     }
 
     //Chooses a color for the lines and then actually draws them to the canvas
     context.strokeStyle = "black";
-    //context.lineWidth = 10;
+    context.lineWidth = gridProp.gridLineWidth;
     context.stroke();
 }
 
@@ -151,15 +156,36 @@ function drawGrid(context, gridProp) {
  * @param {Number} boxHeight The width each box occupies, used to calculating the mouse x position relative to a canvas.
  * @returns {Array} A 2D array each element consiting of the beggining x and y mouse cordinates for each box and its color.
  */
-function initGridDataStruct(rows, cols, boxWidth, boxHeight) {
+function initGridDataStruct(rows, cols, boxWidth, boxHeight, gridLineWidth) {
 
     var grid = [];
     for (var r = 0; r < rows; r++) {
         grid[r] = [];
         for (var c = 0; c < cols; c++) {
-            var startX = c * boxWidth;
-            var startY = r * boxHeight;
-            grid[r][c] = { boxStartX: startX, boxStartY: startY, color: '#FFFFFF' };
+            var startX = -1;
+            var startY = -1;
+
+
+            if (c === 0) startX = gridLineWidth / 2;
+            else startX = grid[r][c - 1].boxEndX + gridLineWidth;
+
+            if (r === 0) startY = gridLineWidth / 2;
+            else startY = grid[r - 1][c].boxEndY + gridLineWidth;
+
+            // var startX = (c * boxWidth) + 15;
+            // var startY = (r * boxHeight) + 15;
+            var endX = (startX + boxWidth);
+            var endY = (startY + boxHeight);
+
+
+
+            grid[r][c] = {
+                boxStartX: startX,
+                boxStartY: startY,
+                boxEndX: endX,
+                boxEndY: endY,
+                color: '#FFFFFF'
+            };
         }
     }
 
@@ -289,10 +315,10 @@ function startMouseEventHandler(globalVars) {
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
                 var boxStartX = grid[row][col].boxStartX;
-                var boxEndX = boxStartX + gridProp.boxWidth;
+                var boxEndX = grid[row][col].boxEndX;
 
                 var boxStartY = grid[row][col].boxStartY;
-                var boxEndY = boxStartY + gridProp.boxHeight;
+                var boxEndY = grid[row][col].boxEndY;
 
                 if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
                     var newColor = colorPicker.color.hexString;
