@@ -38,7 +38,9 @@ $(function() {
     drawGrid(globalVars.context, globalVars.gridProp);
     setupEventHandlers(globalVars);
 
+
     if (globalVars._debug) debugInfo("Debug Inital", globalVars);
+
 
 });
 
@@ -157,105 +159,107 @@ function initGridDataStruct(rows, cols, boxWidth, boxHeight) {
     return grid;
 }
 
-function sendData() {
-    for (r = (tileRowCount - 1); r >= 0; r--) {
-        var rev = 0;
-        for (c = 0; c < tileColumnCount; c++) {
-            //This line is to make sure data gets sent in the order
-            //of how the matrix lights are wired
-            if (r % 2 == 0) c = tileColumnCount - 1 - rev;
+// function sendData() {
+//     for (r = (tileRowCount - 1); r >= 0; r--) {
+//         var rev = 0;
+//         for (c = 0; c < tileColumnCount; c++) {
+//             //This line is to make sure data gets sent in the order
+//             //of how the matrix lights are wired
+//             if (r % 2 == 0) c = tileColumnCount - 1 - rev;
 
-            //Turn RGB to GRB(since the matrix uses GRB)
-            var x = tiles[c][r].state;
-            x = x.slice(1, 7);
-            x = parseInt(x, 16);
-            x = (x & 0x0000FF) | ((x & 0xFF0000) >>> 8) | ((x & 0x00FF00) << 8);
+//             //Turn RGB to GRB(since the matrix uses GRB)
+//             var x = tiles[c][r].state;
+//             x = x.slice(1, 7);
+//             x = parseInt(x, 16);
+//             x = (x & 0x0000FF) | ((x & 0xFF0000) >>> 8) | ((x & 0x00FF00) << 8);
 
-            var ledString = x.toString(16);
-            while (ledString.length < 6) ledString = '0' + ledString;
-            dataString = dataString + ledString;
-            c = rev++;
-        }
-    }
-    $.ajax({
-        type: "POST",
-        url: "/cgi-bin/pytest.py",
-        data: { param: dataString },
-        context: document.body
-    });
-}
+//             var ledString = x.toString(16);
+//             while (ledString.length < 6) ledString = '0' + ledString;
+//             dataString = dataString + ledString;
+//             c = rev++;
+//         }
+//     }
+//     $.ajax({
+//         type: "POST",
+//         url: "/cgi-bin/pytest.py",
+//         data: { param: dataString },
+//         context: document.body
+//     });
+// }
 
-function clear() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-}
+// function clear() {
+//     ctx.clearRect(0, 0, WIDTH, HEIGHT);
+// }
 
 
 
 /********  EVENT HANDLERS *******/
 function setupEventHandlers(globalVars) {
-    console.log("setupEventHandlers: isMouseDown = " + globalVars.isMouseDown);
+    startMouseEventHandler(globalVars);
 
-    globalVars.canvas.mousedown({ globalVars: globalVars }, mouseDownOnGrid);
-
-    globalVars.canvas.mouseup({ globalVars: globalVars }, mouseUpOnGrid);
-
-    globalVars.canvas.mousemove({ globalVars: globalVars }, mouseMoveOnGrid);
-
-    globalVars.canvas.mouseout({ globalVars: globalVars }, mouseOutOfGrid);
 }
 
+function startMouseEventHandler(globalVars) {
 
-function mouseDownOnGrid(event) {
-    event.data.globalVars.setMouseDown(true);
-    var canvas = event.data.globalVars.canvas;
+    var isMouseDown = false;
+    var canvas = globalVars.canvas;
 
-    var mouseX = event.pageX - canvas.offset().left;
-    var mouseY = event.pageY - canvas.offset().top;
+    var mouseX;
+    var mouseY;
 
-    if (event.data.globalVars._debug) {
-        $('#debug-mouseX').text(" Mouse X = " + mouseX + "px");
-        $('#debug-mouseX').text(" Mouse Y = " + mouseY + "px");
+    globalVars.canvas.mousedown(mouseDownOnGrid);
+    globalVars.canvas.mouseup(mouseUpOnGrid);
+    globalVars.canvas.mousemove(mouseMoveOnGrid);
+    globalVars.canvas.mouseout(mouseOutOfGrid);
+
+
+
+    function mouseDownOnGrid(event) {
+        isMouseDown = true;
+
+        mouseX = event.pageX - canvas.offset().left;
+        mouseY = event.pageY - canvas.offset().top;
+
+        if (globalVars._debug) {
+            $('#debug-mouseX').text("Mouse X = " + mouseX + "px");
+            $('#debug-mouseY').text("Mouse Y = " + mouseY + "px");
+
+        }
         console.log("mouseDownOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+
+        colorCanvasOnMousePos(mouseX, mouseY, globalVars);
     }
 
 
 
+    function mouseMoveOnGrid(event) {
 
-    colorCanvasOnMousePos(mouseX, mouseY, event.data.globalVars);
 
+        mouseX = event.pageX - canvas.offset().left;
+        mouseY = event.pageY - canvas.offset().top;
 
-}
+        if (globalVars._debug) {
+            $('#debug-mouseX').text("Mouse X = " + mouseX + "px");
+            $('#debug-mouseY').text("Mouse Y = " + mouseY + "px");
 
-function mouseUpOnGrid(event) {
-    if (event.data.globalVars.isMouseDown()) event.data.globalVars.setMouseDown(false);
+            console.log("mouseMoveOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+        }
 
-}
+        if (isMouseDown) colorCanvasOnMousePos(mouseX, mouseY, globalVars);
+    }
 
-function mouseMoveOnGrid(event) {
-
-    var canvas = event.data.globalVars.canvas;
-
-    var mouseX = event.pageX - canvas.offset().left;
-    var mouseY = event.pageY - canvas.offset().top;
-
-    if (event.data.globalVars._debug) {
-        $('#debug-mouseX').text(" Mouse X = " + mouseX + "px");
-        $('#debug-mouseX').text(" Mouse Y = " + mouseY + "px");
-        console.log("mouseMoveOnGrid: \n Pos x = " + mouseX + "\n Pos y = " + mouseY + "\n");
+    function mouseUpOnGrid(event) {
+        if (isMouseDown) isMouseDown = false;
 
     }
 
-
-
-    if (event.data.globalVars.isMouseDown()) colorCanvasOnMousePos(mouseX, mouseY, event.data.globalVars);
-}
-
-function mouseOutOfGrid(event) {
-    if (event.data.globalVars._debug) {
-        $('#debug-mouseX').text(" Mouse X = N/A");
-        $('#debug-mouseX').text(" Mouse Y = N/A");
-        $('#debug-row-col').text(" Clicked Pos (Row = N/A, Col = N/A)");
-        //$('debug-color').text(" Color of last colored box(hex) = " + globalVars.colorPicker.color.hexString);
+    function mouseOutOfGrid(event) {
+        if (globalVars._debug) {
+            $('#debug-mouseX').text("Mouse X = n/a");
+            $('#debug-mouseY').text("Mouse Y = n/a");
+            $('#debug-row-col').text("Clicked (Row = n/a, Col = n/a)");
+            //$('debug-color').text(" Color of last colored box(hex) = " + globalVars.colorPicker.color.hexString);
+        }
     }
 }
 
@@ -274,13 +278,21 @@ function colorCanvasOnMousePos(mouseX, mouseY, globalVars) {
             var boxEndY = boxStartY + gridProp.boxHeight;
 
             if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
-                console.log("row: " + r + "Col: " + c);
+                console.log("Row: " + r + "Col: " + c);
                 globalVars.setGridColor(r, c, colorPicker.color.hexString);
                 if (globalVars._debug) {
-                    $('#debug-row-col').text(" Clicked Pos (Row = " + r + ", Col = " + c);
-                    $('#debug-color').text(" Color of last colored box(hex) = " + colorPicker.color.hexString);
+                    $('#debug-row-col').text("Clicked (Row = " + r + ", Col = " + c + ")");
+                    $('#debug-color').text("Last box clicked color(hex) = " + colorPicker.color.hexString);
                 }
             }
         }
     }
+}
+
+
+
+/****** DEBUG STUFF */
+
+function updateDebugInfo(mouseX, mouseY, row, col, colorString) {
+
 }

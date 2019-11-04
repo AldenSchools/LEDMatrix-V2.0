@@ -15,11 +15,22 @@ canvas {
     border: 2px solid black;
 }
 
-
-/* .debug-box {
+.debug-box {
     background: rgba(0, 0, 255, 0.7);
-    border: 10px, solid, red;
+    border: 20px, solid, rgba(255, 0, 0, 0.3);
     position: absolute;
     z-index: 9;
-    text-align: center;
-} */
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -o-user-select: none;
+}
+
+.debug-box:hover {
+    cursor: move;
+}
+
+.debug-box p {
+    font-size: 13px;
+}
