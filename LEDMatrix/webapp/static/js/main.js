@@ -2,7 +2,10 @@
  * Author: LEDMatrix Team - 2019
  * Description: Originally created for Alden schools
  * 
- * Please consider sharing any cool additons to this project! :)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this 
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/ .
+ * 
  * */
 
 
@@ -27,10 +30,11 @@ $(function() {
 
 
     var gridWidth = 800;
-    var gridHeight = 800;
+    var gridHeight = 600;
     var boxesPerRow = 16;
     var boxesPerCol = 16;
-    var gridLineWidth = 10;
+    var gridLineWidth = 5;
+    var initialColor = '#4c4c4c';
     var _debug = true;
 
     var globalVars = initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, _debug);
@@ -38,10 +42,6 @@ $(function() {
 
     drawGrid(globalVars);
     setupEventHandlers(globalVars);
-
-
-
-
 
 });
 
@@ -59,7 +59,7 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWi
 
     var boxWidth = (gridWidth / boxesPerRow) - gridLineWidth;
     var boxHeight = (gridHeight / boxesPerCol) - gridLineWidth;
-    var grid = initGridDataStruct(boxesPerRow, boxesPerCol, boxWidth, boxHeight, gridLineWidth);
+    var grid = initGridDataStruct(context, boxesPerRow, boxesPerCol, boxWidth, boxHeight, gridLineWidth);
     var gridProp = {
         grid: grid,
         gridWidth: gridWidth,
@@ -146,6 +146,8 @@ function drawGrid(globalVars) {
 }
 
 
+
+
 /**
  * Creates and initializes an array of arrays with each element  
  * consiting of the beggining x and y mouse cordinates for each box and its color.
@@ -156,7 +158,7 @@ function drawGrid(globalVars) {
  * @param {Number} boxHeight The width each box occupies, used to calculating the mouse x position relative to a canvas.
  * @returns {Array} A 2D array each element consiting of the beggining x and y mouse cordinates for each box and its color.
  */
-function initGridDataStruct(rows, cols, boxWidth, boxHeight, gridLineWidth) {
+function initGridDataStruct(context, rows, cols, boxWidth, boxHeight, gridLineWidth) {
 
     var grid = [];
     for (var r = 0; r < rows; r++) {
@@ -184,8 +186,10 @@ function initGridDataStruct(rows, cols, boxWidth, boxHeight, gridLineWidth) {
                 boxStartY: startY,
                 boxEndX: endX,
                 boxEndY: endY,
-                color: '#FFFFFF'
+                color: '#4c4c4c'
             };
+            context.fillStyle = '#4c4c4c';
+            context.fillRect(startX, startY, boxWidth, boxHeight);
         }
     }
 
