@@ -1,95 +1,81 @@
 $(function() {
 
-    var gridWidth = 800;
-    var gridHeight = 800;
-    var boxesPerRow = 16;
-    var boxesPerCol = 16;
-    var gridLineWidth = 5;
-    var initialColor = '#4c4c4c';
-    var _debug = false;
-
 });
 
 
-function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, defaultColor, _debug) {
+function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, initColor) {
 
-    gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
+
+    gridWidth = (gridWidth === undefined) ? 800 : gridWidth;
+    gridHeight = (gridHeight === undefined) ? gridWidth : gridHeight;
     gridHeight = gridWidth;
 
-    var canvas = $('#led-matrix-grid');
+    gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
+
+
     canvas.attr({ width: gridWidth, height: gridHeight });
 
     var context = canvas.get(0).getContext("2d");
-    context.fillStyle = defaultColor;
-    console.log(context);
-
-    var colorPicker = new iro.ColorPicker('#color-picker', { width: $("#color-picker").width() });
-
-    var mode = "color";
 
     var boxWidth = (gridWidth / boxesPerRow) - gridLineWidth;
     var boxHeight = (gridHeight / boxesPerCol) - gridLineWidth;
-    var grid = initGridDataStruct(context, boxesPerRow, boxesPerCol, boxWidth, boxHeight, gridLineWidth, defaultColor);
 
+    var grid = createGridDataStruct(boxesPerRow, boxesPerCol);
 
-    var gridProp = {
-        grid: grid,
-        gridWidth: gridWidth,
-        gridHeight: gridHeight,
-        boxesPerRow: boxesPerRow,
-        boxesPerCol: boxesPerCol,
-        boxWidth: boxWidth,
-        boxHeight: boxHeight,
-        gridLineWidth: gridLineWidth
-    };
+    drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineWidth);
+    calculateGridDims(initColor);
 
-    function getColorPicker() { return colorPicker; }
 
     function getCanvas() { return canvas; }
 
-    function getContext() { return context; }
+    function getGrid() { return grid; }
 
-    function getGridProp() { return gridProp; }
+    function getWidth() { return gridWidth; }
+
+    function getHeight() { return gridHeight; }
+
+    function getBoxesPerRow() { return boxesPerRow; }
+
+    function getBoxesPerCol() { return boxesPerCol; }
+
+    function getBoxWidth() { return boxWidth; }
+
+    function getBoxHeight() { return boxHeight; }
+
+    function getGridLineWidth() { return gridLineWidth; }
+
 
     function setGridColor(row, col, newColor) {
 
-        var trueColor;
-        if (mode === "color") trueColor = newColor;
-        if (mode === "eraser") trueColor = defaultColor;
-
-        grid[row][col].color = trueColor;
-
-        //context.beginPath();
+        grid[row][col].color = newColor;
 
         context.clearRect(grid[row][col].boxStartX, grid[row][col].boxStartY, boxWidth, boxHeight);
 
-        context.fillStyle = trueColor;
+        context.fillStyle = newColor;
         context.fillRect(grid[row][col].boxStartX, grid[row][col].boxStartY, boxWidth, boxHeight);
 
-        //context.closePath();
-        //context.fill();
     }
 
     function updateGrid() {
 
 
         gridWidth = $("#grid-div").width();
-        gridHeight = gridWidth;
+        if (gridHeight === undefined) trueGridHeight = gridWidth;
+
+        canvas.attr({ width: gridWidth, height: gridHeight });
 
         boxWidth = (gridWidth / boxesPerRow) - gridLineWidth;
         boxHeight = (gridHeight / boxesPerCol) - gridLineWidth;
 
         console.log("recalculating start positions for each box in grid");
         //drawGrid();
-        canvas.attr({ width: gridWidth, height: gridHeight });
 
-        gridProp.gridWidth = gridWidth;
-        gridProp.gridHeight = gridHeight;
-        gridProp.boxWidth = boxWidth;
-        gridProp.boxHeight = boxHeight;
+        drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineWidth);
+        calculateGridDims(_);
 
-        drawGrid(context, gridProp);
+    }
 
+    function calculateGridDims(fillColor) {
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
                 var startX = -1;
@@ -109,24 +95,231 @@ function initGlobals(gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWi
                 grid[row][col].boxEndX = startX + boxWidth;
                 grid[row][col].boxEndY = startY + boxHeight;
 
-                context.fillStyle = grid[row][col].color;
+                if (fillColor !== undefined) context.fillColor = fillColor;
+                else context.fillStyle = grid[row][col].color;
+
                 context.fillRect(startX, startY, boxWidth, boxHeight);
 
             }
         }
-
-        gridProp.grid = grid;
     }
 
     return {
-        getColorPicker: getColorPicker,
         getCanvas: getCanvas,
-        getContext: getContext,
-        getGridProp: getGridProp,
-        getDefaultColor: getDefaultColor,
+        getGrid: getGrid,
+        getWidth: getWidth,
+        getHeight: getHeight,
+        getBoxesPerRow: getBoxesPerRow,
+        getBoxesPerCol: getBoxesPerCol,
+        getBoxWidth: getBoxWidth,
+        getBoxHeight: getBoxHeight,
+        getGridLineWidth: getGridLineWidth,
         setGridColor: setGridColor,
         updateGrid: updateGrid,
-        setMode: setMode,
-        getDebugStatus: getDebugStatus,
+        calculateGridDims: calculateGridDims
+
     };
+}
+
+
+
+
+
+
+
+/**
+ * Creates/Draws a 2d grid on the canvas that is visible on the page
+ * 
+ * @param {Number} totalGridWidth The total witdth of the grid/canvas
+ * @param {Number} totalGridHeight The total height of the grid/canvas
+ * @param {Number} boxesPerRow The number of boxes/rectangles you want on each row
+ * @param {Number} boxesPerCol The number of boxes/rectangles you want on each column
+ */
+function drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineWidth) {
+    context.clearRect(0, 0, gridWidth, gridHeight)
+
+    //used to calculate the width and height of each box in the grid given the total height and with of our grid. 
+
+    /*creates 'boxesPerRow + 1' vertical lines each having a witdth of boxWidth,
+      each iteration we move by one 'boxWidth' unit to the right.*/
+    for (var x = 0; x <= gridWidth; x += boxWidth + gridLineWidth) {
+        context.moveTo(x, 0);
+        context.lineTo(x, gridHeight);
+    }
+
+    /*creates 'boxesPerCol + 1' Horozontal lines each having a height of boxHeight,
+      each iteration we move by one 'boxHeight' unit down. */
+    for (var y = 0; y <= gridHeight; y += boxHeight + gridLineWidth) {
+        context.moveTo(0, y);
+        context.lineTo(gridWidth, y);
+    }
+    context.moveTo(gridWidth, 0);
+    context.lineTo(gridWidth, gridHeight);
+
+    //Chooses a color for the lines and then actually draws them to the canvas
+    context.strokeStyle = "black";
+    context.lineWidth = gridLineWidth;
+    context.stroke();
+}
+
+
+
+
+
+
+/**
+ * Creates and initializes an array of arrays with each element  
+ * consiting of the beggining x and y mouse cordinates for each box and its color.
+ * 
+ * @param {Number} rows The numner of rows for our 2d array.
+ * @param {Number} cols The numner of columns for our 2d array.
+ * @param {Number} boxWidth The width each box occupies, used to calculating the mouse x position relative to a canvas.
+ * @param {Number} boxHeight The width each box occupies, used to calculating the mouse x position relative to a canvas.
+ * @returns {Array} A 2D array each element consiting of the beggining x and y mouse cordinates for each box and its color.
+ */
+function createGridDataStruct(numRows, numCols) {
+
+    var grid = [];
+    for (var row = 0; row < numRows; row++) {
+        grid[row] = [];
+        for (var col = 0; col < numCols; col++) {
+
+            grid[row][col] = {
+                boxStartX: -1,
+                boxStartY: -1,
+                boxEndX: -1,
+                boxEndY: -1,
+                color: ""
+            };
+
+        }
+    }
+
+    return grid;
+}
+
+
+
+
+
+
+
+
+function mouseOnGridEventHandler(globalVars) {
+
+    var isMouseDown = false;
+
+    var canvas = globalGridVars.getCanvas();
+
+    var lastColoredRow = 0;
+    var lastColoredCol = 0;
+
+    var lastBoxStartX = -1;
+    var lastBoxEndX = -1;
+    var lastBoxStartY = -1;
+    var lastBoxEndY = -1;
+
+    var mouseX;
+    var mouseY;
+
+    canvas.mousedown(mouseDownOnGrid);
+    canvas.mouseup(mouseUpOnGrid);
+    canvas.mousemove(mouseMoveOnGrid);
+    canvas.mouseout(mouseOutOfGrid);
+
+
+
+    function mouseDownOnGrid(event) {
+        isMouseDown = true;
+
+        mouseX = event.pageX - canvas.offset().left;
+        mouseY = event.pageY - canvas.offset().top;
+
+        colorCanvasOnMousePos();
+
+        updateExtraMouseDebugInfo();
+    }
+
+
+
+    function mouseMoveOnGrid(event) {
+
+
+        mouseX = event.pageX - canvas.offset().left;
+        mouseY = event.pageY - canvas.offset().top;
+
+        var isInLastBox = mouseX >= lastBoxStartX && mouseX <= lastBoxEndX && mouseY >= lastBoxStartY && mouseY <= lastBoxEndY;
+        if (lastBoxStartX === -1 && lastBoxStartY === -1 && lastBoxEndX === -1 && lastBoxEndY === -1) isInLastBox = false;
+
+        if (isMouseDown && !isInLastBox) colorCanvasOnMousePos();
+
+        updateExtraMouseDebugInfo();
+    }
+
+    function mouseUpOnGrid(event) {
+        if (isMouseDown) isMouseDown = false;
+        lastBoxStartX = -1;
+        lastBoxEndX = -1;
+        lastBoxStartY = -1;
+        lastBoxEndY = -1;
+
+    }
+
+    function mouseOutOfGrid(event) {
+        if (debug) {
+            $('#debug-mouseX-canvas').text("(Canvas)Mouse X: n/a");
+            $('#debug-mouseY-canvas').text("(Canvas)Mouse Y: n/a");
+        }
+
+        if (isMouseDown) isMouseDown = false;
+        lastBoxStartX = -1;
+        lastBoxEndX = -1;
+        lastBoxStartY = -1;
+        lastBoxEndY = -1;
+    }
+
+
+    function colorCanvasOnMousePos() {
+        var grid = globalGridVars.getGrid();
+
+        for (var row = 0; row < grid.length; row++) {
+            for (var col = 0; col < grid[row].length; col++) {
+                var boxStartX = grid[row][col].boxStartX;
+                var boxEndX = grid[row][col].boxEndX;
+
+                var boxStartY = grid[row][col].boxStartY;
+                var boxEndY = grid[row][col].boxEndY;
+
+                if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
+                    var newColor = colorPicker.color.hexString;
+                    if (grid.color !== newColor) globalGridVars.setGridColor(row, col, newColor);
+
+                    lastColoredRow = row;
+                    lastColoredCol = col;
+
+                    lastBoxStartX = boxStartX;
+                    lastBoxEndX = boxEndX;
+
+                    lastBoxStartY = boxStartY;
+                    lastBoxEndY = boxEndY;
+                    break;
+
+                }
+
+            }
+        }
+
+    }
+
+
+    function updateExtraMouseDebugInfo() {
+        if (debug) {
+            $('#debug-mouseX-canvas').text("(Canvas)Mouse X: " + mouseX + "px");
+            $('#debug-mouseY-canvas').text("(Canvas)Mouse Y: " + mouseY + "px");
+            $('#debug-row-col-canvas').text("(Canvas)Clicked: (Row: " + lastColoredRow + ", Col: " + lastColoredCol + ")");
+            console.log("(Canvas)Clicked: (Row: ", lastColoredRow, ", Col: ", lastColoredCol, ")");
+            console.log(" (Canvas)Mouse X: ", mouseX, "\n", "(Canvas)Mouse Y: ", mouseY);
+        }
+    }
+
 }
