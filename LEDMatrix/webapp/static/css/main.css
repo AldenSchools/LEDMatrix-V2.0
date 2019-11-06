@@ -33,7 +33,7 @@ body {
 canvas {
     background: #ffffff;
     border: 5px solid black;
-    width: 100%;
+    /* width: 100%; */
     /* position: relative; */
 }
 
@@ -56,9 +56,9 @@ canvas {
 }
 
 
-/* Toolbar */
+/* Toolbox */
 
-.toolbar {
+.toolbox {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -67,7 +67,7 @@ canvas {
     border: 1px solid #555;
 }
 
-.toolbar li {
+.toolbox li {
     text-align: center;
     border-bottom: 1px solid #555;
     display: block;
@@ -76,20 +76,20 @@ canvas {
     text-decoration: none;
 }
 
-.toolbar li:last-child {
+.toolbox li:last-child {
     border-bottom: none;
 }
 
-.toolbar li.active {
+.toolbox li.active {
     background-color: #4CAF50;
     color: white;
 }
 
-.toolbar li:hover {
+.toolbox li:hover {
     cursor: pointer;
 }
 
-.toolbar li:hover:not(.active) {
+.toolbox li:hover:not(.active) {
     background-color: #555;
     color: white;
 }
@@ -97,8 +97,9 @@ canvas {
 
 /* Page footer */
 
-.page-footer {
+
+/* .page-footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-}
+} */
