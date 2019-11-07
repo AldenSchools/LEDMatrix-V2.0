@@ -21,10 +21,10 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
     var boxWidth = (gridWidth / boxesPerRow) - gridLineWidth;
     var boxHeight = (gridHeight / boxesPerCol) - gridLineWidth;
 
-    var grid = createGridDataStruct(boxesPerRow, boxesPerCol);
+    var grid = createGridDataStruct(boxesPerRow, boxesPerCol, initColor);
 
     drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineWidth);
-    calculateGridDims(initColor);
+    calculateGridDims();
 
 
     function getCanvas() { return canvas; }
@@ -71,14 +71,13 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
         boxHeight = (gridHeight / boxesPerCol) - gridLineWidth;
 
         console.log("recalculating start positions for each box in grid");
-        //drawGrid();
 
         drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineWidth);
-        calculateGridDims(_);
+        calculateGridDims();
 
     }
 
-    function calculateGridDims(fillColor) {
+    function calculateGridDims() {
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
                 var startX = -1;
@@ -98,8 +97,8 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
                 grid[row][col].boxEndX = startX + boxWidth;
                 grid[row][col].boxEndY = startY + boxHeight;
 
-                if (fillColor !== undefined) context.fillStyle = fillColor;
-                else context.fillStyle = grid[row][col].color;
+
+                context.fillStyle = grid[row][col].color;
 
                 context.fillRect(startX, startY, boxWidth, boxHeight);
 
@@ -180,7 +179,7 @@ function drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineW
  * @param {Number} boxHeight The width each box occupies, used to calculating the mouse x position relative to a canvas.
  * @returns {Array} A 2D array each element consiting of the beggining x and y mouse cordinates for each box and its color.
  */
-function createGridDataStruct(numRows, numCols) {
+function createGridDataStruct(numRows, numCols, initColor) {
 
     var grid = [];
     for (var row = 0; row < numRows; row++) {
@@ -192,7 +191,7 @@ function createGridDataStruct(numRows, numCols) {
                 boxStartY: -1,
                 boxEndX: -1,
                 boxEndY: -1,
-                color: ""
+                color: initColor
             };
 
         }
