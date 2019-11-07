@@ -57,14 +57,28 @@ $(function() {
 
 
     if (_debug) {
-        var debugInfo = populateDebugInfo(globalVars);
+
+        var debugInfo = function() {
+            return {
+                "Color Picker: ": colorPickerGlobalVars.getColorPicker().color.hexString,
+                "Default Color: ": colorPickerGlobalVars.getDefaultColor(),
+                "Mode: '": colorPickerGlobalVars.getMode() + "'",
+                "Grid Width: ": gridGlobalVars.getWidth(),
+                "Grid Height: ": gridGlobalVars.getHeight(),
+                "Boxes per rows: ": gridGlobalVars.getBoxesPerRow(),
+                "boxes per column: ": gridGlobalVars.getBoxesPerCol(),
+                "Box width: ": gridGlobalVars.getBoxWidth(),
+                "Box height: ": gridGlobalVars.getBoxHeight()
+            };
+        };
+
         var extraDebugInfo = extraDebugInfoManual();
 
         var debug = initDebug(debugInfo);
         debug.extraDebugInfoOnPageManualTrack(extraDebugInfo);
 
-        console.log(" Grid: ", grid);
-        console.log(context);
+        console.log(" Grid: ", gridGlobalVars.getGrid());
+        //console.log(gridGlobalVars.getContext());
     }
 
 });
@@ -107,17 +121,9 @@ function resizedWindowHandler(globalVars) {
 /********  DEBUG STUFF *******/
 
 function populateDebugInfo(globalVars) {
-    return {
-        "Color Picker: ": colorPicker.color.hexString,
-        "Default Color: ": defaultColor,
-        "Mode: '": mode + "'",
-        "Grid Width: ": gridWidth,
-        "Grid Height: ": gridHeight,
-        "Boxes per rows: ": boxesPerRow,
-        "boxes per column: ": boxesPerCol,
-        "Box width: ": boxWidth,
-        "Box height: ": boxHeight
-    };
+    var gridVars = globalVars.gridVars;
+    var colorPickerVars = globalVars.colorPickerVars;
+
 }
 
 function extraDebugInfoManual() {

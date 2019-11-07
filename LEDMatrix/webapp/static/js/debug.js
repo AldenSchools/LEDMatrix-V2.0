@@ -79,7 +79,7 @@ function createDebugBox(debugBoxTitle) {
         "width": "250"
     });
     var debugBoxTitle = $('<div>', { class: "", id: "debug-title-div" });
-    var title = $('<h4>', { class: "font-weight-bold", id: "debug-title" }).text(debugBoxTitle);
+    var title = $('<h4>', { class: "font-weight-bold", id: "debug-title" }).text(debugBoxTitle + "");
     title.css("text-align", "center");
     debugBoxTitle.append(title);
 
@@ -107,11 +107,12 @@ function watchVariables(debugInfoObjFunc, onChangeActionFunc) {
     var watchVars = populateWatchVars();
 
     function populateWatchVars() {
-        watchVars = [];
+        var watchVars = [];
         for (var i = 0; i < debugVars.length; i++) {
             var x = debugVars[i];
             watchVars[i] = x;
         }
+        return watchVars;
     }
 
     function getUpdatedVarsList() {
