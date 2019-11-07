@@ -32,6 +32,7 @@ function initDebug(debugInfoObjFunc) {
 
     function populateDebugBoxMain() {
 
+
         for (var i = 0; i < debugText.length; i++) {
             var pElem = $('<p>', { class: "my-1 font-weight-bold debug-main-auto-gen" }).text(debugText[i] + debugVars[i]);
             $("#debug-box-main").append(pElem)
@@ -58,6 +59,9 @@ function initDebug(debugInfoObjFunc) {
 
     function repopulateElemsOnPage() {
         //debugBox.remove('.debug-auto-gen');
+        debugInfoObj = debugInfoObjFunc();
+        debugText = Object.keys(debugInfoObj);
+        debugVars = Object.values(debugInfoObj);
         $(".debug-main-auto-gen").remove();
         populateDebugBoxMain();
     }
@@ -107,12 +111,12 @@ function watchVariables(debugInfoObjFunc, onChangeActionFunc) {
     var watchVars = populateWatchVars();
 
     function populateWatchVars() {
-        var watchVars = [];
+        var vars = [];
         for (var i = 0; i < debugVars.length; i++) {
             var x = debugVars[i];
-            watchVars[i] = x;
+            vars[i] = x;
         }
-        return watchVars;
+        return vars;
     }
 
     function getUpdatedVarsList() {
