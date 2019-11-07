@@ -14,21 +14,35 @@ function toolboxSelectionHandler(globalVars) {
 
     var toolbox = $(".toolbox");
 
-    var color = $("#color");
-    var colorAllBlank = $("#color-all-blank");
-    var colorAll = $("#color-all");
-    var addEffects = $("#add-effects");
-    var eraser = $("#eraser");
-    var clearAll = $("#clear-all");
+    var color;
+    var colorAllBlank;
+    var colorAll;
+    var addEffects;
+    var eraser;
+    var clearAll;
+
+    if (toolbox) {
+        color = $("#color");
+        colorAllBlank = $("#color-all-blank");
+        colorAll = $("#color-all");
+        addEffects = $("#add-effects");
+        eraser = $("#eraser");
+        clearAll = $("#clear-all");
+
+        color.on("click", colorMode);
+        colorAllBlank.on("click", colorAllBlankMode);
+        colorAll.on("click", colorAllMode);
+        addEffects.on("click", addEfects);
+        eraser.on("click", eraserMode);
+        clearAll.on("click", clearGrid);
+
+    }
 
 
 
-    color.on("click", colorMode);
-    colorAllBlank.on("click", colorAllBlankMode);
-    colorAll.on("click", colorAllMode);
-    addEffects.on("click", addEfects);
-    eraser.on("click", eraserMode);
-    clearAll.on("click", clearAll);
+
+
+
 
     function colorMode(event) {
         globalVars.colorPickerVars.setMode("color");
@@ -59,9 +73,9 @@ function toolboxSelectionHandler(globalVars) {
         updateNewActiveElem(eraser);
     }
 
-    function clearAll(event) {
+    function clearGrid(event) {
         fillAll(colorPickerVars.getDefaultColor());
-        console.log("trying to clear with color ", colorPickerVars.getDefaultColor() );
+
     }
 
     function fillAll(newColor) {

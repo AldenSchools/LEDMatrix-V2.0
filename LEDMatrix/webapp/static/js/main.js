@@ -45,6 +45,10 @@ $(function() {
     var gridGlobalVars = initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, defaultColor);
     var controlGlobalVars = initControlGlobals();
 
+    // if (typeof initColorPickerGlobals === "function")
+    // if (typeof initGridGlobals === "function")
+    // if (typeof initControlGlobals === "function")
+
     var globalVars = {
         colorPickerVars: colorPickerGlobalVars,
         gridVars: gridGlobalVars,
@@ -78,7 +82,6 @@ $(function() {
         debug.extraDebugInfoOnPageManualTrack(extraDebugInfo);
 
         console.log(" Grid: ", gridGlobalVars.getGrid());
-        //console.log(gridGlobalVars.getContext());
     }
 
 });

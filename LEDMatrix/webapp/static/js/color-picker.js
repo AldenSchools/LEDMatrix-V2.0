@@ -6,7 +6,8 @@ function initColorPickerGlobals(defaultColor) {
 
 
     var mode = "color";
-    var colorPicker = new iro.ColorPicker('#color-picker');
+    var colorPicker;
+    if ($('#color-picker').length) colorPicker = new iro.ColorPicker('#color-picker');
 
     function getColorPicker() { return colorPicker; }
 
