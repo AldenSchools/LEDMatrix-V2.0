@@ -7,10 +7,11 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
 
     gridWidth = (gridWidth === undefined) ? 800 : gridWidth;
-    gridHeight = (gridHeight === undefined) ? gridWidth : gridHeight;
+    gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
+    //gridHeight = (gridHeight === undefined) ? gridWidth : gridHeight;
     gridHeight = gridWidth;
 
-    gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
+
 
 
     canvas.attr({ width: gridWidth, height: gridHeight });
@@ -46,6 +47,7 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
 
     function setGridColor(row, col, newColor) {
+        if (grid[row][col].color === newColor) return;
 
         grid[row][col].color = newColor;
 
@@ -209,7 +211,8 @@ function mouseOnGridEventHandler(globalVars) {
 
     var isMouseDown = false;
 
-    var canvas = globalGridVars.getCanvas();
+    var canvas = globalVars.gridVars.getCanvas();
+    var debug = globalVars.debug;
 
     var lastColoredRow = 0;
     var lastColoredCol = 0;
@@ -280,7 +283,7 @@ function mouseOnGridEventHandler(globalVars) {
 
 
     function colorCanvasOnMousePos() {
-        var grid = globalGridVars.getGrid();
+        var grid = globalVars.gridVars.getGrid();
 
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
@@ -291,8 +294,11 @@ function mouseOnGridEventHandler(globalVars) {
                 var boxEndY = grid[row][col].boxEndY;
 
                 if (mouseX >= boxStartX && mouseX <= boxEndX && mouseY >= boxStartY && mouseY <= boxEndY) {
-                    var newColor = colorPicker.color.hexString;
-                    if (grid.color !== newColor) globalGridVars.setGridColor(row, col, newColor);
+                    var newColor = globalVars.colorPickerVars.getColorPicker().color.hexString;
+                    var mode = globalVars.colorPickerVars.getMode();
+
+                    if (mode === "color") globalVars.gridVars.setGridColor(row, col, newColor);
+                    else if (mode === "eraser") globalVars.gridVars.setGridColor(row, col, globalVars.colorPickerVars.getDefaultColor());
 
                     lastColoredRow = row;
                     lastColoredCol = col;

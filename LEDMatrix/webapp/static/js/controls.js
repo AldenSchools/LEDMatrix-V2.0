@@ -2,12 +2,16 @@ $(function() {
 
 });
 
-function initControlGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, initColor) {
+function initControlGlobals() {
 
 }
 
 
 function toolboxSelectionHandler(globalVars) {
+
+    var colorPickerVars = globalVars.colorPickerVars;
+    var gridVars = globalVars.gridVars;
+
     var toolbox = $(".toolbox");
 
     var color = $("#color");
@@ -27,22 +31,22 @@ function toolboxSelectionHandler(globalVars) {
     clearAll.on("click", clearAll);
 
     function colorMode(event) {
-        globalVars.setMode("color");
+        globalVars.colorPickerVars.setMode("color");
 
         updateNewActiveElem(color);
     }
 
     function colorAllBlankMode(event) {
-        var grid = globalVars.getGridProp().grid;
+        var grid = gridVars.getGrid();
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
-                if (grid[row][col].color === globalVars.getDefaultColor()) globalVars.setGridColor(row, col, globalVars.getColorPicker().color.hexString);
+                if (grid[row][col].color === colorPickerVars.getDefaultColor()) gridVars.setGridColor(row, col, colorPickerVars.getColorPicker().color.hexString);
             }
         }
     }
 
     function colorAllMode(event) {
-        fillAll(globalVars.getColorPicker().color.hexString);
+        fillAll(colorPickerVars.getColorPicker().color.hexString);
     }
 
     function addEfects(event) {
@@ -50,20 +54,20 @@ function toolboxSelectionHandler(globalVars) {
     }
 
     function eraserMode(event) {
-        globalVars.setMode("eraser");
+        colorPickerVars.setMode("eraser");
 
         updateNewActiveElem(eraser);
     }
 
     function clearAll(event) {
-        fillAll(globalVars.getDefaultColor());
+        fillAll(colorPickerVars.getDefaultColor());
     }
 
     function fillAll(newColor) {
-        var grid = globalVars.getGridProp().grid;
+        var grid = gridVars.getGrid();
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
-                globalVars.setGridColor(row, col, newColor);
+                gridVars.setGridColor(row, col, newColor);
             }
         }
     }

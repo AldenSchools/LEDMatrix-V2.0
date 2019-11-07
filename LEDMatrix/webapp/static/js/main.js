@@ -29,7 +29,7 @@
 $(function() {
 
 
-    var _debug = false;
+    var _debug = true;
 
     var canvas = $("#led-matrix-grid");
 
@@ -46,9 +46,9 @@ $(function() {
     var controlGlobalVars = initControlGlobals();
 
     var globalVars = {
-        colorPickerGlobals: colorPickerGlobalVars,
-        gridGlobals: gridGlobalVars,
-        controlGlobals: controlGlobalVars,
+        colorPickerVars: colorPickerGlobalVars,
+        gridVars: gridGlobalVars,
+        controlVars: controlGlobalVars,
         debug: _debug
     };
 
@@ -56,23 +56,13 @@ $(function() {
     setupEventHandlers(globalVars);
 
 
-    var getDebugInfo = function() {
-
-        return {
-            "Color Picker: ": colorPicker.color.hexString,
-            "Default Color: ": defaultColor,
-            "Mode: '": mode + "'",
-            "Grid Width: ": gridWidth,
-            "Grid Height: ": gridHeight,
-            "Boxes per rows: ": boxesPerRow,
-            "boxes per column: ": boxesPerCol,
-            "Box width: ": boxWidth,
-            "Box height: ": boxHeight
-        };
-    }
-
     if (_debug) {
-        showDebugInfo(getDebugInfo);
+        var debugInfo = populateDebugInfo(globalVars);
+        var extraDebugInfo = extraDebugInfoManual();
+
+        var debug = initDebug(debugInfo);
+        debug.extraDebugInfoOnPageManualTrack(extraDebugInfo);
+
         console.log(" Grid: ", grid);
         console.log(context);
     }
@@ -109,4 +99,28 @@ function resizedWindowHandler(globalVars) {
         console.log("window resized\n colorPicker div width", $("#color-picker").width(), "\n grid width", $("#grid-div").width());
 
     }
+}
+
+/********  DEBUG STUFF *******/
+
+function populateDebugInfo(globalVars) {
+    return {
+        "Color Picker: ": colorPicker.color.hexString,
+        "Default Color: ": defaultColor,
+        "Mode: '": mode + "'",
+        "Grid Width: ": gridWidth,
+        "Grid Height: ": gridHeight,
+        "Boxes per rows: ": boxesPerRow,
+        "boxes per column: ": boxesPerCol,
+        "Box width: ": boxWidth,
+        "Box height: ": boxHeight
+    };
+}
+
+function extraDebugInfoManual() {
+    var pElem1 = $('<p>', { id: "debug-mouseX-canvas", class: "my-1 font-weight-bold" }).text("(Canvas)Mouse X: n/a");
+    var pElem2 = $('<p>', { id: "debug-mouseY-canvas", class: "my-1 font-weight-bold" }).text("(Canvas)Mouse Y: n/a");
+    var pElem3 = $('<p>', { id: "debug-row-col-canvas", class: "my-1 font-weight-bold" }).text("(Canvas)Clicked: (Row: n/a, Col: n/a)");
+
+    return [pElem1, pElem2, pElem3];
 }
