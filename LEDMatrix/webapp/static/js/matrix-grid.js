@@ -62,7 +62,8 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
 
         gridWidth = $("#grid-div").width();
-        if (gridHeight === undefined) trueGridHeight = gridWidth;
+        gridHeight = gridWidth;
+        //if (gridHeight === undefined) trueGridHeight = gridWidth;
 
         canvas.attr({ width: gridWidth, height: gridHeight });
 
@@ -97,7 +98,7 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
                 grid[row][col].boxEndX = startX + boxWidth;
                 grid[row][col].boxEndY = startY + boxHeight;
 
-                if (fillColor !== undefined) context.fillColor = fillColor;
+                if (fillColor !== undefined) context.fillStyle = fillColor;
                 else context.fillStyle = grid[row][col].color;
 
                 context.fillRect(startX, startY, boxWidth, boxHeight);

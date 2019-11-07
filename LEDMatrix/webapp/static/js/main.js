@@ -87,15 +87,18 @@ function setupEventHandlers(globalVars) {
 
 function resizedWindowHandler(globalVars) {
 
-    var win = $(window);
+    var gridVars = globalVars.gridVars;
+    var colorPickerVars = globalVars.colorPickerVars;
+
+
 
     $(window).on("resize", windowWasResized);
 
     function windowWasResized(event) {
 
         //canvas.outerHeight(windowHeight - canvasOffsetTop - marginSize);
-        globalVars.getGridGlobalVars().updateGrid();
-        globalVars.getColorPicker().resize($("#color-picker").width());
+        gridVars.updateGrid();
+        colorPickerVars.setWidth($("#color-picker").width());
         console.log("window resized\n colorPicker div width", $("#color-picker").width(), "\n grid width", $("#grid-div").width());
 
     }
