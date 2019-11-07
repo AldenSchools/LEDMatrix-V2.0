@@ -58,10 +58,11 @@ function initDebug(debugInfoObjFunc) {
 
 
     function repopulateElemsOnPage() {
-        //debugBox.remove('.debug-auto-gen');
+        
         debugInfoObj = debugInfoObjFunc();
         debugText = Object.keys(debugInfoObj);
         debugVars = Object.values(debugInfoObj);
+        
         $(".debug-main-auto-gen").remove();
         populateDebugBoxMain();
     }
