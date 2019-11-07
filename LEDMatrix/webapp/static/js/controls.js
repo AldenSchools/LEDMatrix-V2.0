@@ -61,6 +61,7 @@ function toolboxSelectionHandler(globalVars) {
 
     function clearAll(event) {
         fillAll(colorPickerVars.getDefaultColor());
+        console.log("trying to clear with color ", colorPickerVars.getDefaultColor() );
     }
 
     function fillAll(newColor) {
