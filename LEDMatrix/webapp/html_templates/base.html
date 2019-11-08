@@ -29,7 +29,8 @@
 	<link rel="stylesheet" type="text/css" href="../static/css/main.css">
 
 
-	<title> LED Matrix | Create </title>
+    {% block head %} {% endblock head %}
+	
 </head>
 
 <body>
@@ -176,10 +177,8 @@
         </div>
     </section>
 
-	<section class="main-section-content mt-4">
-		
-	</section>
-
+	
+    {% block main_content %} {% endblock main_content %}
 
 	<footer class="page-footer font-small pt-4">
 		
