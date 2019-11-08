@@ -4,7 +4,7 @@ $(function() {
 
 
 function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, initColor) {
-
+    if (canvas.length === 0) return undefined;
 
     gridWidth = (gridWidth === undefined) ? 800 : gridWidth;
     gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
@@ -208,10 +208,12 @@ function createGridDataStruct(numRows, numCols, initColor) {
 
 
 function mouseOnGridEventHandler(globalVars) {
+    if (globalVars === undefined || globalVars.gridVars === undefined || globalVars.colorPickerVars === undefined) return;
 
     var isMouseDown = false;
 
     var canvas = globalVars.gridVars.getCanvas();
+
     var debug = globalVars.debug;
 
     var lastColoredRow = 0;

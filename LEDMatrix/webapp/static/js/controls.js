@@ -9,6 +9,8 @@ function initControlGlobals() {
 
 function toolboxSelectionHandler(globalVars) {
 
+    if (globalVars === undefined || globalVars.gridVars === undefined || globalVars.colorPickerVars === undefined) return;
+
     var colorPickerVars = globalVars.colorPickerVars;
     var gridVars = globalVars.gridVars;
 

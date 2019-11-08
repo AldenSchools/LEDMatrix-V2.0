@@ -29,7 +29,7 @@
 $(function() {
 
 
-    var _debug = true;
+    var _debug = false;
 
     var canvas = $("#led-matrix-grid");
 
@@ -45,9 +45,11 @@ $(function() {
     var gridGlobalVars = initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, defaultColor);
     var controlGlobalVars = initControlGlobals();
 
-    // if (typeof initColorPickerGlobals === "function")
-    // if (typeof initGridGlobals === "function")
-    // if (typeof initControlGlobals === "function")
+
+    // if (typeof initColorPickerGlobals === "function") 
+    // if (typeof initGridGlobals === "function") 
+    // if (typeof initControlGlobals === "function") 
+
 
     var globalVars = {
         colorPickerVars: colorPickerGlobalVars,
@@ -63,16 +65,27 @@ $(function() {
     if (_debug) {
 
         var debugInfo = function() {
+
+            var colorPickerColor = (colorPickerGlobalVars === undefined) ? "n/a" : colorPickerGlobalVars.getColorPicker().color.hexString;
+            var colorPickerMode = (colorPickerGlobalVars === undefined) ? "n/a" : colorPickerGlobalVars.getMode();
+
+            var trueWidth = (gridGlobalVars === undefined) ? "n/a" : gridGlobalVars.getWidth();
+            var trueHeight = (gridGlobalVars === undefined) ? "n/a" : gridGlobalVars.getHeight();
+            var boxesPerRow = (gridGlobalVars === undefined) ? "n/a" : gridGlobalVars.getBoxesPerRow();
+            var boxesPerCol = (gridGlobalVars === undefined) ? "n/a" : gridGlobalVars.getBoxesPerCol();
+            var boxWidth = (gridGlobalVars === undefined) ? "n/a" : gridGlobalVars.getBoxWidth();
+            var boxHeight = (gridGlobalVars === undefined) ? "n/a" : gridGlobalVars.getBoxHeight();
+
             return {
-                "Color Picker: ": colorPickerGlobalVars.getColorPicker().color.hexString,
-                "Default Color: ": colorPickerGlobalVars.getDefaultColor(),
-                "Mode: '": colorPickerGlobalVars.getMode() + "'",
-                "Grid Width: ": gridGlobalVars.getWidth(),
-                "Grid Height: ": gridGlobalVars.getHeight(),
-                "Boxes per rows: ": gridGlobalVars.getBoxesPerRow(),
-                "boxes per column: ": gridGlobalVars.getBoxesPerCol(),
-                "Box width: ": gridGlobalVars.getBoxWidth(),
-                "Box height: ": gridGlobalVars.getBoxHeight()
+                "Color Picker: ": colorPickerColor,
+                "Default Color: ": defaultColor,
+                "Mode: '": +colorPickerMode + "'",
+                "Grid Width: ": trueWidth,
+                "Grid Height: ": trueHeight,
+                "Boxes per rows: ": boxesPerRow,
+                "boxes per column: ": boxesPerCol,
+                "Box width: ": boxWidth,
+                "Box height: ": boxHeight
             };
         };
 
@@ -81,7 +94,7 @@ $(function() {
         var debug = initDebug(debugInfo);
         debug.extraDebugInfoOnPageManualTrack(extraDebugInfo);
 
-        console.log(" Grid: ", gridGlobalVars.getGrid());
+        if (gridGlobalVars !== undefined) console.log(" Grid: ", gridGlobalVars.getGrid());
     }
 
 });
@@ -94,10 +107,11 @@ $(function() {
 /********  EVENT HANDLERS *******/
 function setupEventHandlers(globalVars) {
 
-    mouseOnGridEventHandler(globalVars, );
+    mouseOnGridEventHandler(globalVars);
     resizedWindowHandler(globalVars);
     toolboxSelectionHandler(globalVars);
     saveDeleteLoadHandler(globalVars);
+    loginRegisterModalsHandler();
 
 }
 
@@ -120,6 +134,29 @@ function resizedWindowHandler(globalVars) {
 
     }
 }
+
+
+function loginRegisterModalsHandler() {
+
+    var closeLoginModalBtn = $("#user-login-model").find(".close");
+
+    closeLoginModalBtn.click(function() {
+        // $("#user-login-model").removeClass("show");
+        // //$("#user-login-model").attr("aria-hidden", "true");
+        // $("#user-login-model").css("display", "none");
+        // $(".modal-backdrop").remove();
+        //$("#user-login-model").modal("toggle");
+    });
+
+
+}
+
+
+
+
+
+
+
 
 /********  DEBUG STUFF *******/
 

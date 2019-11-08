@@ -2,9 +2,11 @@
     Author: LEDMatrix Team - 2019
 	Description: Originally created for Alden schools 
 
-    Please consider sharing any cool additons to this project! :)
+	This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at https://mozilla.org/MPL/2.0/ .
 -->
-{% load static %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,24 +26,179 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css">
 	
 	<!-- Custom CSS Styles -->
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/main.css">
 
 
-	<title>LED Matrix</title>
-	
+	<title> LED Matrix | Create </title>
 </head>
 
 <body>
 
-<body>
+	<header>
+        <nav class="navbar navbar-expand-md navbar-dark elegant-color">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url "home_view" %}">
+                        <!--<img src="">-->
+                        LED Matrix
+                    </a>
 
-    
+                </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        	</button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url "learn_view" %}">Home</a>
+                        </li>
+
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url "practice_view" %}">Create</a>
+                        </li>
+						<li class="nav-item">
+                            <a class="nav-link" href="{% url "practice_view" %}">Admin Dashboard</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user-login-modal">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">More</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+
+    </header>
+
+    <section class="login-register-sec">
+        <div class="modal fade" id="user-login-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                    
+                        <h4 class="modal-title"><i class="fa fa-unlock-alt"></i> Login</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="login" method="post">
+                            
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                        <!--<i class="fa fa-asterisk"></i>-->
+                                    </div>
+                                    <input class="form-control" id="username" value="" name="username" type="text"  autocomplete="off">
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit" value="Login">Login</button>
+                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#user-register-modal">Register</button>
+                            </div>
+                            
+                        </form>
+                        
+                        <br>
+                        <a href="/forgottenpassword">Forgotten your username?</a>                
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="user-register-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                
+                        <h4 class="modal-title"><i class="fa fa-unlock-alt"></i> Register</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="login" method="post">
+
+                            <div class="form-group">
+                                <label for="username">Fisrt Name:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                    </div>
+                                    <input class="form-control" id="first-name" value="" name="first-name" type="text"  autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="username">Last Name:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                    </div>
+                                    <input class="form-control" id="last-name" value="" name="last-name" type="text"  autocomplete="off">
+                                </div>
+                            </div>
+                        
+                            <div class="form-group">
+                                <label for="username">Username:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                    </div>
+                                    <input class="form-control" id="username" value="" name="username" type="text"  autocomplete="off">
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button class="btn btn-default" href="submit" value="register">Register</button>
+                            </div>
+                        
+                        </form>               
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+	<section class="main-section-content mt-4">
+		
+	</section>
+
+
+	<footer class="page-footer font-small pt-4">
+		
+        <div class="text-center py-3 elegant-color-dark">
+            LED Matrix
+        </div>
+		
+
+    </footer>
+
 
 
 
 	
 	<!-- JQuery 3.4.1-->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+	<!-- JQueryUI 1.12.1-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" ntegrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 	
 	<!-- Bootstrap tooltips -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -55,11 +212,17 @@
 	<!--Font Awsome JavaScript-->
     <script src="https://kit.fontawesome.com/69d34591d2.js" crossorigin="anonymous"></script>
 
-    <!-- Color Picker JavaScript -->
+	<!-- Color Picker -->
 	<script src="https://cdn.jsdelivr.net/npm/@jaames/iro/dist/iro.min.js"></script>
 
 	<!-- Custom JavaScript -->
-	<script type="text/javascript" src="src/main.js"></script>
+	<script type="text/javascript" src="../static/js/debug.js"></script>
+	<script type="text/javascript" src="../static/js/color-picker.js"></script>
+	<script type="text/javascript" src="../static/js/controls.js"></script>
+	<script type="text/javascript" src="../static/js/matrix-grid.js"></script>
+	<script type="text/javascript" src="../static/js/main.js"></script>
+	
+	<!-- <script type="text/javascript" src="../static/js/vsc-no-track/test.js"></script> -->
 
 </body>
 
