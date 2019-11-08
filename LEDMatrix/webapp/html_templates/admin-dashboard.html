@@ -75,10 +75,266 @@
     </header>
 
 	<section class="main-section-content mt-4">
-		
-        
+		<div class="row">
+
+			
+			<div class="col-lg-3 order-1 order-lg-1">
+
+				<div class="container">
+
+					<h4 class="text-center ">Select Option</h4>
+					<div class="card  flex-column sticky-top" id="admin-options-list" role="tablist" aria-orientation="vertical">
+					
+  						<!--<div class="card-header text-center new-sketch">
+    						New Sketch <i class="fas fa-plus"></i>
+  						</div> -->
+
+  						<ul class="list-group list-group-flush">
+						  	
+							<li class="list-group-item active">
+                                <div class="nav-link" id="currently-showing-tab" data-toggle="tab" href="#currently-showing" role="tab" aria-controls="currently-showing" aria-selected="true">
+                                    <p class="" id="sketch-name">Currently Showing</p>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+
+						  		<!--<a class="nav-link" id="new-submissions-tab" data-toggle="pill" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false"> -->
+                                    <div class="nav-link d-flex align-items-center" id="new-submissions-tab" data-toggle="tab" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false">
+                                	    <p class="flex-grow-1" id="sketch-name">New Submissions</p>
+                                        <span class="badge badge-primary">200</span>
+                            	    </div>
+                                <!--</a> -->
+
+							</li>
+
+                            <li class="list-group-item">
+						  		
+                                <div cass="nav-link d-flex align-items-center" id="submissions-history-tab" data-toggle="tab" href="#submissions-history" role="tab" aria-controls="submissions-history" aria-selected="false">
+                                	<p class="flex-grow-1" id="sketch-name">Submissions History</p>
+                                	<span class="badge badge-primary">200</span>
+                            	</div>
+
+							</li>
+
+                            <li class="list-group-item">
+						  		
+                                <div  cass="nav-link d-flex align-items-center" id="registerd-users-tab" data-toggle="tab" href="#registerd-users" role="tab" aria-controls="registerd-users" aria-selected="false">
+                                	<p class="flex-grow-1" id="sketch-name">Registerd Users</p>	
+                                	<span class="badge badge-primary">200</span>
+                            	</div>
+
+							</li>
+
+                            <li class="list-group-item">
+                                
+                                <div cass="nav-link d-flex align-items-center" id="prefrences-tab" data-toggle="tab" href="#prefrences" role="tab" aria-controls="prefrences" aria-selected="false">
+                                    <p class="flex-grow-1" id="sketch-name">Prefrences</p>
+                                </div>
+                            
+                            </li>
+
+  						</ul>
+
+					</div>
+
+				</div>
+
+			</div>
 
 
+
+            <div class="col-lg-6 order-2 order-lg-2">
+
+                
+                <div class="tab-content" >
+                    
+                    <div class="container tab-pane fade show active" id="currently-showing" role="tabpanel" aria-labelledby="currently-showing-tab">
+                        
+                        <h3 class="text-center ">Currently Showing</h3>
+					    <div class="card " >
+				
+  						    <ul class="list-group list-group-flush">
+						  	
+							    <li class="list-group-item">
+
+                                    
+                                    <div class="d-md-flex align-items-center">
+
+                                        <div class="flex-lg-grow-1">
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> Submission History 1</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> 10/10/10</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> 10:59 AM</p>
+                                        </div>
+                                        
+                                        
+                                        <button type="button" class=" btn btn-primary btn-sm">View Drawing</button>
+                                        <button type="button" class=" btn btn-secondary btn-sm">Remove From List</button>
+                                    </div>
+
+                                </li>
+
+                                
+
+  						    </ul>
+
+					    </div>
+                    </div>
+
+
+                    <div class="container tab-pane fade" id="new-submissions" role="tabpanel" aria-labelledby="new-submissions-tab">
+                        
+                        
+                        <h3 class="text-center ">New Submissions</h3>
+					    <div class="card " >
+				
+  						    <ul class="list-group list-group-flush">
+						  	
+							    <li class="list-group-item">
+                                    
+                                    <div class="d-md-flex align-items-center">
+
+                                        <div class="flex-lg-grow-1">
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> Submission History 1</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> 10/10/10</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> 10:59 AM</p>
+                                        </div>
+                                        
+                                        
+                                        <button type="button" class=" btn btn-primary btn-sm">View Drawing</button>
+                                        <button type="button" class=" btn btn-secondary btn-sm">Add To Accepted List</button>
+                                    </div>
+
+                                </li>
+
+
+  						    </ul>
+
+					    </div>
+                        
+                    
+                    </div>
+
+
+                    <div class="container tab-pane fade" id="submissions-history" role="tabpanel" aria-labelledby="submissions-history-tab">
+                        
+                        
+                        <h3 class="text-center ">Submissions History</h3>
+					    <div class="card " >
+				
+  						    <ul class="list-group list-group-flush">
+						  	
+							    <li class="list-group-item">
+                                    
+                                    <div class="d-md-flex align-items-center">
+
+                                        <div class="flex-lg-grow-1">
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> Submission History 1</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> 10/10/10</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> 10:59 AM</p>
+                                        </div>
+                                        
+                                        
+                                        <button type="button" class=" btn btn-primary btn-sm">View Drawing</button>
+                                        <button type="button" class=" btn btn-secondary btn-sm">Add To Accepted List</button>
+                                    </div>
+
+                                </li>
+
+
+  						    </ul>
+
+					    </div>
+                        
+                    
+                    </div>
+                    
+
+
+                    <div class="container tab-pane fade" id="registerd-users" role="tabpanel" aria-labelledby="registerd-users-tab">
+                        
+                        
+                        <h3 class="text-center ">Registerd Users</h3>
+					    <div class="card " >
+				
+  						    <ul class="list-group list-group-flush">
+						  	
+							    <li class="list-group-item">
+                                    
+                                    <div class="d-md-flex align-items-center">
+
+                                        <div class="flex-lg-grow-1">
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Joined</i> 10/10/10</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submissions:</i> 100</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Accepted Submissions:</i> 1100</p>
+                                        </div>
+                                        
+                                        
+                                        <button type="button" class=" btn btn-primary btn-sm">Remove User</button>
+                                        <button type="button" class=" btn btn-secondary btn-sm">Block</button>
+                                    </div>
+
+                                </li>
+
+
+  						    </ul>
+
+					    </div>
+                        
+                    
+                    </div>
+
+
+                    <div class="container tab-pane fade" id="prefrences" role="tabpanel" aria-labelledby="prefrences-tab">
+                        
+                        
+                        <h3 class="text-center ">Prefrences</h3>
+					    <div class="card " >
+				
+  						    <ul class="list-group list-group-flush">
+						  	
+							    <li class="list-group-item">
+                                    
+                                    <div class="d-md-flex align-items-center">
+
+                                        <div class="flex-lg-grow-1">
+                                            <p class="mb-0" id="sketch-name">Pref 1</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Some Description on the current prefrence</i></p>
+                                        </div>
+                                        
+                                        
+                                        <button type="button" class=" btn btn-primary btn-sm">Remove User</button>
+                                        <button type="button" class=" btn btn-secondary btn-sm">Block</button>
+                                    </div>
+
+                                </li>
+
+
+  						    </ul>
+
+					    </div>
+                        
+                    
+                    </div>
+
+
+
+                </div> 
+
+
+
+            </div>
+
+            <div class="col-lg-3 order-3 order-lg-3">
+            </div>
+
+
+
+        </div>
 	</section>
 
     
