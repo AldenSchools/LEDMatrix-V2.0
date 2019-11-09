@@ -6,7 +6,7 @@
     License, v. 2.0. If a copy of the MPL was not distributed with this
     file, You can obtain one at https://mozilla.org/MPL/2.0/ .
 -->
-
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-11/css/all.min.css">
 	
 	<!-- Custom CSS Styles -->
-	<link rel="stylesheet" type="text/css" href="../static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
 
 
     {% block head %} {% endblock head %}
@@ -53,20 +53,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link " href="{% url "learn_view" %}">Home</a>
+                            <a class="nav-link " href="{% url "home_view" %}">Home</a>
                         </li>
 
                         <li class="nav-item active">
-                            <a class="nav-link" href="{% url "practice_view" %}">Create</a>
+                            <a class="nav-link" href="{% url "create_view" %}">Create</a>
                         </li>
 						<li class="nav-item">
-                            <a class="nav-link" href="{% url "practice_view" %}">Admin Dashboard</a>
+                            <a class="nav-link" href="{% url "admin_dashboard_view" %}">Admin Dashboard</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user-login-modal">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">More</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url "more_view" %}">More</a></li>
                     </ul>
                 </div>
             </div>
@@ -215,11 +215,11 @@
 	<script src="https://cdn.jsdelivr.net/npm/@jaames/iro/dist/iro.min.js"></script>
 
 	<!-- Custom JavaScript -->
-	<script type="text/javascript" src="../static/js/debug.js"></script>
-	<script type="text/javascript" src="../static/js/color-picker.js"></script>
-	<script type="text/javascript" src="../static/js/controls.js"></script>
-	<script type="text/javascript" src="../static/js/matrix-grid.js"></script>
-	<script type="text/javascript" src="../static/js/main.js"></script>
+	<script type="text/javascript" src="{% static "js/debug.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/color-picker.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/controls.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/matrix-grid.js" %}"></script>
+	<script type="text/javascript" src="{% static "js/main.js" %}"></script>
 	
 	<!-- <script type="text/javascript" src="../static/js/vsc-no-track/test.js"></script> -->
 

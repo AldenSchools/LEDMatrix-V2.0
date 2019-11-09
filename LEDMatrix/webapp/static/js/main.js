@@ -138,15 +138,6 @@ function resizedWindowHandler(globalVars) {
 
 function loginRegisterModalsHandler() {
 
-    var closeLoginModalBtn = $("#user-login-model").find(".close");
-
-    closeLoginModalBtn.click(function() {
-        // $("#user-login-model").removeClass("show");
-        // //$("#user-login-model").attr("aria-hidden", "true");
-        // $("#user-login-model").css("display", "none");
-        // $(".modal-backdrop").remove();
-        //$("#user-login-model").modal("toggle");
-    });
 
 
 }
