@@ -128,3 +128,6 @@ STATICFILES_DIRS = [
 
 
 MEDIA_ROOT = os.path.join(STATIC_URL, 'media/')
+
+LOGIN_REDIRECT_URL = 'create-view'
+LOGIN_URL = 'create-view'

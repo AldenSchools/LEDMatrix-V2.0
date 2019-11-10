@@ -75,6 +75,9 @@
 
     </header>
 
+    {% block user_login_register %}
+    
+    
     <section class="login-register-sec">
 
         <div class="modal fade" id="user-login-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -86,8 +89,14 @@
 
         </div>
     </section>
+    
+    {% endblock user_login_register %}
 
-	
+	{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
     {% block main_content %} {% endblock main_content %}
 
 	<footer class="page-footer font-small pt-4">
