@@ -5,8 +5,8 @@ from users.views import *
 # Create your views here.
 
 def home_veiw(request):
-    register_form = check_for_user_registration(request)
-    login_form = check_for_user_login(request)
+    register_form = handle_user_registration_form(request)
+    login_form = handle_user_login_form(request)
 
     context = {
         "login_form":login_form,
@@ -15,10 +15,11 @@ def home_veiw(request):
     return render(request, "home.html", context)
 
 def create_veiw(request):
-    register_form = check_for_user_registration(request)
+    register_form = handle_user_registration_form(request)
+    login_form = handle_user_login_form(request)
 
     context = {
-        "login_form":UserLoginForm(),
+        "login_form":login_form,
         "register_form":register_form,
     }
 
@@ -30,7 +31,8 @@ def admin_dash_veiw(request):
 
 
 def about_view(request):
-    
+    register_form = handle_user_registration_form(request)
+    login_form = handle_user_login_form(request)
 
     context = {
         "login_form":UserLoginForm(),

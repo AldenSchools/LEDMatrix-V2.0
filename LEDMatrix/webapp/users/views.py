@@ -10,18 +10,36 @@ def user_login_veiw(request):
     return render(request, "auth/user-login.html", {})
 
 def user_register_view(request):
-    form = check_for_user_registration(request)
-    return render(request, "auth/user-register.html", {"form":form})
+    
+    return render(request, "auth/user-register.html", {})
      
 def admin_login_veiw(request):
-    return render(request, "auth/admin-login.html", {})
+    if (request.method == 'POST'):
+        form = AdminLoginForm(request.POST)
+        if (form.is_valid()):
+            username = form.cleaned_data.get('acct_name')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to a success page.
+                messages.success(request, f'Hi {username}!')
+                return redirect('/admin-dash')
+            else:
+                # Return an 'invalid login' error message.
+                messages.error(request, f"Could not log in with username '{username}''")
+                    
+    else: 
+        form = AdminLoginForm()
+
+    return render(request, "auth/admin-login.html", {"form":form})
     
 def logout_view(request):
     logout(request)
 
 
 
-def check_for_user_registration(request):
+def handle_user_registration_form(request):
     
     if (request.method == 'POST'):
         form = UserRegisterForm(request.POST)
@@ -32,9 +50,8 @@ def check_for_user_registration(request):
             last_name = form.cleaned_data.get('last_name')
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect('create-view')
+            return redirect('/create/')
         else:
-            print("form is not valid")
             messages.error(request, f'Form is not valid')
     else:
         print("form is not a POST ") 
@@ -42,18 +59,17 @@ def check_for_user_registration(request):
     
     return form
 
-def check_for_user_login(request):
+def handle_user_login_form(request):
     if (request.method == 'POST'):
         form = UserLoginForm(request.POST)
         if (form.is_valid()):
             username = form.cleaned_data.get('username')
-            
-            user = authenticate(request, username=username, password="")
+            user = authenticate(request, username=username)
             if user is not None:
                 login(request, user)
                 # Redirect to a success page.
                 messages.success(request, f'Hi {username}!')
-                return redirect('create_view')
+                return redirect('/create/')
             else:
                 # Return an 'invalid login' error message.
                 messages.error(request, f"Could not log in with username '{username}''")
@@ -62,4 +78,5 @@ def check_for_user_login(request):
         form = UserLoginForm()
     
     return form
+
 
