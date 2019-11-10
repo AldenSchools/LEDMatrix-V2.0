@@ -60,13 +60,13 @@
                             <a class="nav-link" href="{% url "create_view" %}">Create</a>
                         </li>
 						<li class="nav-item">
-                            <a class="nav-link" href="{% url "admin_dashboard_view" %}">Admin Dashboard</a>
+                            <a class="nav-link" href="{% url "admin_dash_view" %}">Admin Dashboard</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#user-login-modal">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url "more_view" %}">More</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url "about_view" %}">More</a></li>
                     </ul>
                 </div>
             </div>
@@ -76,103 +76,13 @@
     </header>
 
     <section class="login-register-sec">
+
         <div class="modal fade" id="user-login-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                    
-                        <h4 class="modal-title"><i class="fa fa-unlock-alt"></i> Login</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form action="login" method="post">
-                            
-                            <div class="form-group">
-                                <label for="username">Username:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
-                                        <!--<i class="fa fa-asterisk"></i>-->
-                                    </div>
-                                    <input class="form-control" id="username" value="" name="username" type="text"  autocomplete="off">
-                                </div>
-                            </div>
-
-                            
-
-                            <div class="modal-footer">
-                                <button class="btn btn-primary" type="submit" value="Login">Login</button>
-                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#user-register-modal">Register</button>
-                            </div>
-                            
-                        </form>
-                        
-                        <br>
-                        <a href="/forgottenpassword">Forgotten your username?</a>                
-
-                    </div>
-
-                </div>
-            </div>
-
+            {% include "auth/user-login.html"  %}
         </div>
 
         <div class="modal fade" id="user-register-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-header">
-                
-                        <h4 class="modal-title"><i class="fa fa-unlock-alt"></i> Register</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <form action="login" method="post">
-
-                            <div class="form-group">
-                                <label for="username">Fisrt Name:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
-                                    </div>
-                                    <input class="form-control" id="first-name" value="" name="first-name" type="text"  autocomplete="off">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="username">Last Name:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
-                                    </div>
-                                    <input class="form-control" id="last-name" value="" name="last-name" type="text"  autocomplete="off">
-                                </div>
-                            </div>
-                        
-                            <div class="form-group">
-                                <label for="username">Username:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
-                                    </div>
-                                    <input class="form-control" id="username" value="" name="username" type="text"  autocomplete="off">
-                                </div>
-                            </div>
-
-
-                            <div class="modal-footer">
-                                <button class="btn btn-default" href="submit" value="register">Register</button>
-                            </div>
-                        
-                        </form>               
-
-                    </div>
-
-                </div>
-            </div>
+            {% include "auth/user-register.html"  %}
 
         </div>
     </section>

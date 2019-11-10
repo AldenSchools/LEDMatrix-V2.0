@@ -1,0 +1,55 @@
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                
+                        <h4 class="modal-title"><i class="fa fa-unlock-alt"></i> Register</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form  method="POST">
+                            {% csrf_token %} 
+                            <div class="form-group">
+                                
+                                {{ register_form.first_name.label_tag }}
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                    </div>
+                                    {{ register_form.first_name }}
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                {{ register_form.last_name.label_tag }}
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                    </div>
+                                    {{ register_form.last_name }}
+                                </div>
+                            </div>
+                        
+                            <div class="form-group">
+                                {{ register_form.username.label_tag }}
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" ><i class="fa fa-user"></i><span>
+                                    </div>
+                                    {{ register_form.username }}                             
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-default" href="submit" value="register">Register</button>
+                            </div>
+                        
+                        </form>               
+
+                    </div>
+
+                </div>
+            </div>

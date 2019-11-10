@@ -1,3 +1,6 @@
+   
+   
+   
     <div class="modal fade" id="admin-login-model" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -9,25 +12,27 @@
                 </div>
 
                 <div class="modal-body">
-                    <form action="login" method="post">
-
+                    <form method="POST">
+                        {% csrf_token %}
                         <div class="form-group">
-                            <label for="username">Account Name:</label>
+                            
+                            {{ form.acct_name.label_tag }}
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" ><i class="fa fa-user"></i><span>
                                 </div>
-                                <input class="form-control" id="admin-name" value="" name="admin-name" type="text"  autocomplete="off">
+                                {{ form.acct_name }}
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="username">Password:</label>
+                            
+                            {{ form.password.label_tag }}
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" ><i class="fa fa-asterisk"></i>-<span>
                                 </div>
-                                <input class="form-control" id="admin-pass" value="" name="admin-pass" type="text"  autocomplete="off">
+                                {{ form.password }}
                             </div>
                         </div>
 
