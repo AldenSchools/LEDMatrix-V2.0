@@ -35,7 +35,8 @@ def admin_login_veiw(request):
         form = AdminLoginForm()
 
     return render(request, "auth/admin-login.html", {"form":form})
-    
+
+@login_required 
 def logout_view(request):
     logout(request)
     return redirect("/")

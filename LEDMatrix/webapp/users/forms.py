@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import *
 
 
 class UserLoginForm(forms.Form):
@@ -35,8 +36,11 @@ class UserRegisterForm(UserCreationForm):
         user.last_name = self.cleaned_data.get('last_name')
         user.username = self.cleaned_data.get('username')
         user.set_unusable_password()
+        user.admin_dash = False
+
         if(commit):
             user.save()
+            UserProfile.objects.create(user=user, number_submissions=0, number_accepted_submissions=0)
         return user
 
 

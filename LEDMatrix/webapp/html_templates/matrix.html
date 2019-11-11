@@ -20,7 +20,7 @@
 				
 				<div class="container">
 
-					<h4 class="text-center ">Saved Sketches</h4>
+					<h4 class="text-center ">Saved Drawings</h4>
 					<div class="card  flex-column" >
 					
   						<div class="card-header text-center new-sketch">
@@ -29,14 +29,18 @@
 
   						<ul class="list-group list-group-flush">
 						  	
+							{% for drawing in drawings %}
+							
+							
 							<li class="list-group-item">
 						  		<div class="d-flex align-items-center">
 								  	
-                                	<p class="  flex-grow-1" id="sketch-name">abcdefghijklmno</p>
+                                	<p class="  flex-grow-1" id="sketch-name">{{ drawing.drawing_name }}</p>
 									
                                 	<button type="button" class=" btn btn-primary btn-sm" id="load-btn">Load</button>
                             	</div>
 							</li>
+							{% endfor %}
 
   						</ul>
 

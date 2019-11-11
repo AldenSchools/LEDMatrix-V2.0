@@ -13,10 +13,10 @@
 			
 			<div class="col-lg-3 order-1 order-lg-1">
 
-				<div class="container">
+				<div class="container sticky-top">
 
 					<h4 class="text-center ">Select Option</h4>
-					<div class="card  flex-column sticky-top" id="admin-options-list" role="tablist" aria-orientation="vertical">
+					<div class="card  flex-column " id="admin-options-list" role="tablist" aria-orientation="vertical">
 					
   						<!--<div class="card-header text-center new-sketch">
     						New Sketch <i class="fas fa-plus"></i>
@@ -25,8 +25,9 @@
   						<ul class="list-group list-group-flush">
 						  	
 							<li class="list-group-item active">
-                                <div class="nav-link" id="currently-showing-tab" data-toggle="tab" href="#currently-showing" role="tab" aria-controls="currently-showing" aria-selected="true">
-                                    <p class="" id="sketch-name">Currently Showing</p>
+                                <div class="nav-link d-flex align-items-center" id="currently-showing-tab" data-toggle="tab" href="#currently-showing" role="tab" aria-controls="currently-showing" aria-selected="true">
+                                    <p class="flex-grow-1" id="sketch-name">Currently Showing</p>
+                                    <span class="badge badge-primary">{{ currently_showing|length }} </span>
                                 </div>
                             </li>
 
@@ -35,7 +36,7 @@
 						  		<!--<a class="nav-link" id="new-submissions-tab" data-toggle="pill" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false"> -->
                                     <div class="nav-link d-flex align-items-center" id="new-submissions-tab" data-toggle="tab" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false">
                                 	    <p class="flex-grow-1" id="sketch-name">New Submissions</p>
-                                        <span class="badge badge-primary">200</span>
+                                        <span class="badge badge-primary">{{ new_submissions|length }} </span>
                             	    </div>
                                 <!--</a> -->
 
@@ -45,7 +46,7 @@
 						  		
                                 <div class="nav-link d-flex align-items-center" id="submissions-history-tab" data-toggle="tab" href="#submissions-history" role="tab" aria-controls="submissions-history" aria-selected="false">
                                 	<p class="flex-grow-1" id="sketch-name">Submissions History</p>
-                                	<span class="badge badge-primary">200</span>
+                                	<span class="badge badge-primary">{{ submissions_history|length }}</span>
                             	</div>
 
 							</li>
@@ -53,8 +54,11 @@
                             <li class="list-group-item">
 						  		
                                 <div  class="nav-link d-flex align-items-center" id="registerd-users-tab" data-toggle="tab" href="#registerd-users" role="tab" aria-controls="registerd-users" aria-selected="false">
-                                	<p class="flex-grow-1" id="sketch-name">Registerd Users</p>	
-                                	<span class="badge badge-primary">200</span>
+                                	<p class="flex-grow-1" id="sketch-name">Registerd Users</p>
+                                    {% if  users|length > 0%}
+                                        <span class="badge badge-primary">{{ users|length }} </span>
+                                    {% endif %}	
+                                	
                             	</div>
 
 							</li>
@@ -89,16 +93,19 @@
 				
   						    <ul class="list-group list-group-flush">
 						  	
+                              {% for showing in currently_showing %}
+                              
+                              
 							    <li class="list-group-item">
 
                                     
                                     <div class="d-md-flex align-items-center">
 
                                         <div class="flex-lg-grow-1">
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> Submission History 1</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> 10/10/10</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> 10:59 AM</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> {{ showing.submission.drawing.user.username }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> {{ showing.submission.drawing.drawing_name }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> {{ showing.submission.submission_datetime.date }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> {{ showing.submission.submission_datetime.time }}</p>
                                         </div>
                                         
                                         
@@ -107,6 +114,7 @@
                                     </div>
 
                                 </li>
+                                {% endfor %}
 
                                 
 
@@ -124,15 +132,18 @@
 				
   						    <ul class="list-group list-group-flush">
 						  	
+                              {% for new_submission in new_submissions %}
+                              
+                              
 							    <li class="list-group-item">
                                     
                                     <div class="d-md-flex align-items-center">
 
                                         <div class="flex-lg-grow-1">
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> Submission History 1</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> 10/10/10</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> 10:59 AM</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> {{ new_submission.submission.drawing.user.username }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> {{ new_submission.submission.drawing.drawing_name }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> {{ new_submission.submission.submission_datetime.date }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> {{ new_submission.submission.submission_datetime.time }}</p>
                                         </div>
                                         
                                         
@@ -141,6 +152,7 @@
                                     </div>
 
                                 </li>
+                                {% endfor %}
 
 
   						    </ul>
@@ -159,15 +171,18 @@
 				
   						    <ul class="list-group list-group-flush">
 						  	
+                                {% for submission in submissions_history %}
+                                
+                                
 							    <li class="list-group-item">
                                     
                                     <div class="d-md-flex align-items-center">
 
                                         <div class="flex-lg-grow-1">
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> Submission History 1</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> 10/10/10</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> 10:59 AM</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> {{ submission.drawing.user.username }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> {{ submission.drawing.drawing_name }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> {{ submission.submission_datetime.date }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> {{ submission.submission_datetime.time }}</p>
                                         </div>
                                         
                                         
@@ -176,6 +191,7 @@
                                     </div>
 
                                 </li>
+                                {% endfor %}
 
 
   						    </ul>
@@ -195,15 +211,19 @@
 				
   						    <ul class="list-group list-group-flush">
 						  	
+                                {% for user in users %}
+                                
+                                
 							    <li class="list-group-item">
                                     
                                     <div class="d-md-flex align-items-center">
 
                                         <div class="flex-lg-grow-1">
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> some username </p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Joined</i> 10/10/10</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submissions:</i> 100</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Accepted Submissions:</i> 1100</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Full Name:</i> {{ user.first_name }} {{ user.last_name}}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Username:</i> {{ user.username }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Joined:</i> {{user.date_joined.date }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submissions:</i> {{ user.number_submissions }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Accepted Submissions:</i> {{ user.number_accepted_submissions }}</p>
                                         </div>
                                         
                                         
@@ -212,6 +232,7 @@
                                     </div>
 
                                 </li>
+                                {% endfor %}
 
 
   						    </ul>
