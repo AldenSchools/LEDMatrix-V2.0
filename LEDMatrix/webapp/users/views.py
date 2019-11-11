@@ -19,6 +19,8 @@ def admin_login_veiw(request):
         if (form.is_valid()):
             username = form.cleaned_data.get('acct_name')
             password = form.cleaned_data.get('password')
+            print("usrname="+username)
+            print("pass="+password)
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -51,7 +53,7 @@ def handle_user_registration_form(request):
             last_name = form.cleaned_data.get('last_name')
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect('/create/')
+            return redirect('/create')
         else:
             messages.error(request, f'Form is not valid')
     else:
@@ -70,7 +72,7 @@ def handle_user_login_form(request):
                 login(request, user)
                 # Redirect to a success page.
                 messages.success(request, f'Hi {username}!')
-                return redirect('/create/')
+                return redirect('/create')
             else:
                 # Return an 'invalid login' error message.
                 messages.error(request, f"Could not log in with username '{username}''")
