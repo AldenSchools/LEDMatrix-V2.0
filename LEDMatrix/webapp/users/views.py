@@ -36,6 +36,7 @@ def admin_login_veiw(request):
     
 def logout_view(request):
     logout(request)
+    return redirect("/")
 
 
 

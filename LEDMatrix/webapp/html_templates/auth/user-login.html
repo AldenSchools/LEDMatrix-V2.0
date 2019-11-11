@@ -12,7 +12,7 @@
                     <div class="modal-body">
                         <form  method="POST">
                             {% csrf_token %}
-                            <div class="form-group">
+                            <fieldset class="form-group">
                                 {{ login_form.username.label_tag }}
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -21,7 +21,7 @@
                                     </div>
                                     {{ login_form.username }}
                                 </div>
-                            </div>
+                            </fieldset>
 
                             
 

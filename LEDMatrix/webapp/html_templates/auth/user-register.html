@@ -10,7 +10,7 @@
                     <div class="modal-body">
                         <form  method="POST">
                             {% csrf_token %} 
-                            <div class="form-group">
+                            <fieldset class="form-group">
                                 
                                 {{ register_form.first_name.label_tag }}
                                 <div class="input-group">
@@ -19,9 +19,9 @@
                                     </div>
                                     {{ register_form.first_name }}
                                 </div>
-                            </div>
+                            </fieldset>
 
-                            <div class="form-group">
+                            <fieldset class="form-group">
                                 {{ register_form.last_name.label_tag }}
 
                                 <div class="input-group">
@@ -30,9 +30,9 @@
                                     </div>
                                     {{ register_form.last_name }}
                                 </div>
-                            </div>
+                            </fieldset>
                         
-                            <div class="form-group">
+                            <fieldset class="form-group">
                                 {{ register_form.username.label_tag }}
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -40,7 +40,7 @@
                                     </div>
                                     {{ register_form.username }}                             
                                 </div>
-                            </div>
+                            </fieldset>
 
 
                             <div class="modal-footer">

@@ -1,5 +1,9 @@
 {% extends "base.html" %}   
    
+{% block head %}
+    <title> LED Matrix | Admin Login </title>
+{% endblock head %}
+
    {% block user_login_register %}{% endblock user_login_register %}
    
    {% block main_content %}
@@ -14,7 +18,7 @@
                 <div class="modal-body">
                     <form method="POST">
                         {% csrf_token %}
-                        <div class="form-group">
+                        <fieldset class="form-group">
                             
                             {{ form.acct_name.label_tag }}
                             <div class="input-group">
@@ -23,9 +27,9 @@
                                 </div>
                                 {{ form.acct_name }}
                             </div>
-                        </div>
+                        </fieldset>
 
-                        <div class="form-group">
+                        <fieldset class="form-group">
                             
                             {{ form.password.label_tag }}
                             <div class="input-group">
@@ -34,7 +38,7 @@
                                 </div>
                                 {{ form.password }}
                             </div>
-                        </div>
+                        </fieldset>
 
 
                         <div class="modal-footer">
