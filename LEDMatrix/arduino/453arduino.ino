@@ -23,25 +23,31 @@ void setup() {
 }
 
 void loop() {
- if (Serial.available())
-       {//if serial data receivied
-              serialData = Serial.read();      //Read incoming byte
+  //if serial data receivied
+  //Read incoming byte
+  if (Serial.available()){
+    serialData = Serial.read();      
                
               
-              if(serialData != 10){       //arduino terminal sends 10 at end of string so check for that, can be changed to whatever char marks end of a color's data
-                colorInt[strPos++] = serialData; 
-              }
-
+    //arduino terminal sends 10 at end of string so check for that, can be changed to whatever char marks end of a color's data          
+    if(serialData != 10){       
+     
+    
+      colorInt[strPos++] = serialData;
             
-              if(strPos >= 6){      //if end found, then turn hex string to hex number, set color at position, reset variables as needed
-             // Serial.print("I received: ");     //Display individual bytes, for testing purposes
-             // Serial.println(strtoul(colorInt,NULL,16), HEX);
-              //Serial.println(strtoul(colorInt,NULL,16));
-              strip.setPixelColor(ledPos++,strtoul(colorInt,NULL,16));
-              if(ledPos >= 256){ledPos = 0;}
-              for(int i = 0; i < 8; i++)colorInt[i] = 0;          //reset string for led's color
-              strPos = 0;
-              }
-       }//end of serial data 
-       strip.show();
+    //if end found, then turn hex string to hex number, set color at position, reset variables as needed
+    if(strPos >= 6){      
+      //Serial.print("I received: ");     //Display individual bytes, for testing purposes
+      //Serial.println(strtoul(colorInt,NULL,16), HEX);
+      //Serial.println(strtoul(colorInt,NULL,16));
+      strip.setPixelColor(ledPos++,strtoul(colorInt,NULL,16));
+      
+      if(ledPos >= 256) ledPos = 0;
+      
+      for(int i = 0; i < 8; i++) colorInt[i] = 0; //reset string for led's color
+      
+      strPos = 0;
+    }
+  }//end of serial data 
+  strip.show();
 }
