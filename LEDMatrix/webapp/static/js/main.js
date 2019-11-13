@@ -111,8 +111,8 @@ function setupEventHandlers(globalVars) {
     resizedWindowHandler(globalVars);
     toolboxSelectionHandler(globalVars);
     saveDeleteLoadHandler(globalVars);
-    loginRegisterModalsHandler();
 
+    newDrawingHandler(globalVars);
 }
 
 
@@ -135,11 +135,14 @@ function resizedWindowHandler(globalVars) {
     }
 }
 
+function newDrawingHandler(globalVars) {
+    var newDrawingElem = $("#new-drawing");
 
-function loginRegisterModalsHandler() {
+    newDrawingElem.on("click", createNewDrawing);
 
-
-
+    function createNewDrawing(event) {
+        console.log("I want to create a new drawing")
+    }
 }
 
 

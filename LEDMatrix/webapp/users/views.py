@@ -69,7 +69,7 @@ def handle_user_login_form(request):
         if (form.is_valid()):
             username = form.cleaned_data.get('username')
             user = authenticate(request, username=username)
-            if user is not None:
+            if user is not None and not user.has_perm('users.admin-dash') and not user.is_superuser:
                 login(request, user)
                 # Redirect to a success page.
                 messages.success(request, f'Hi {username}!')

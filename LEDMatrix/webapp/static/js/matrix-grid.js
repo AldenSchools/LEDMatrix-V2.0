@@ -58,6 +58,14 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
     }
 
+    function loadDrawingToGrid(drawingData) {
+        for (var row = 0; row < drawingData.length; row++) {
+            for (var col = 0; col < drawingData[row].length; col++) {
+                setGridColor(row, col, drawingData[row][col]);
+            }
+        }
+    }
+
     function updateGrid() {
 
 
@@ -106,6 +114,8 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
         }
     }
 
+
+
     return {
         getCanvas: getCanvas,
         getGrid: getGrid,
@@ -117,6 +127,7 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
         getBoxHeight: getBoxHeight,
         getGridLineWidth: getGridLineWidth,
         setGridColor: setGridColor,
+        loadDrawingToGrid: loadDrawingToGrid,
         updateGrid: updateGrid,
         calculateGridDims: calculateGridDims
 

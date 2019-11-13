@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+
 from .models import *
 from users.forms import *
 from users.views import *
@@ -62,4 +63,5 @@ def about_view(request):
         "register_form":UserRegisterForm(),
     }
     return render(request, "about.html", context)
+
 

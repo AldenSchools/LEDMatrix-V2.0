@@ -98,7 +98,39 @@ function toolboxSelectionHandler(globalVars) {
 
 function saveDeleteLoadHandler(globalVars) {
 
+    var loadForm = $("#load-drawing-form");
+    var saveForm = $("#save-drawing-form");
+    var deleteForm = $("#submit-drawing-form");
+
+
+    loadForm.submit(loadDrawing);
+    saveForm.submit(saveCurrentDrawing);
+    deleteForm.submit(deleteCurrentDrawing);
+
+    function loadDrawing(event) {
+        event.preventDefault();
+        $.ajax({
+            url: loadForm.attr("data-handle-fetch-drawing-url"),
+            data: loadForm.serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log(data.drawing_data);
+                globalVars.gridVars.loadDrawingToGrid(data.drawing_data);
+                //update current pic id on coresponding forms
+            }
+        });
+    }
+
+    function saveCurrentDrawing(event) {
+
+    }
+
+    function deleteCurrentDrawing(event) {
+
+    }
+
 }
+
 
 
 

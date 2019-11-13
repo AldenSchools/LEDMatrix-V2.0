@@ -5,12 +5,12 @@ from .models import *
 
 
 class UserLoginForm(forms.Form):
-    widget = forms.TextInput(attrs={'class':'form-control','id':''})
+    widget = forms.TextInput(attrs={'class':'form-control','id':'' , "autocomplete":"off"})
     username = forms.CharField(help_text='A valid email address, please.', label="Username:", max_length=120,strip=True, widget=widget)
 
 class UserRegisterForm(UserCreationForm):
 
-    widget = forms.TextInput(attrs={'class':'form-control','id':''})
+    widget = forms.TextInput(attrs={'class':'form-control','id':'', "autocomplete":"off"})
     first_name = forms.CharField(label="First Name:", max_length=120,strip=True, widget=widget)
     last_name = forms.CharField(label="Last Name:", max_length=120,strip=True, widget=widget)
     username = forms.CharField(label="Username:", max_length=120, strip=True , widget=widget)
@@ -45,12 +45,12 @@ class UserRegisterForm(UserCreationForm):
 
 
 class AdminLoginForm(forms.Form):
-    widget = forms.TextInput(attrs={'class':'form-control','id':''})
-    widget2 = forms.TextInput(attrs={'class':'form-control','type':'password'})
+    widget = forms.TextInput(attrs={'class':'form-control','id':'' , "autocomplete":"off"})
+    widget2 = forms.TextInput(attrs={'class':'form-control','type':'password', "autocomplete":"off"})
     acct_name = forms.CharField(label="Account Name:", max_length=120,strip=True, widget=widget)
     password = forms.CharField(label="Password:", max_length=120 , widget=widget2) 
 
 class AdminRegisterForm(UserCreationForm):
-    widget = forms.TextInput(attrs={'class':'form-control','id':''})
+    widget = forms.TextInput(attrs={'class':'form-control','id':'', "autocomplete":"off"})
     pass
     

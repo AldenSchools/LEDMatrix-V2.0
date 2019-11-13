@@ -23,21 +23,41 @@
 					<h4 class="text-center ">Saved Drawings</h4>
 					<div class="card  flex-column" >
 					
-  						<div class="card-header text-center new-sketch">
-    						New Sketch <i class="fas fa-plus"></i>
+  						<div class="card-header text-center" id="new-drawing">
+    						New Drawing <i class="fas fa-plus"></i>
   						</div>
 
   						<ul class="list-group list-group-flush">
 						  	
+							<li class="list-group-item ">
+						  		<div class="d-flex align-items-center">
+
+								  	<form method="POST" data-save-drawing-url="{% url "new_drawing"%}">
+									  {% csrf_token %}
+                                		<fieldset class="flex-grow-1">
+											<input type="text" class="form-control" placeholder="Drawing Name">
+										</fieldset>
+									
+                                		<button type="submit" class="create-btn d-flex align-items-center justify-content-center btn btn-primary btn-sm" id="">Create!</button>
+									</form>
+                            	</div>
+							</li>
 							{% for drawing in drawings %}
 							
 							
 							<li class="list-group-item">
 						  		<div class="d-flex align-items-center">
 								  	
-                                	<p class="  flex-grow-1" id="sketch-name">{{ drawing.drawing_name }}</p>
+                                	<p class="flex-grow-1 drawing-name" id="">{{ drawing.drawing_name }}</p>
 									
-                                	<button type="button" class=" btn btn-primary btn-sm" id="load-btn">Load</button>
+									<form method="POST" data-handle-fetch-drawing-url="{% url "fetch_drawing_data" %}" id="load-drawing-form">
+										{% csrf_token %}
+                                		<fieldset class="flex-grow-1">
+											<input type="hidden" class="form-control" id="drawing-id" name="drawing" value="{{ drawing.id }}">
+										</fieldset>
+									
+                                		<button type="submit" class="load-btn d-flex align-items-center justify-content-center btn btn-primary btn-sm" id="load-btn">Load</button>
+                                	</form>
                             	</div>
 							</li>
 							{% endfor %}
@@ -95,11 +115,26 @@
 								</li>
 							</ul>
 							
-							<div class=" mt-5  mb-5 mb-lg-1 text-center">
+							<div class=" d-none d-md-block mt-3  mb-5 mb-lg-1 text-center">
 								
-								{% if user.is_authenticated %} 
-								<button type="button" class="btn btn-primary btn-sm" id="save-btn">Save</button>
-  								<button type="button" class="btn btn-danger btn-sm" id="delete-btn">Delete</button>
+								{% if user.is_authenticated %}
+								<form method="POST" id="save-drawing-form" data-save-drawing-url="{% url "save_drawing"  %}">
+									{% csrf_token %}	
+									<input type="hidden" id="save-drawing-id-input" name="drawing-id"  value="-1" >
+									<button type="submit" class="btn btn-primary btn-sm" id="save-btn">Save</button>
+								</form>
+
+								<form method="POST" id="submit-drawing-form" data-submit-drawing-url="{% url "submit_drawing" %}">
+									{% csrf_token %}
+									<input type="hidden" id="submit-drawing-id-input" name="drawing-id"  value="-1" >
+									<button type="submit" class="btn btn-success btn-sm" id="submit-to-led-btn">Submit to LED Matrix</button>
+								</form>
+								
+								<form method="POST" id="delete-drawing-form" data-delete-drawing-url="{% url "delete_drawing" %}">
+									{% csrf_token %}
+									<input type="hidden"  id="delete-drawing-id-input" name="drawing-id"  value="-1" >
+									<button type="button" class="btn btn-danger btn-sm mt-5" id="delete-btn">Delete</button>
+								</form>
 								{% else %}
 								<p>Want to save this sketch login/register <a  href="" data-toggle="modal" data-target="#user-login-modal">here!</a></p>
 								{% endif %}
@@ -120,6 +155,9 @@
 					<h4 class="text-center ">Color Picker</h4>
 					<div  class="d-flex align-items-center justify-content-center" id="color-picker"></div>
 				</div>
+				<div class="d-flex align-items-center justify-content-center mt-4"><h2 id="color-text">Color = #FFFFFF</h2></div>
+				<!--<div class="d-flex align-items-center justify-content-center ml-4"><p >Learn more about how computers represent color <a href="#">here</a></p></div>-->
+				
 			</div>
 
 
