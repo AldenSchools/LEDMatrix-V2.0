@@ -87,7 +87,7 @@ function drawingControlsFormHandler(globalVars) {
     var loadForm = $("#load-drawing-form");
     var saveForm = $("#save-drawing-form");
     var deleteForm = $("#delete-drawing-form");
-    var submitForm = $("#submit-drawing-form");
+    var submitDrawingForm = $("#submit-drawing-form");
     var createDrawingForm = $("#new-drawing-form");
 
 
@@ -95,7 +95,10 @@ function drawingControlsFormHandler(globalVars) {
     saveForm.submit(saveCurrentDrawing);
     deleteForm.submit(deleteCurrentDrawing);
     createDrawingForm.submit(createNewDrawing);
-    //submitForm.submit();
+    submitDrawingForm.submit(submitDrawingForReview);
+
+
+
 
     function loadDrawing(event) {
         event.preventDefault();
@@ -119,6 +122,9 @@ function drawingControlsFormHandler(globalVars) {
         });
     }
 
+
+
+
     function saveCurrentDrawing(event) {
         event.preventDefault();
         var dataAsString = globalVars.gridVars.getGridDataAsString();
@@ -129,10 +135,14 @@ function drawingControlsFormHandler(globalVars) {
             data: saveForm.serialize(),
             dataType: 'json',
             success: function(data) {
-                $("#id_new_drawing_data").attr("value", "");
+                console.log(data);
+                //$("#id_new_drawing_data").attr("value", "");
             }
         });
     }
+
+
+
 
     function deleteCurrentDrawing(event) {
         console.log("delete form submitted");
@@ -145,13 +155,18 @@ function drawingControlsFormHandler(globalVars) {
             dataType: 'json',
             success: function(data) {
                 console.log("delete request successfuly sent");
+                console.log(data);
+                if (data.drawing_id < 0) {
+                    //error did not save correctly handle me
+                    return;
+                }
                 globalVars.gridVars.fillGrid(globalVars.colorPickerVars.getDefaultColor());
 
             }
         });
-
-
     }
+
+
 
     function createNewDrawing(event) {
         event.preventDefault();
@@ -164,10 +179,36 @@ function drawingControlsFormHandler(globalVars) {
             success: function(data) {
                 console.log("create request successfuly sent");
                 console.log(data);
-
+                if (data.drawing_id < 0) {
+                    //error did not save correctly handle me
+                    return;
+                }
+                var newListElem = JSON.parse(JSON.stringify($("#saved-drawings-list").first()));
+                console.log(newListElem);
+                //newListElem.find(".drawing-name").text(data.drawing_name);
+                //newListElem.find("#drawing-id").attr("value", data.new_drawing_id);
             }
         });
     }
+
+
+
+
+    function submitDrawingForReview(event) {
+        $.ajax({
+            type: "POST",
+            url: submitDrawingForm.attr("data-submit-drawing-url"),
+            data: submitDrawingForm.serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log("create request successfuly sent");
+                console.log(data);
+
+            }
+        });
+
+    }
+
 
 }
 

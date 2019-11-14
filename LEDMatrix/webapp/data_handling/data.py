@@ -24,6 +24,7 @@ def fetch_drawing_data(request):
 def new_drawing(request):
     print("atempting to create a drawing")
     drawing_id = -1
+    drawing_name = ""
     if(request.method == "POST"):
         form = CreateDrawingForm(request.POST)
         if(form.is_valid()):
@@ -31,14 +32,25 @@ def new_drawing(request):
             drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=default_drawing_data(), drawing_created=datetime.datetime.now(), user=request.user)
             drawing_id = drawing.id
 
-    return JsonResponse({"new_drawing_id":drawing_id})
+    return JsonResponse({"new_drawing_id":drawing_id, "drawing_name":drawing_name})
 
 
     
 
 @login_required
 def save_drawing(request):
-    pass
+    success = False
+    if(request.method == "POST"):
+        form = SaveDrawingForm(request.POST)
+        if(form.is_valid()):
+            drawing_id = form.cleaned_data.get('drawing_id')
+            new_drawing_data = form.cleaned_data.get('new_drawing_data')
+            drawing = Drawing.objects.get(pk=drawing_id)
+            drawing.drawing_data = new_drawing_data;
+            drawing.save()
+            success = True
+
+    return JsonResponse({"success":success})
 
 @login_required
 def submit_drawing(request):
@@ -48,7 +60,7 @@ def submit_drawing(request):
         if(form.is_valid()):
             drawing_id = form.cleaned_data.get('drawing_id')
             drawing = Drawing.objects.get(pk=drawing_id)
-            new_sub = SubmissionsHistory.objects.create(drawing=drawing)
+            new_sub = SubmissionsHistory.objects.create(drawing=drawing, submission_datetime=datetime.datetime.now())
             NewSubmission.objects.create(submission=new_sub)
             success = True
     

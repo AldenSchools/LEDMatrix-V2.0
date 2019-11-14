@@ -34,7 +34,7 @@
 							<li class="list-group-item ">
 						  		<div class="d-flex align-items-center">
 								  	
-                                	<p class="flex-grow-1 drawing-name" id="">{{ drawing.drawing_name }}</p>
+                                	<p class="flex-grow-1 drawing-name">{{ drawing.drawing_name }}</p>
 									
 									<form method="GET" data-handle-fetch-drawing-url="{% url "fetch_drawing_data" %}" id="load-drawing-form">
 										{% csrf_token %}
@@ -109,7 +109,7 @@
 									
 									{{ save_form.drawing_id }}
 									{{ save_form.new_drawing_data }}
-									<button type="button" class="btn btn-primary btn-sm" id="save-btn">Save</button>
+									<button type="submit" class="btn btn-primary btn-sm" id="save-btn">Save</button>
 								</form>
 
 								<form method="POST" id="submit-drawing-form" data-submit-drawing-url="{% url "submit_drawing" %}">
@@ -151,6 +151,10 @@
 
 		</div>
 
+		{% if user.is_authenticated %}
+		
+		
+		
 		<div class="modal fade" id="new-drawing-modal" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
@@ -179,6 +183,7 @@
 				</div>
 			</div>
 		</div>
+		{% endif %}
 	</section>
 
 {% endblock main_content %}

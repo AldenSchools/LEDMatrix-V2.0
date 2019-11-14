@@ -21,7 +21,7 @@ class SubmissionsHistory(models.Model):
     drawing = models.ForeignKey(Drawing, on_delete= models.CASCADE)
 
 class NewSubmission(models.Model):
-    sumbission = models.OneToOneField(SubmissionsHistory, on_delete=models.CASCADE)
+    submission = models.OneToOneField(SubmissionsHistory, on_delete=models.CASCADE)
     viewed_by_admin = models.BooleanField(default=False)
 
 
