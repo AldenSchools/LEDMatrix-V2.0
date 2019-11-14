@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import  fetch_drawing_data, new_drawing, save_drawing, submit_drawing, delete_drawing
+from .data import  fetch_drawing_data, new_drawing, save_drawing, submit_drawing, delete_drawing
 
 urlpatterns = [
     

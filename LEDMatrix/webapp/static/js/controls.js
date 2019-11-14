@@ -41,11 +41,6 @@ function toolboxSelectionHandler(globalVars) {
     }
 
 
-
-
-
-
-
     function colorMode(event) {
         globalVars.colorPickerVars.setMode("color");
 
@@ -62,7 +57,7 @@ function toolboxSelectionHandler(globalVars) {
     }
 
     function colorAllMode(event) {
-        fillAll(colorPickerVars.getColorPicker().color.hexString);
+        globalVars.gridVars.fillGrid(colorPickerVars.getColorPicker().color.hexString);
     }
 
     function addEfects(event) {
@@ -76,17 +71,8 @@ function toolboxSelectionHandler(globalVars) {
     }
 
     function clearGrid(event) {
-        fillAll(colorPickerVars.getDefaultColor());
+        globalVars.gridVars.fillGrid(colorPickerVars.getDefaultColor());
 
-    }
-
-    function fillAll(newColor) {
-        var grid = gridVars.getGrid();
-        for (var row = 0; row < grid.length; row++) {
-            for (var col = 0; col < grid[row].length; col++) {
-                gridVars.setGridColor(row, col, newColor);
-            }
-        }
     }
 
     function updateNewActiveElem(element) {
@@ -96,20 +82,25 @@ function toolboxSelectionHandler(globalVars) {
 }
 
 
-function saveDeleteLoadHandler(globalVars) {
+function drawingControlsFormHandler(globalVars) {
 
     var loadForm = $("#load-drawing-form");
     var saveForm = $("#save-drawing-form");
-    var deleteForm = $("#submit-drawing-form");
+    var deleteForm = $("#delete-drawing-form");
+    var submitForm = $("#submit-drawing-form");
+    var createDrawingForm = $("#new-drawing-form");
 
 
     loadForm.submit(loadDrawing);
     saveForm.submit(saveCurrentDrawing);
     deleteForm.submit(deleteCurrentDrawing);
+    createDrawingForm.submit(createNewDrawing);
+    //submitForm.submit();
 
     function loadDrawing(event) {
         event.preventDefault();
         $.ajax({
+            type: "GET",
             url: loadForm.attr("data-handle-fetch-drawing-url"),
             data: loadForm.serialize(),
             dataType: 'json',
@@ -117,16 +108,65 @@ function saveDeleteLoadHandler(globalVars) {
                 console.log(data.drawing_data);
                 globalVars.gridVars.loadDrawingToGrid(data.drawing_data);
                 //update current pic id on coresponding forms
+                $("#save-drawing-id-input").attr("value", data.drawing_id);
+                $("#submit-drawing-id-input").attr("value", data.drawing_id);
+                $("#delete-drawing-id-input").attr("value", data.drawing_id);
+
+                $("#saved-drawings-list").find("li.active").removeClass('active');
+                //$("#saved-drawings-list").find("[value= "+ data.drawing_id+ " ]").addClass("active")
+
             }
         });
     }
 
     function saveCurrentDrawing(event) {
-
+        event.preventDefault();
+        var dataAsString = globalVars.gridVars.getGridDataAsString();
+        $("#id_new_drawing_data").attr("value", dataAsString);
+        $.ajax({
+            type: "POST",
+            url: saveForm.attr("data-save-drawing-url"),
+            data: saveForm.serialize(),
+            dataType: 'json',
+            success: function(data) {
+                $("#id_new_drawing_data").attr("value", "");
+            }
+        });
     }
 
     function deleteCurrentDrawing(event) {
+        console.log("delete form submitted");
+        event.preventDefault();
 
+        $.ajax({
+            type: "POST",
+            url: deleteForm.attr("data-delete-drawing-url"),
+            data: deleteForm.serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log("delete request successfuly sent");
+                globalVars.gridVars.fillGrid(globalVars.colorPickerVars.getDefaultColor());
+
+            }
+        });
+
+
+    }
+
+    function createNewDrawing(event) {
+        event.preventDefault();
+        console.log("create request ");
+        $.ajax({
+            type: "POST",
+            url: createDrawingForm.attr("data-create-drawing-url"),
+            data: createDrawingForm.serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log("create request successfuly sent");
+                console.log(data);
+
+            }
+        });
     }
 
 }

@@ -14,27 +14,8 @@ def user_register_view(request):
     return render(request, "auth/user-register.html", {})
      
 def admin_login_veiw(request):
-    if (request.method == 'POST'):
-        form = AdminLoginForm(request.POST)
-        if (form.is_valid()):
-            username = form.cleaned_data.get('acct_name')
-            password = form.cleaned_data.get('password')
-            print("usrname="+username)
-            print("pass="+password)
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                # Redirect to a success page.
-                messages.success(request, f'Hi {username}!')
-                return redirect('/admin-dash')
-            else:
-                # Return an 'invalid login' error message.
-                messages.error(request, f"Could not log in with username '{username}''")
-                    
-    else: 
-        form = AdminLoginForm()
-
-    return render(request, "auth/admin-login.html", {"form":form})
+    
+    return render(request, "auth/admin-login.html", {"form":handle_admin_login_form})
 
 @login_required 
 def logout_view(request):
@@ -43,6 +24,8 @@ def logout_view(request):
 
 
 
+
+##### HELPER FUNCTIONS ########
 def handle_user_registration_form(request):
     
     if (request.method == 'POST'):
@@ -84,3 +67,26 @@ def handle_user_login_form(request):
     return form
 
 
+def handle_admin_login_form(request):
+    if (request.method == 'POST'):
+        form = AdminLoginForm(request.POST)
+        if (form.is_valid()):
+            username = form.cleaned_data.get('acct_name')
+            password = form.cleaned_data.get('password')
+            print("usrname="+username)
+            print("pass="+password)
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                # Redirect to a success page.
+                messages.success(request, f'Hi {username}!')
+                return redirect('/admin-dash')
+            else:
+                # Return an 'invalid login' error message.
+                print("here 1")
+                messages.error(request, f"Could not log in with username '{username}''")
+                    
+    else: 
+        form = AdminLoginForm()
+
+    return form

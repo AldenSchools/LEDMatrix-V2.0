@@ -3,10 +3,10 @@ $(function() {
 });
 
 
-function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, initColor) {
+function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesPerRow, boxesPerCol, gridLineWidth, initColor) {
     if (canvas.length === 0) return undefined;
 
-    gridWidth = (gridWidth === undefined) ? 800 : gridWidth;
+    var gridWidth = (suggestedGridWidth === undefined) ? 800 : suggestedGridWidth;
     gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
     //gridHeight = (gridHeight === undefined) ? gridWidth : gridHeight;
     gridHeight = gridWidth;
@@ -45,6 +45,17 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
     function getGridLineWidth() { return gridLineWidth; }
 
+    function getGridDataAsString() {
+        var dataAsString = "";
+        for (var row = 0; row < grid.length; row++) {
+            for (var col = 0; col < grid[row].length; col++) {
+                dataAsString += grid[row][col].color;
+            }
+        }
+
+        return dataAsString;
+    }
+
 
     function setGridColor(row, col, newColor) {
         if (grid[row][col].color === newColor) return;
@@ -58,6 +69,14 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
     }
 
+    function fillGrid(color) {
+        for (var row = 0; row < grid.length; row++) {
+            for (var col = 0; col < grid[row].length; col++) {
+                setGridColor(row, col, color);
+            }
+        }
+    }
+
     function loadDrawingToGrid(drawingData) {
         for (var row = 0; row < drawingData.length; row++) {
             for (var col = 0; col < drawingData[row].length; col++) {
@@ -68,8 +87,8 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
 
     function updateGrid() {
 
-
-        gridWidth = $("#grid-div").width();
+        gridWidth = (suggestedGridWidth === undefined) ? 800 : suggestedGridWidth;
+        gridWidth = (gridWidth > $("#grid-div").width()) ? $("#grid-div").width() : gridWidth;
         gridHeight = gridWidth;
         //if (gridHeight === undefined) trueGridHeight = gridWidth;
 
@@ -124,9 +143,11 @@ function initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol
         getBoxesPerRow: getBoxesPerRow,
         getBoxesPerCol: getBoxesPerCol,
         getBoxWidth: getBoxWidth,
+        getGridDataAsString: getGridDataAsString,
         getBoxHeight: getBoxHeight,
         getGridLineWidth: getGridLineWidth,
         setGridColor: setGridColor,
+        fillGrid: fillGrid,
         loadDrawingToGrid: loadDrawingToGrid,
         updateGrid: updateGrid,
         calculateGridDims: calculateGridDims

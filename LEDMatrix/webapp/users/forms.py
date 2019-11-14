@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import *
 
 
+
 class UserLoginForm(forms.Form):
     widget = forms.TextInput(attrs={'class':'form-control','id':'' , "autocomplete":"off"})
     username = forms.CharField(help_text='A valid email address, please.', label="Username:", max_length=120,strip=True, widget=widget)
@@ -54,3 +55,21 @@ class AdminRegisterForm(UserCreationForm):
     widget = forms.TextInput(attrs={'class':'form-control','id':'', "autocomplete":"off"})
     pass
     
+
+class SubmitDrawingForm(forms.Form):
+    widget = forms.TextInput(attrs={'id':'submit-drawing-id-input' , "autocomplete":"off", 'type':'hidden'})
+    drawing_id= forms.IntegerField(initial=-1, widget=widget)
+
+class DeleteDrawingForm(forms.Form):
+    widget = forms.TextInput(attrs={'id':'delete-drawing-id-input' , "autocomplete":"off", 'type':'hidden'})
+    drawing_id = forms.IntegerField(initial=-1, widget=widget)
+
+class SaveDrawingForm(forms.Form):
+    widget = forms.TextInput(attrs={'id':'save-drawing-id-input' , "autocomplete":"off", 'type':'hidden'})
+    drawing_id = forms.IntegerField(initial=-1, widget=widget)
+    new_drawing_data = forms.CharField(max_length=1792,strip=True,widget=forms.HiddenInput())
+
+class CreateDrawingForm(forms.Form):
+    widget = forms.TextInput(attrs={"class":"form-control", 'id':'new-drawing-name-input' , "autocomplete":"off","placeholder":"Enter new drawing name here" })
+    drawing_name = forms.CharField( max_length=120,strip=True, widget=widget)
+

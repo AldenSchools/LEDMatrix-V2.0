@@ -106,7 +106,7 @@
 
 	{% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            <div class="alert alert-{{ message.tags }}" id="messages-div">{{ message }}</div>
         {% endfor %}
     {% endif %}
     {% block main_content %} {% endblock main_content %}

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import home_veiw, create_veiw, admin_dash_veiw, about_view, get_drawing
+from .views import home_veiw, create_veiw, admin_dash_veiw, about_view
 
 urlpatterns = [
     path('', home_veiw, name="home_view"),

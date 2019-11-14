@@ -110,9 +110,7 @@ function setupEventHandlers(globalVars) {
     mouseOnGridEventHandler(globalVars);
     resizedWindowHandler(globalVars);
     toolboxSelectionHandler(globalVars);
-    saveDeleteLoadHandler(globalVars);
-
-    newDrawingHandler(globalVars);
+    drawingControlsFormHandler(globalVars);
 }
 
 
@@ -132,16 +130,6 @@ function resizedWindowHandler(globalVars) {
         colorPickerVars.setWidth($("#color-picker").width());
         console.log("window resized\n colorPicker div width", $("#color-picker").width(), "\n grid width", $("#grid-div").width());
 
-    }
-}
-
-function newDrawingHandler(globalVars) {
-    var newDrawingElem = $("#new-drawing");
-
-    newDrawingElem.on("click", createNewDrawing);
-
-    function createNewDrawing(event) {
-        console.log("I want to create a new drawing")
     }
 }
 
