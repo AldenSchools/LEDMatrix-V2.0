@@ -10,6 +10,16 @@ function initColorPickerGlobals(defaultColor) {
     if ($('#color-picker').length) colorPicker = new iro.ColorPicker('#color-picker');
     else return undefined;
 
+
+
+    colorPicker.on("color:change", colorChangeCallback);
+
+    function colorChangeCallback(color) {
+        $("#color-hex").css("color", color.hexString);
+        $("#color-hex").text(color.hexString.toUpperCase());
+        //console.log(color.hexString);
+    }
+
     function getColorPicker() { return colorPicker; }
 
     function getDefaultColor() { return defaultColor; }

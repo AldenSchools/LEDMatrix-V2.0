@@ -14,8 +14,8 @@ def user_register_view(request):
     return render(request, "auth/user-register.html", {})
      
 def admin_login_veiw(request):
-    
-    return render(request, "auth/admin-login.html", {"form":handle_admin_login_form})
+    admin_login_form = handle_admin_login_form(request)
+    return render(request, "auth/admin-login.html", {"form":admin_login_form})
 
 @login_required 
 def logout_view(request):

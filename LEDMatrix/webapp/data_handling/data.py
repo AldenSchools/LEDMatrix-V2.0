@@ -11,7 +11,6 @@ def fetch_drawing_data(request):
     drawing_id = request.GET.get('drawing',None)
     drawing_data = Drawing.objects.get(pk=drawing_id).drawing_data
     
-    
     matrix_data = drawing_data_as_list(drawing_data)
 
     data = {
@@ -29,7 +28,10 @@ def new_drawing(request):
         form = CreateDrawingForm(request.POST)
         if(form.is_valid()):
             drawing_name = form.cleaned_data.get('drawing_name')
-            drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=default_drawing_data(), drawing_created=datetime.datetime.now(), user=request.user)
+            drawing_data = form.cleaned_data.get('drawing_data')
+            if drawing_data is None or drawing_data == "":
+                drawing_data = default_drawing_data()
+            drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=drawing_data, drawing_created=datetime.datetime.now(), user=request.user)
             drawing_id = drawing.id
 
     return JsonResponse({"new_drawing_id":drawing_id, "drawing_name":drawing_name})
@@ -75,11 +77,9 @@ def delete_drawing(request):
         if(form.is_valid()):
             drawing_id = form.cleaned_data.get('drawing_id')
             
-            if(drawing_id < 0):
-                messages.error(request, f"could not delete")
-            else:
-                drawing = Drawing.objects.filter(pk=drawing_id)
-                if(drawing[0].user == request.user):
+            if(drawing_id >= 0):
+                drawing = Drawing.objects.get(pk=drawing_id)
+                if(drawing.user == request.user):
                     #messages.success(request, f"Drawing {drawing[0].drawing_name} deleted")
                     drawing.delete()
                     print("deleted")

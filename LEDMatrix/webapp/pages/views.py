@@ -9,6 +9,7 @@ from users.views import *
 
 def home_veiw(request):
     context = {}
+    context['currently_showing'] = CurrentlyShowing.objects.all()
     if( not request.user.is_authenticated):
         context['register_form'] = handle_user_registration_form(request)
         context['login_form'] = handle_user_login_form(request)

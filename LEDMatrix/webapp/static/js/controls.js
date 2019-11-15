@@ -83,15 +83,16 @@ function toolboxSelectionHandler(globalVars) {
 
 
 function drawingControlsFormHandler(globalVars) {
+    console.log("drawingControlHandler");
 
-    var loadForm = $("#load-drawing-form");
+    var loadForms = $(".load-drawing-form");
     var saveForm = $("#save-drawing-form");
     var deleteForm = $("#delete-drawing-form");
     var submitDrawingForm = $("#submit-drawing-form");
     var createDrawingForm = $("#new-drawing-form");
 
 
-    loadForm.submit(loadDrawing);
+    loadForms.submit(loadDrawing);
     saveForm.submit(saveCurrentDrawing);
     deleteForm.submit(deleteCurrentDrawing);
     createDrawingForm.submit(createNewDrawing);
@@ -99,24 +100,24 @@ function drawingControlsFormHandler(globalVars) {
 
 
 
-
     function loadDrawing(event) {
+        console.log("loadDrawing called");
         event.preventDefault();
         $.ajax({
             type: "GET",
-            url: loadForm.attr("data-handle-fetch-drawing-url"),
-            data: loadForm.serialize(),
+            url: $(this).attr("data-handle-fetch-drawing-url"),
+            data: $(this).serialize(),
             dataType: 'json',
             success: function(data) {
                 console.log(data.drawing_data);
                 globalVars.gridVars.loadDrawingToGrid(data.drawing_data);
-                //update current pic id on coresponding forms
+
                 $("#save-drawing-id-input").attr("value", data.drawing_id);
                 $("#submit-drawing-id-input").attr("value", data.drawing_id);
                 $("#delete-drawing-id-input").attr("value", data.drawing_id);
 
                 $("#saved-drawings-list").find("li.active").removeClass('active');
-                //$("#saved-drawings-list").find("[value= "+ data.drawing_id+ " ]").addClass("active")
+                $(event.target).closest("li").addClass("active");
 
             }
         });
@@ -126,8 +127,15 @@ function drawingControlsFormHandler(globalVars) {
 
 
     function saveCurrentDrawing(event) {
+        console.log("save drawing called");
         event.preventDefault();
         var dataAsString = globalVars.gridVars.getGridDataAsString();
+
+        if ($("#save-drawing-id-input").attr("value") === "-1") {
+            $("#drawing-data-cached-input").attr("value", dataAsString);
+            $("#new-drawing-modal").modal('show');
+            return;
+        }
         $("#id_new_drawing_data").attr("value", dataAsString);
         $.ajax({
             type: "POST",
@@ -136,7 +144,11 @@ function drawingControlsFormHandler(globalVars) {
             dataType: 'json',
             success: function(data) {
                 console.log(data);
-                //$("#id_new_drawing_data").attr("value", "");
+                if (false) {
+                    displayInfoModal("Save Error", "Could not save this drawing at this time. Make sure you have created and selected a new drawing first and try again.", false);
+                }
+                $("#id_new_drawing_data").attr("value", "");
+                displayInfoModal("Drawing saved", "Your drawing has been saved succesfuly!", false);
             }
         });
     }
@@ -156,11 +168,18 @@ function drawingControlsFormHandler(globalVars) {
             success: function(data) {
                 console.log("delete request successfuly sent");
                 console.log(data);
-                if (data.drawing_id < 0) {
+                if (data.deleted_drawing_id < 0) {
                     //error did not save correctly handle me
+                    displayInfoModal("Delete Error", "Could not delete this drawing at this time. Please try again later.", false);
                     return;
                 }
+                console.log($("#saved-drawings-list").find("li input[value=" + data.deleted_drawing_id + "]").closest("li"));
+                $("#saved-drawings-list").find("li input[value=" + data.deleted_drawing_id + "]").closest("li").remove();
+                $("#save-drawing-id-input").attr("value", "-1");
+                $("#submit-drawing-id-input").attr("value", "-1");
+                $("#delete-drawing-id-input").attr("value", "-1");
                 globalVars.gridVars.fillGrid(globalVars.colorPickerVars.getDefaultColor());
+                displayInfoModal("Delete Success", "Deleted request succesful.", false);
 
             }
         });
@@ -181,12 +200,28 @@ function drawingControlsFormHandler(globalVars) {
                 console.log(data);
                 if (data.drawing_id < 0) {
                     //error did not save correctly handle me
+                    displayInfoModal("Create Error", "Could not create a new drawing at this drawing at this time. Please try again later.", false);
                     return;
                 }
-                var newListElem = JSON.parse(JSON.stringify($("#saved-drawings-list").first()));
+
+
+
+                var newListElem = $($(".drawing-list-item").get(0)).clone();
                 console.log(newListElem);
-                //newListElem.find(".drawing-name").text(data.drawing_name);
-                //newListElem.find("#drawing-id").attr("value", data.new_drawing_id);
+                newListElem.find("#drawing-id").attr("value", data.new_drawing_id);
+                newListElem.find(".drawing-name").text(data.drawing_name);
+                newListElem.addClass("active");
+
+                $('#new-drawing-modal').modal('hide');
+                $('#saved-drawings-list').append(newListElem);
+
+                $("#save-drawing-id-input").attr("value", data.new_drawing_id);
+                $("#submit-drawing-id-input").attr("value", data.new_drawing_id);
+                $("#delete-drawing-id-input").attr("value", data.new_drawing_id);
+
+                $("#drawing-data-cached-input").attr("value", "");
+
+
             }
         });
     }
@@ -195,6 +230,15 @@ function drawingControlsFormHandler(globalVars) {
 
 
     function submitDrawingForReview(event) {
+        event.preventDefault();
+        var dataAsString = globalVars.gridVars.getGridDataAsString();
+
+        if ($("#save-drawing-id-input").attr("value") === "-1") {
+            $("#drawing-data-cached-input").attr("value", dataAsString);
+            displayInfoModal("Submit error", "Please give this drawing a name and then try to submit it again. ", false);
+            $("#new-drawing-modal").modal('show');
+            return;
+        }
         $.ajax({
             type: "POST",
             url: submitDrawingForm.attr("data-submit-drawing-url"),
@@ -203,7 +247,8 @@ function drawingControlsFormHandler(globalVars) {
             success: function(data) {
                 console.log("create request successfuly sent");
                 console.log(data);
-
+                if (data.success) displayInfoModal("Submit to matrix", "Your request to show this drawing on the LED matrix has been submitted.", false);
+                else displayInfoModal("Submit error", "An error has occurred could not submit for review. Please try again later", false);
             }
         });
 
@@ -212,33 +257,6 @@ function drawingControlsFormHandler(globalVars) {
 
 }
 
+function adminControlHandlers(globalVars) {
 
-
-
-// function sendData() {
-//     for (r = (tileRowCount - 1); r >= 0; r--) {
-//         var rev = 0;
-//         for (c = 0; c < tileColumnCount; c++) {
-//             //This line is to make sure data gets sent in the order
-//             //of how the matrix lights are wired
-//             if (r % 2 == 0) c = tileColumnCount - 1 - rev;
-
-//             //Turn RGB to GRB(since the matrix uses GRB)
-//             var x = tiles[c][r].state;
-//             x = x.slice(1, 7);
-//             x = parseInt(x, 16);
-//             x = (x & 0x0000FF) | ((x & 0xFF0000) >>> 8) | ((x & 0x00FF00) << 8);
-
-//             var ledString = x.toString(16);
-//             while (ledString.length < 6) ledString = '0' + ledString;
-//             dataString = dataString + ledString;
-//             c = rev++;
-//         }
-//     }
-//     $.ajax({
-//         type: "POST",
-//         url: "/cgi-bin/pytest.py",
-//         data: { param: dataString },
-//         context: document.body
-//     });
-// }
+}

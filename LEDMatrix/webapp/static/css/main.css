@@ -56,7 +56,12 @@ canvas {
 }
 
 
-/* saved drawings list */
+/* saved drawings */
+
+#saved-drawings-list {
+    overflow-y: scroll;
+    max-height: calc(125vh - 9rem);
+}
 
 #new-drawing:hover {
     cursor: pointer;

@@ -29,6 +29,7 @@
 $(function() {
 
 
+
     var _debug = false;
 
     var canvas = $("#led-matrix-grid");
@@ -111,6 +112,8 @@ function setupEventHandlers(globalVars) {
     resizedWindowHandler(globalVars);
     toolboxSelectionHandler(globalVars);
     drawingControlsFormHandler(globalVars);
+
+    //adminControlHandlers(globalVars);
 }
 
 
@@ -131,6 +134,18 @@ function resizedWindowHandler(globalVars) {
         console.log("window resized\n colorPicker div width", $("#color-picker").width(), "\n grid width", $("#grid-div").width());
 
     }
+}
+
+
+
+function displayInfoModal(modalTitle, modalText, showOkBtn) {
+    $("#info-modal-title").text(modalTitle);
+    $("#modal-info-text").text(modalText);
+
+    if (showOkBtn) $("#modal-ok-btn").removeClass("d-none");
+    else $("#modal-ok-btn").addClass("d-none");
+
+    $("#info-modal").modal('show');
 }
 
 
