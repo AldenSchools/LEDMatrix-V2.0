@@ -22,19 +22,19 @@
     						New Sketch <i class="fas fa-plus"></i>
   						</div> -->
 
-  						<ul class="list-group list-group-flush">
+  						<ul class="list-group list-group-flush" id="admin-options-list">
 						  	
-							<li class="list-group-item active">
-                                <div class="nav-link d-flex align-items-center" id="currently-showing-tab" data-toggle="tab" href="#currently-showing" role="tab" aria-controls="currently-showing" aria-selected="true">
+							<li class="list-group-item active" id="currently-showing-tab" data-toggle="tab" href="#currently-showing" role="tab" aria-controls="currently-showing" aria-selected="true">
+                                <div class="nav-link d-flex align-items-center" >
                                     <p class="flex-grow-1" id="sketch-name">Currently Showing</p>
                                     <span class="badge badge-primary">{{ currently_showing|length }} </span>
                                 </div>
                             </li>
 
-                            <li class="list-group-item">
+                            <li class="list-group-item" id="new-submissions-tab" data-toggle="tab" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false">
 
 						  		<!--<a class="nav-link" id="new-submissions-tab" data-toggle="pill" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false"> -->
-                                    <div class="nav-link d-flex align-items-center" id="new-submissions-tab" data-toggle="tab" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false">
+                                    <div class="nav-link d-flex align-items-center" >
                                 	    <p class="flex-grow-1" id="sketch-name">New Submissions</p>
                                         <span class="badge badge-primary">{{ new_submissions|length }} </span>
                             	    </div>
@@ -42,18 +42,18 @@
 
 							</li>
 
-                            <li class="list-group-item">
+                            <li class="list-group-item" id="submissions-history-tab" data-toggle="tab" href="#submissions-history" role="tab" aria-controls="submissions-history" aria-selected="false">
 						  		
-                                <div class="nav-link d-flex align-items-center" id="submissions-history-tab" data-toggle="tab" href="#submissions-history" role="tab" aria-controls="submissions-history" aria-selected="false">
+                                <div class="nav-link d-flex align-items-center" >
                                 	<p class="flex-grow-1" id="sketch-name">Submissions History</p>
                                 	<span class="badge badge-primary">{{ submissions_history|length }}</span>
                             	</div>
 
 							</li>
 
-                            <li class="list-group-item">
+                            <li class="list-group-item" id="registerd-users-tab" data-toggle="tab" href="#registerd-users" role="tab" aria-controls="registerd-users" aria-selected="false">
 						  		
-                                <div  class="nav-link d-flex align-items-center" id="registerd-users-tab" data-toggle="tab" href="#registerd-users" role="tab" aria-controls="registerd-users" aria-selected="false">
+                                <div  class="nav-link d-flex align-items-center" >
                                 	<p class="flex-grow-1" id="sketch-name">Registerd Users</p>
                                     {% if  users|length > 0%}
                                         <span class="badge badge-primary">{{ users|length }} </span>
@@ -63,9 +63,9 @@
 
 							</li>
 
-                            <li class="list-group-item">
+                            <li class="list-group-item" id="prefrences-tab" data-toggle="tab" href="#prefrences" role="tab" aria-controls="prefrences" aria-selected="false">
                                 
-                                <div class="nav-link d-flex align-items-center" id="prefrences-tab" data-toggle="tab" href="#prefrences" role="tab" aria-controls="prefrences" aria-selected="false">
+                                <div class="nav-link d-flex align-items-center" >
                                     <p class="flex-grow-1" id="sketch-name">Prefrences</p>
                                 </div>
                             
@@ -109,8 +109,17 @@
                                         </div>
                                         
                                         
-                                        <button type="button" class=" btn btn-primary btn-sm">View Drawing</button>
-                                        <button type="button" class=" btn btn-secondary btn-sm">Remove From List</button>
+                                        <form method="GET" class="get-user-drawing-form-curr-showing" data-handle-fetch-drawing-url="{% url "fetch_drawing_admin_dash" %}" >
+										    {% csrf_token %}
+										    <input type="hidden" name="submission" value="{{ showing.submission.id }}">
+                                            <button type="submit" class=" btn btn-primary btn-sm">View Drawing</button>
+                                        </form>
+                                        <form method="POST" class="remove-from-showing-list" data-handle-remove-from-show-list-url="{% url "remove_from_showing_list" %}" >
+										    {% csrf_token %}
+										    <input type="hidden" name="submission" value="{{ showing.submission.id }}">
+                                            <button type="submit" class=" btn btn-danger btn-sm">Stop Showing</button>
+                                        </form>
+        
                                     </div>
 
                                 </li>
@@ -147,8 +156,16 @@
                                         </div>
                                         
                                         
-                                        <button type="button" class=" btn btn-primary btn-sm">View Drawing</button>
-                                        <button type="button" class=" btn btn-secondary btn-sm">Add To Accepted List</button>
+                                        <form method="GET" class="get-user-drawing-form-new-subs" data-handle-fetch-drawing-url="{% url "fetch_drawing_admin_dash" %}" >
+										    {% csrf_token %}
+										    <input type="hidden" name="submission" value="{{ new_submission.submission.id }}">
+                                            <button type="submit" class=" btn btn-primary btn-sm">View Drawing</button>
+                                        </form>
+                                        <form method="POST" class="send-to-showing-list-new-subs" data-handle-send-to-show-list-url="{% url "add_to_curr_showing_list" %}" >
+										    {% csrf_token %}
+										    <input type="hidden" name="submission" value="{{ new_submission.submission.id }}">
+                                            <button type="submit" class=" btn btn-success btn-sm">Send to LED matrix</button>
+                                        </form>
                                     </div>
 
                                 </li>
@@ -185,9 +202,17 @@
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Time:</i> {{ submission.submission_datetime.time }}</p>
                                         </div>
                                         
-                                        
-                                        <button type="button" class=" btn btn-primary btn-sm">View Drawing</button>
-                                        <button type="button" class=" btn btn-secondary btn-sm">Add To Accepted List</button>
+                                        <form method="GET" class="get-user-drawing-form-sub-his" data-handle-fetch-drawing-url="{% url "fetch_drawing_admin_dash" %}" >
+										    {% csrf_token %}
+										    <input type="hidden" name="submission" value="{{ submission.id }}">
+                                            <button type="submit" class=" btn btn-primary btn-sm">View Drawing</button>
+                                        </form>
+
+                                        <form method="POST" class="send-to-showing-list-sub-his" data-handle-send-to-show-list-url="{% url "add_to_curr_showing_list" %}" >
+										    {% csrf_token %}
+										    <input type="hidden" name="submission" value="{{ submission.id }}">
+                                            <button type="submit" class=" btn btn-success btn-sm">Send to LED matrix</button>
+                                        </form>
                                     </div>
 
                                 </li>
@@ -227,8 +252,8 @@
                                         </div>
                                         
                                         
-                                        <button type="button" class=" btn btn-primary btn-sm">Remove User</button>
-                                        <button type="button" class=" btn btn-secondary btn-sm">Block</button>
+                                        <button type="button" class=" btn btn-primary btn-sm">Block</button>
+                                        <button type="button" class=" btn btn-danger btn-sm">Remove User</button>
                                     </div>
 
                                 </li>
@@ -284,6 +309,30 @@
             </div>
 
 
+
+        </div>
+
+
+        <div class="modal fade" id="matrix-preview-modal" tabindex="-1" role="dialog" aria-labelledby="matrix-preview-modal-l" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="matrix-preview-modal-title">LED Matrix Preview</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+            
+                    <div class="modal-body d-flex align-items-center justify-content-center" id="grid-div">
+                        <canvas id='led-matrix-grid'></canvas>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!--<button type="button" class="btn btn-primary" id="modal-ok-btn">OK</button>-->
+                    </div>
+                </div>
+            </div>
         </div>
 	</section>
 

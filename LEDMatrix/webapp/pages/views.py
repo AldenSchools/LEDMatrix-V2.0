@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from data_handling.data import save_drawing, delete_drawing, submit_drawing 
 from .models import *
 from users.forms import *
 from users.views import *

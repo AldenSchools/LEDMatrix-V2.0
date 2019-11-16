@@ -107,6 +107,13 @@ canvas {
 }
 
 
+/* admin options */
+
+#admin-options-list>li:hover {
+    cursor: pointer;
+}
+
+
 /* Page footer */
 
 

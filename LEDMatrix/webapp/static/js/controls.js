@@ -258,5 +258,61 @@ function drawingControlsFormHandler(globalVars) {
 }
 
 function adminControlHandlers(globalVars) {
+    var currShowingGetDataForms = $(".get-user-drawing-form-curr-showing");
+    var newSubGetDataForms = $(".get-user-drawing-form-new-subs");
+    var subHisGetDataForms = $(".get-user-drawing-form-sub-his");
+
+    var currShowingRemoveFroms = $(".remove-from-showing-list");
+    var newSubAddToShowListForms = $(".send-to-showing-list-new-subs");
+    var subHisAddToShowListForms = $(".send-to-showing-list-sub-his");
+
+    currShowingGetDataForms.submit(getDrawingData);
+    newSubGetDataForms.submit(getDrawingData);
+    subHisGetDataForms.submit(getDrawingData);
+
+    newSubAddToShowListForms.submit(addToShowingList);
+    subHisAddToShowListForms.submit(addToShowingList);
+
+    currShowingRemoveFroms.submit(removeFromShowingList)
+
+    function getDrawingData(event) {
+        console.log("GetDrawingData called");
+        event.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: $(this).attr("data-handle-fetch-drawing-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                //delete list element if in new submision list (from the back end only not html wait till refresh to show updated list on html)
+                console.log(data);
+                $('#matrix-preview-modal').modal('show');
+
+                globalVars.gridVars.loadDrawingToGrid(data.drawing_data);
+                // $(event.target).closest("li.active").removeClass('active');
+                // $(event.target).closest("li").addClass("active");
+
+            }
+        });
+    }
+
+
+    function addToShowingList(event) {
+        console.log("addToShowingList called");
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("data-handle-send-to-show-list-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                //show success and delete list element if in new submision list (from the back end and in html)
+            }
+        });
+    }
+
+    function removeFromShowingList(event) {
+
+    }
 
 }

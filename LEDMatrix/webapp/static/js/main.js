@@ -61,6 +61,7 @@ $(function() {
 
 
     setupEventHandlers(globalVars);
+    adminOptionsCurrentlyActive();
 
 
     if (_debug) {
@@ -112,8 +113,7 @@ function setupEventHandlers(globalVars) {
     resizedWindowHandler(globalVars);
     toolboxSelectionHandler(globalVars);
     drawingControlsFormHandler(globalVars);
-
-    //adminControlHandlers(globalVars);
+    adminControlHandlers(globalVars);
 }
 
 
@@ -148,7 +148,20 @@ function displayInfoModal(modalTitle, modalText, showOkBtn) {
     $("#info-modal").modal('show');
 }
 
+function adminOptionsCurrentlyActive() {
+    var adminOptionsList = $("#admin-options-list");
+    if (adminOptionsList.length === 0) return;
 
+    var listItem = adminOptionsList.find(".list-group-item");
+
+    listItem.click(setActiveListItem);
+
+    function setActiveListItem(event) {
+        adminOptionsList.find("li.active").removeClass("active");
+        console.log($(this));
+        $(event.target).addClass("active");
+    }
+}
 
 
 

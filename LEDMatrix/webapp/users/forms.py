@@ -74,4 +74,3 @@ class CreateDrawingForm(forms.Form):
     widget2 = forms.TextInput(attrs={"type":"hidden", 'id':'drawing-data-cached-input' , "value":"",})
     drawing_name = forms.CharField( max_length=120,strip=True, widget=widget)
     drawing_data = forms.CharField(max_length=1792,strip=True,widget=widget2)
-

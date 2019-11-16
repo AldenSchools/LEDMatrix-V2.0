@@ -10,7 +10,7 @@ class UserProfile(models.Model):
     permissions = [
         ("admin_dash", "Can access the admin dashboard"),
     #    ("close_task", "Can remove a task by setting its status as closed"),
-         ]
+    ]
 
 class Prefrences():
     pass
