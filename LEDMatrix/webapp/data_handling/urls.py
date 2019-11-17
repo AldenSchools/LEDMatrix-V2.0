@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .data import  fetch_drawing, fetch_drawing_admin, new_drawing, save_drawing, submit_drawing, delete_drawing, add_to_curr_showing_list, remove_from_showing_list, remove_from_new_subms_list
-
+from .tasks import start_tasks
 urlpatterns = [
     
     path('fetch-drawing/', fetch_drawing, name="fetch_drawing"),
@@ -14,3 +14,6 @@ urlpatterns = [
     path('admin-data/remove-from-new-subms-list/', remove_from_new_subms_list, name="remove-from-showing-list"),
     
 ]
+
+# I put this in here because this file (urls.py) django only runs it once and we only want to start our tasks once
+#start_tasks()

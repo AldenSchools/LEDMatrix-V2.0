@@ -6,6 +6,7 @@ from pages.models import *
 from django.contrib.auth.models import User
 from users.forms import SubmitDrawingForm, SaveDrawingForm, DeleteDrawingForm, CreateDrawingForm
 
+
 @login_required
 def fetch_drawing(request):
     if(not request.user.is_authenticated):
@@ -126,9 +127,9 @@ def add_to_curr_showing_list(request):
             try:
                 submission = SubmissionsHistory.objects.get(pk=submission_id)
                 try:
-                    try_get_curr_showin_sub = CurrentlyShowing.objects.filter(submission__id = submission_id)
+                    try_get_curr_showin_sub = CurrentlyShowing.objects.filter(submission__id = submission_id)[0]
                     print("already in currently showing list")
-                except CurrentlyShowing.DoesNotExist:
+                except (CurrentlyShowing.DoesNotExist, IndexError) as e:
                     print("not in currently showing list moving it there now")
                     CurrentlyShowing.objects.create(submission=submission)
             except SubmissionsHistory.DoesNotExist:
@@ -143,9 +144,9 @@ def remove_from_showing_list(request):
     if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
         submission_id = request.POST.get('submission',None)
         try:
-            showing_submission = CurrentlyShowing.objects.filter(submission__id=submission_id)
-            showing_submission[0].delete()
-        except CurrentlyShowing.DoesNotExist:
+            showing_submission = CurrentlyShowing.objects.filter(submission__id=submission_id)[0]
+            showing_submission.delete()
+        except (CurrentlyShowing.DoesNotExist, IndexError) as e:
             print("Could not remove form showing list because this submission does not exist.")
     return JsonResponse({})
 

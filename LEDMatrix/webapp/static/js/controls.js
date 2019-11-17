@@ -312,7 +312,17 @@ function adminControlHandlers(globalVars) {
     }
 
     function removeFromShowingList(event) {
-
+        console.log("removeFromShowingList called");
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("data-handle-remove-from-show-list-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                //show success and delete list element if in new submision list (from the back end and in html)
+            }
+        });
     }
 
 }

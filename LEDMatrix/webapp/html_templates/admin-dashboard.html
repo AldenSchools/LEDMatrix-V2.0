@@ -99,9 +99,9 @@
 							    <li class="list-group-item">
 
                                     
-                                    <div class="d-md-flex align-items-center">
+                                    <div class="d-flex align-items-center">
 
-                                        <div class="flex-lg-grow-1">
+                                        <div class="flex-grow-1">
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> {{ showing.submission.drawing.user.username }}</p>
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> {{ showing.submission.drawing.drawing_name }}</p>
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> {{ showing.submission.submission_datetime.date }}</p>
@@ -146,9 +146,9 @@
                               
 							    <li class="list-group-item">
                                     
-                                    <div class="d-md-flex align-items-center">
+                                    <div class="d-flex align-items-center">
 
-                                        <div class="flex-lg-grow-1">
+                                        <div class="flex-grow-1">
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> {{ new_submission.submission.drawing.user.username }}</p>
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> {{ new_submission.submission.drawing.drawing_name }}</p>
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> {{ new_submission.submission.submission_datetime.date }}</p>
@@ -193,9 +193,9 @@
                                 
 							    <li class="list-group-item">
                                     
-                                    <div class="d-md-flex align-items-center">
+                                    <div class="d-flex align-items-center">
 
-                                        <div class="flex-lg-grow-1">
+                                        <div class="flex-grow-1">
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">User:</i> {{ submission.drawing.user.username }}</p>
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Drawing name:</i> {{ submission.drawing.drawing_name }}</p>
                                             <p class="mb-0" id="sketch-name"><i class="text-muted">Submission Date:</i> {{ submission.submission_datetime.date }}</p>
@@ -241,19 +241,26 @@
                                 
 							    <li class="list-group-item">
                                     
-                                    <div class="d-md-flex align-items-center">
+                                    <div class="d-flex align-items-center">
 
-                                        <div class="flex-lg-grow-1">
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Full Name:</i> {{ user.first_name }} {{ user.last_name}}</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Username:</i> {{ user.username }}</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Joined:</i> {{user.date_joined.date }}</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submissions:</i> {{ user.number_submissions }}</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Accepted Submissions:</i> {{ user.number_accepted_submissions }}</p>
+                                        <div class="flex-grow-1">
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Full Name:</i> {{ user.0.first_name }} {{ user.0.last_name}}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Username:</i> {{ user.0.username }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Joined:</i> {{user.0.date_joined.date }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Submissions:</i> {{ user.0.userprofile.number_submissions }}</p>
+                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Accepted Submissions:</i> {{ user.0.userprofile.number_accepted_submissions }}</p>
+                                            {% if user.1 %}
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">Account Type:</i> Administrator</p>
+                                            {% else %}
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">Account Type:</i> Standard User</p>
+                                            {% endif %}
                                         </div>
                                         
+                                        {% if not user.1 %}
+                                            <button type="button" class=" btn btn-primary btn-sm">Block</button>
+                                            <button type="button" class=" btn btn-danger btn-sm">Remove User</button>
+                                        {% endif %}
                                         
-                                        <button type="button" class=" btn btn-primary btn-sm">Block</button>
-                                        <button type="button" class=" btn btn-danger btn-sm">Remove User</button>
                                     </div>
 
                                 </li>
@@ -271,30 +278,115 @@
                     <div class="container tab-pane fade" id="prefrences" role="tabpanel" aria-labelledby="prefrences-tab">
                         
                         
-                        <h3 class="text-center ">Prefrences</h3>
-					    <div class="card " >
-				
-  						    <ul class="list-group list-group-flush">
-						  	
-							    <li class="list-group-item">
-                                    
-                                    <div class="d-md-flex align-items-center">
+                        <h3 class="text-center mt-2">Prefrences</h3>
+                        
+                        <form id="matrix-settings-form" data-update-matrix-settings-url="">
+                            <div class="card " >
+                                
+                                <ul class="list-group list-group-flush">
+                                
+                                    <li class="list-group-item">
+                                        
+                                        <div class="d-flex align-items-center">
 
-                                        <div class="flex-lg-grow-1">
-                                            <p class="mb-0" id="sketch-name">Pref 1</p>
-                                            <p class="mb-0" id="sketch-name"><i class="text-muted">Some Description on the current prefrence</i></p>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0" id="sketch-name">Disable/Enable LED Matrix</p>
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">Students can still submit drawing but will stop showing all drawings in the rotation until enabled again</i></p>
+                                            </div>
+                                            
+                                            
+                                            <!--<button type="button" class=" btn btn-primary btn-sm">Toggle</button>-->
+                                            {{matrix_settings_form.led_matrix_on}}
+                                            
+                                            
+                                                  
+                                            
                                         </div>
+
+                                    </li>
+
+                                    <li class="list-group-item">
                                         
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0" id="sketch-name">Currently Showing Limit</p>
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">The maximum number of drawings you want to have in roatation at once</i></p>
+                                            </div>
+                                            
+                                            
+                                            <!--<input type="number" name="showing-limit" placeholder="Enter a limit">-->
+                                            {{ matrix_settings_form.currently_showing_limit }}
+                                        </div>
+
+                                    </li>
+
+
+                                    <li class="list-group-item">
                                         
-                                        <button type="button" class=" btn btn-primary btn-sm">Toggle</button>
-                                    </div>
+                                        <div class="d-flex align-items-center">
 
-                                </li>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0" id="sketch-name">Delay Detween Drawings (in seconds)</p>
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">The amount of time (in seconds) you want to wait before showing the next drawing in the rotation, the minimum is 3 seconds.</i></p>
+                                            </div>
+                                            
+                                            
+                                            <!--<input type="number" name="drawing-delay" placeholder="Enter a number in seconds">-->
+                                            {{ matrix_settings_form.time_between_drawings }}
+                                        </div>
+
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0" id="sketch-name">Enable/Disable Matrix Start and End Time </p>
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">The time you want the matrix to start and end the rotation each day.</i></p>
+                                            </div>
+                                            
+                                            
+                                            <div>
+                                                {{ matrix_settings_form.led_on_off_time_enabled }}
+
+                                                <p class="mb-0">Start Time</p>
+                                                {{ matrix_settings_form.led_matrix_on_time}}
+
+                                                <p class=" mt-1 mb-0">End Time</p>
+                                                {{ matrix_settings_form.led_matrix_off_time}}
+                                            </div>
+                                        </div>
+
+                                    </li>
+
+                                    <li class="list-group-item">
+                                        
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0" id="sketch-name">Default Drawing</p>
+                                                <p class="mb-0" id="sketch-name"><i class="text-muted">The default drawing that the matrix will have when it is disabled.</i></p>
+                                            </div>
+                                            
+                                            
+                                            <button type="button" class=" btn btn-primary btn-sm">Select</button>
+                                        </div>
+
+                                    </li>
 
 
-  						    </ul>
+                                </ul>
 
-					    </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary float-right">Save Changes</button>
+                        </form>
+
+                        <form id="reset-defaults-btn" data-reset-matrix-defaults-url="">
+                            <button type="submit" class=" btn btn-secondary float-right d-inline">Reset Defaults</button>
+                        </form>
                         
                     
                     </div>

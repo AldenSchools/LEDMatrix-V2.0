@@ -39,13 +39,23 @@ def admin_dash_veiw(request):
     currently_showing = CurrentlyShowing.objects.all()
     new_submissions = NewSubmission.objects.all()
     submissions_history = SubmissionsHistory.objects.all()
+    
     users = User.objects.all()
+    users_with_perms_list = []
+    for user in users:
+        users_with_perms_list.append((user, user.has_perm("users.admin_dash")))
+
+    #matrix_settings = LEDMatrixSettings.objects.get(pk=1)
+    matrix_settings_form = LEDMatrixSettingsForm()
+
 
     context = { 
         "currently_showing":currently_showing, 
         "new_submissions":new_submissions, 
         "submissions_history":submissions_history, 
-        "users":users,
+        "users":users_with_perms_list,
+        #"matrix_settings":matrix_settings,
+        "matrix_settings_form":matrix_settings_form,
     }
     return render(request, "admin-dashboard.html", context)
 

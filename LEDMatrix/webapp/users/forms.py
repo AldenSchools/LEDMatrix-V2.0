@@ -74,3 +74,18 @@ class CreateDrawingForm(forms.Form):
     widget2 = forms.TextInput(attrs={"type":"hidden", 'id':'drawing-data-cached-input' , "value":"",})
     drawing_name = forms.CharField( max_length=120,strip=True, widget=widget)
     drawing_data = forms.CharField(max_length=1792,strip=True,widget=widget2)
+
+
+class LEDMatrixSettingsForm(forms.ModelForm):
+  
+
+    class Meta:
+        model = LEDMatrixSettings
+        fields = ['led_matrix_on', 'led_on_off_time_enabled','led_matrix_on_time', 'led_matrix_off_time', 'time_between_drawings', 'currently_showing_limit' ]
+
+        widgets = {
+            "led_matrix_on": forms.CheckboxInput(attrs={'data-toggle':'toggle'}),
+            "led_on_off_time_enabled": forms.CheckboxInput(attrs={'data-toggle':'togge'}),
+            "led_matrix_on_time": forms.TimeInput(format='%I:%M %p', attrs={"type":"time"}),
+            "led_matrix_off_time": forms.TimeInput(format='%I:%M %p', attrs={"type":"time"}),
+        }
