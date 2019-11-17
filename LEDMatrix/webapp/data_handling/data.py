@@ -1,10 +1,10 @@
-import datetime
+from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pages.models import *
 from django.contrib.auth.models import User
-from users.forms import SubmitDrawingForm, SaveDrawingForm, DeleteDrawingForm, CreateDrawingForm
+from users.forms import SubmitDrawingForm, SaveDrawingForm, DeleteDrawingForm, CreateDrawingForm, LEDMatrixSettingsForm
 
 
 @login_required
@@ -49,7 +49,7 @@ def new_drawing(request):
             drawing_data = form.cleaned_data.get('drawing_data')
             if drawing_data is None or drawing_data == "":
                 drawing_data = default_drawing_data()
-            drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=drawing_data, drawing_created=datetime.datetime.now(),accepted=False ,user=request.user)
+            drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=drawing_data, drawing_created=timezone.now(),accepted=False ,user=request.user)
             drawing_id = drawing.id
 
     return JsonResponse({"new_drawing_id":drawing_id, "drawing_name":drawing_name})
@@ -88,7 +88,7 @@ def submit_drawing(request):
                     check_sub_his = SubmissionsHistory.objects.filter(drawing__id = drawing_id)[0]
                     NewSubmission.objects.create(submission=check_sub_his)
                 except (SubmissionsHistory.DoesNotExist, IndexError) as e:
-                    new_sub = SubmissionsHistory.objects.create(drawing=drawing, submission_datetime=datetime.datetime.now())
+                    new_sub = SubmissionsHistory.objects.create(drawing=drawing)
                     NewSubmission.objects.create(submission=new_sub)
                 success = True
             except Drawing.DoesNotExist:
@@ -121,21 +121,37 @@ def delete_drawing(request):
 
 @login_required
 def add_to_curr_showing_list(request):
+    success = False
+    limit_reached = False
     if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
         submission_id = request.POST.get('submission',None)
-        if(submission_id.isnumeric()):
-            try:
-                submission = SubmissionsHistory.objects.get(pk=submission_id)
-                try:
-                    try_get_curr_showin_sub = CurrentlyShowing.objects.filter(submission__id = submission_id)[0]
-                    print("already in currently showing list")
-                except (CurrentlyShowing.DoesNotExist, IndexError) as e:
-                    print("not in currently showing list moving it there now")
-                    CurrentlyShowing.objects.create(submission=submission)
-            except SubmissionsHistory.DoesNotExist:
-                print("Could not add to showing list because submission does not exist")
 
-    return JsonResponse({})
+        
+        try:
+            showing_limit = LEDMatrixSettings.objects.get(pk=1).currently_showing_limit
+        except LEDMatrixSettings.DoesNotExist:
+            LEDMatrixSettings.objects.create()
+            showing_limit = LEDMatrixSettings.objects.get(pk=1).currently_showing_limit
+
+        try:
+            submission = SubmissionsHistory.objects.get(pk=submission_id)
+            try:
+                try_get_curr_showin_sub = CurrentlyShowing.objects.filter(submission__id = submission_id)[0]
+                print("already in currently showing list")
+                success = True
+            except (CurrentlyShowing.DoesNotExist, IndexError) as e:
+                print("not in currently showing list moving it there now ")
+                if(CurrentlyShowing.objects.all().count() == showing_limit):
+                    limit_reached = True
+                    print("limit has been reached cant add more")
+                else:
+                    CurrentlyShowing.objects.create(submission=submission)
+                    success = True
+                    
+        except SubmissionsHistory.DoesNotExist:
+            print("Could not add to showing list because submission does not exist")
+
+    return JsonResponse({"success":success, "limit_reached":limit_reached})
             
 
 
@@ -164,11 +180,66 @@ def remove_from_new_subms_list(submission_id):
 
 
 def update_matrix_settings(request):
+    success = False
+    if(request.user.is_authenticated and request.user.has_perm("users.admin-dash")):
+        reset_default = request.POST.get('reset-default', None)
+        
+        if(reset_default != None):
+            set_matrix_defaults()
+            success = True
+        else:
+            form = LEDMatrixSettingsForm(request.POST)
+            if(form.is_valid()):
+                led_matrix_on = form.cleaned_data.get('led_matrix_on')
+                led_on_off_time_enabled = form.cleaned_data.get('led_on_off_time_enabled')
+                led_matrix_on_time = form.cleaned_data.get('led_matrix_on_time')
+                led_matrix_off_time = form.cleaned_data.get('led_matrix_off_time')
+                time_between_drawings = form.cleaned_data.get('time_between_drawings')
+                currently_showing_limit = form.cleaned_data.get('currently_showing_limit')
+                try:
+                    led_matrix_settings = LEDMatrixSettings.objects.get(pk=1)
+                except LEDMatrixSettings.DoesNotExist:
+                    led_matrix_settings = LEDMatrixSettings.objects.create()
+                
+                led_matrix_settings.led_matrix_on = led_matrix_on
+                led_matrix_settings.led_on_off_time_enabled = led_on_off_time_enabled
+                led_matrix_settings.led_matrix_on_time = led_matrix_on_time
+                led_matrix_settings.led_matrix_off_time = led_matrix_off_time
+                led_matrix_settings.time_between_drawings = time_between_drawings
+                led_matrix_settings.currently_showing_limit = currently_showing_limit
+                led_matrix_settings.save()
+                success = True
 
-    return JsonResponse({})
+            
 
-def default_matrix_settings(request):
-    return JsonResponse({})
+    return JsonResponse({"success":success})
+
+def set_matrix_defaults():
+    try:
+        led_matrix_settings = LEDMatrixSettings.objects.get(pk=1)
+        led_matrix_settings.led_matrix_on = True
+        led_matrix_settings.led_on_off_time_enabled = False
+        led_matrix_settings.led_matrix_on_time = None
+        led_matrix_settings.led_matrix_off_time = None
+        led_matrix_settings.time_between_drawings = 10
+        led_matrix_settings.currently_showing_limit = 10
+    except LEDMatrixSettings.DoesNotExist:
+        led_matrix_settings = LEDMatrixSettings.objects.create()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ##### HELPER FUNCTIONS #####

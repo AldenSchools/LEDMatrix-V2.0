@@ -266,6 +266,9 @@ function adminControlHandlers(globalVars) {
     var newSubAddToShowListForms = $(".send-to-showing-list-new-subs");
     var subHisAddToShowListForms = $(".send-to-showing-list-sub-his");
 
+    var matrixSettingsForm = $("#matrix-settings-form");
+    var resetDefaultsForm = $("#reset-defaults-form");
+
     currShowingGetDataForms.submit(getDrawingData);
     newSubGetDataForms.submit(getDrawingData);
     subHisGetDataForms.submit(getDrawingData);
@@ -273,7 +276,10 @@ function adminControlHandlers(globalVars) {
     newSubAddToShowListForms.submit(addToShowingList);
     subHisAddToShowListForms.submit(addToShowingList);
 
-    currShowingRemoveFroms.submit(removeFromShowingList)
+    currShowingRemoveFroms.submit(removeFromShowingList);
+
+    matrixSettingsForm.submit(updateMatrixSettings);
+    resetDefaultsForm.submit(updateMatrixSettings);
 
     function getDrawingData(event) {
         console.log("GetDrawingData called");
@@ -306,6 +312,7 @@ function adminControlHandlers(globalVars) {
             data: $(this).serialize(),
             dataType: 'json',
             success: function(data) {
+                console.log(data);
                 //show success and delete list element if in new submision list (from the back end and in html)
             }
         });
@@ -320,9 +327,29 @@ function adminControlHandlers(globalVars) {
             data: $(this).serialize(),
             dataType: 'json',
             success: function(data) {
+                console.log(data);
                 //show success and delete list element if in new submision list (from the back end and in html)
             }
         });
+    }
+
+    function updateMatrixSettings(event) {
+
+
+        console.log("updateMatrixSettings called");
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("data-update-matrix-settings-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                //show success and delete list element if in new submision list (from the back end and in html)
+                console.log(data);
+            }
+        });
+
+
     }
 
 

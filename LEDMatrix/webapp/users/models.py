@@ -10,7 +10,7 @@ class UserProfile(models.Model):
    
 class LEDMatrixSettings(models.Model):
     led_matrix_on = models.BooleanField(default=True)
-    led_on_off_time_enabled = models.BooleanField(default=True)
+    led_on_off_time_enabled = models.BooleanField(default=False)
     led_matrix_on_time = models.TimeField(default=timezone.now(), null=True, blank=True)
     led_matrix_off_time = models.TimeField(default=timezone.now(), null=True, blank=True)
     time_between_drawings = models.PositiveIntegerField(default=10)

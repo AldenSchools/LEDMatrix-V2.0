@@ -280,7 +280,8 @@
                         
                         <h3 class="text-center mt-2">Prefrences</h3>
                         
-                        <form id="matrix-settings-form" data-update-matrix-settings-url="{% url "update_matrix_settings" %}">
+                        <form method="POST" id="matrix-settings-form" data-update-matrix-settings-url="{% url "update_matrix_settings" %}">
+                            {% csrf_token %}
                             <div class="card " >
                                 
                                 <ul class="list-group list-group-flush">
@@ -297,10 +298,7 @@
                                             
                                             <!--<button type="button" class=" btn btn-primary btn-sm">Toggle</button>-->
                                             {{matrix_settings_form.led_matrix_on}}
-                                            
-                                            
-                                                  
-                                            
+
                                         </div>
 
                                     </li>
@@ -385,7 +383,9 @@
                             <button type="submit" class="btn btn-primary float-right">Save Changes</button>
                         </form>
 
-                        <form id="reset-defaults-btn" data-reset-matrix-defaults-url="{% url "default_matrix_settings" %}">
+                        <form method="POST" id="reset-defaults-form" data-update-matrix-settings-url="{% url "update_matrix_settings" %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="reset-default" value="True">
                             <button type="submit" class=" btn btn-secondary float-right d-inline">Reset Defaults</button>
                         </form>
                         

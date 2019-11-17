@@ -45,7 +45,11 @@ def admin_dash_veiw(request):
     for user in users:
         users_with_perms_list.append((user, user.has_perm("users.admin_dash")))
 
-    #matrix_settings = LEDMatrixSettings.objects.get(pk=1)
+    try:
+        matrix_settings = LEDMatrixSettings.objects.get(pk=1)
+    except LEDMatrixSettings.DoesNotExist:
+        matrix_settings = LEDMatrixSettings.objects.create()
+
     matrix_settings_form = LEDMatrixSettingsForm()
 
 
@@ -54,7 +58,7 @@ def admin_dash_veiw(request):
         "new_submissions":new_submissions, 
         "submissions_history":submissions_history, 
         "users":users_with_perms_list,
-        #"matrix_settings":matrix_settings,
+        "matrix_settings":matrix_settings,
         "matrix_settings_form":matrix_settings_form,
     }
     return render(request, "admin-dashboard.html", context)
