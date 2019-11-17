@@ -325,4 +325,15 @@ function adminControlHandlers(globalVars) {
         });
     }
 
+
+    $("#id_led_on_off_time_enabled").change(checkBoxChange);
+
+    function checkBoxChange(event) {
+        if ($(this).is(':checked')) {
+            $("#start-end-time-inputs-div").removeClass("d-none");
+        } else {
+            $("#start-end-time-inputs-div").addClass("d-none");
+        }
+    }
+
 }

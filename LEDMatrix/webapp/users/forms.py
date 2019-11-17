@@ -85,7 +85,7 @@ class LEDMatrixSettingsForm(forms.ModelForm):
 
         widgets = {
             "led_matrix_on": forms.CheckboxInput(attrs={'data-toggle':'toggle'}),
-            "led_on_off_time_enabled": forms.CheckboxInput(attrs={'data-toggle':'togge'}),
+            "led_on_off_time_enabled": forms.CheckboxInput(attrs={'data-toggle':'toggle'}),
             "led_matrix_on_time": forms.TimeInput(format='%I:%M %p', attrs={"type":"time"}),
             "led_matrix_off_time": forms.TimeInput(format='%I:%M %p', attrs={"type":"time"}),
         }

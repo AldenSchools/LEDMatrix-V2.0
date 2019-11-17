@@ -163,6 +163,13 @@ def remove_from_new_subms_list(submission_id):
     return success
 
 
+def update_matrix_settings(request):
+
+    return JsonResponse({})
+
+def default_matrix_settings(request):
+    return JsonResponse({})
+
 
 ##### HELPER FUNCTIONS #####
 def fetch_drawing_data(drawing_id):

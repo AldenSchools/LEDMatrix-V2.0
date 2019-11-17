@@ -280,7 +280,7 @@
                         
                         <h3 class="text-center mt-2">Prefrences</h3>
                         
-                        <form id="matrix-settings-form" data-update-matrix-settings-url="">
+                        <form id="matrix-settings-form" data-update-matrix-settings-url="{% url "update_matrix_settings" %}">
                             <div class="card " >
                                 
                                 <ul class="list-group list-group-flush">
@@ -350,12 +350,13 @@
                                             
                                             <div>
                                                 {{ matrix_settings_form.led_on_off_time_enabled }}
+                                                <div class="d-none" id="start-end-time-inputs-div">
+                                                    <p class="mb-0">Start Time</p>
+                                                    {{ matrix_settings_form.led_matrix_on_time}}
 
-                                                <p class="mb-0">Start Time</p>
-                                                {{ matrix_settings_form.led_matrix_on_time}}
-
-                                                <p class=" mt-1 mb-0">End Time</p>
-                                                {{ matrix_settings_form.led_matrix_off_time}}
+                                                    <p class=" mt-1 mb-0">End Time</p>
+                                                    {{ matrix_settings_form.led_matrix_off_time}}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -384,7 +385,7 @@
                             <button type="submit" class="btn btn-primary float-right">Save Changes</button>
                         </form>
 
-                        <form id="reset-defaults-btn" data-reset-matrix-defaults-url="">
+                        <form id="reset-defaults-btn" data-reset-matrix-defaults-url="{% url "default_matrix_settings" %}">
                             <button type="submit" class=" btn btn-secondary float-right d-inline">Reset Defaults</button>
                         </form>
                         
