@@ -9,14 +9,17 @@
  * */
 
 
-//The drawing context, used to draw on a canvas
-
+//
+"use strict"
 
 
 /**
- * Waits till the page to loads 
+ * Waits till the page to load 
+ * this is important because we dont want to manipulate 
+ * a html element if it does not yet exist.
+ * 
  * Some common ways to do this are: 
- * 		$(function() { ... }); 
+ * 		$(function() { ... });   -- what is done here
  * 	or
  * 		$(document).ready(function() { ... });
  *  or
@@ -24,12 +27,25 @@
  *      ...
  *      someFunctionName(jQuery){ ... }
  * 		
+ * The function below is the entry point of our program think of it as the main function.
+ * It defines some configuration variables such as debug some others you can change depending your needs.
+ * Also, this function stores all global variables that you might need. If you need to add a custom global 
+ * variable add it to the 'globalVars' variable it is a javascript object (think of it as a python dictonary or map).
+ * If you create a function that needs to use one of these global variables then you must call it in this main function 
+ * or inside another function that was called in this main function then you can pass it the 'globalVars' variable. 
+ * 
+ * 
+ * The reason for this design is because creating true global variables in javascript is bad practice as it can be overritten 
+ * from another file or you could overwrite some other variable with the same name as the one you created. The method that I chose 
+ * to use is called a javascript "closure" and it is the recommended way of handling variables you want any oject/function to access.
+ * 
+ * 
+ * 
  */
-"use strict"
 $(function() {
 
 
-
+    //The variables below
     var _debug = false;
 
     var canvas = $("#led-matrix-grid");
@@ -45,7 +61,6 @@ $(function() {
     var colorPickerGlobalVars = initColorPickerGlobals(defaultColor);
     var gridGlobalVars = initGridGlobals(canvas, gridWidth, gridHeight, boxesPerRow, boxesPerCol, gridLineWidth, defaultColor);
     var controlGlobalVars = initControlGlobals();
-
 
     // if (typeof initColorPickerGlobals === "function") 
     // if (typeof initGridGlobals === "function") 
@@ -107,6 +122,15 @@ $(function() {
 
 
 /********  EVENT HANDLERS *******/
+
+/**
+ * Sets up all event event handlers 
+ * 
+ * @param {Object} globalVars All global variables 
+ *   - 'globalVars.colorPickerVars':  accesses all global variables/functions assosiated with the color picker
+ *   - 'globalVars.gridVars':         accesses all global variables/functions assosiated with the matrix grid
+ *   - 'globalVars.controlVars':      accesses all global variables/functions assosiated with website controls
+ */
 function setupEventHandlers(globalVars) {
 
     mouseOnGridEventHandler(globalVars);
@@ -117,6 +141,16 @@ function setupEventHandlers(globalVars) {
 }
 
 
+
+/**
+ * This function handles the event where the window is resized
+ * when that happend we need to recalculate the canvas dimentions
+ * 
+ * @param {Object} globalVars All global variables 
+ *   - 'globalVars.colorPickerVars':  accesses all global variables/functions assosiated with the color picker
+ *   - 'globalVars.gridVars':         accesses all global variables/functions assosiated with the matrix grid
+ *   - 'globalVars.controlVars':      accesses all global variables/functions assosiated with website controls
+ */
 function resizedWindowHandler(globalVars) {
 
     var gridVars = globalVars.gridVars;
@@ -138,6 +172,20 @@ function resizedWindowHandler(globalVars) {
 
 
 
+
+/*************OTHER STUFF ********/
+
+/**
+ * Provides a easy way to display error messages and other useful information 
+ * to the user. It just activates an element already in the html with custom text.
+ * Call this function whenever you need display some information to the user.
+ * 
+ * @param {String} modalTitle The title of the message 
+ * @param {String} modalText  A short description of the message
+ * @param {Boolean} showOkBtn Weather or not to also display an OK button (default is Close and OK buttons together)
+ * 
+ *  
+ */
 function displayInfoModal(modalTitle, modalText, showOkBtn) {
     $("#info-modal-title").text(modalTitle);
     $("#modal-info-text").text(modalText);
@@ -148,6 +196,12 @@ function displayInfoModal(modalTitle, modalText, showOkBtn) {
     $("#info-modal").modal('show');
 }
 
+
+/**
+ * Handles the event where a option on the admin options list is selected.
+ * All it does is that it changes which option is highlighted/active(the blue highlight around a box) depending on what
+ * option the admin clicked.
+ */
 function adminOptionsCurrentlyActive() {
     var adminOptionsList = $("#admin-options-list");
     if (adminOptionsList.length === 0) return;

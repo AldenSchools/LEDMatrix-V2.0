@@ -2,7 +2,23 @@ $(function() {
 
 });
 
-
+/**
+ * Sets up all the global variables/functions that any pice of code might need in relation to the grid/matrix.
+ * The way that I have set this up is making this function act like a class with getters and setters and some other
+ * useful function/methods that you can use when you are dealing with anything regarding the grid/matrix.
+ * 
+ * @param {Object} canvas The actual canvas element on the html  
+ * @param {Number} suggestedGridWidth How wide you would like the grid/matrix to appear, it will try to make it that way if it can 
+ * @param {Number} suggestedGridHeight How tall you want the grid/matrix to appear (currently it takes the value of the grid width so you can put anything it wont affect anything ) 
+ * @param {Number} boxesPerRow Number of boxes you want in each row (for our purposes its 16)
+ * @param {Number} boxesPerCol The number of boxes you want in each coloumn (for our purposes its 16)
+ * @param {Number} gridLineWidth The thickness you want the little black line that seperates each box to be (you can change its color too!)    
+ * @param {String} initColor  The initial color that you want each box to have when you render the canvas on the page. ex "#AABBCC"
+ * 
+ * @return {Object} Useful function/methods that you can use when you are dealing with anything regarding the grid/matrix.
+ * 
+ *  
+ */
 function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesPerRow, boxesPerCol, gridLineWidth, initColor) {
     if (canvas.length === 0) return undefined;
 
@@ -45,6 +61,12 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
 
     function getGridLineWidth() { return gridLineWidth; }
 
+    /**
+     * Gets all of the colors currently in the grid and puts it in a really long string
+     * 
+     * @return {String} A string containing all RGB values for all LEDs in the matrix
+     *  - the string looks something like '#FFFFFF#001122#ABCDEF ...'
+     */
     function getGridDataAsString() {
         var dataAsString = "";
         for (var row = 0; row < grid.length; row++) {
@@ -57,6 +79,16 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
     }
 
 
+    /**
+     * 
+     * Call this function whenever you want to change the color of a specific box/LED in the 
+     * matrix.
+     * 
+     * @param {Number} row The row number the specific box is in 
+     * @param {Number} col  The column number the specific box is in
+     * @param {String} newColor The color you want to change the box to, ex. '#ABCDEF'
+     *
+     */
     function setGridColor(row, col, newColor) {
         if (grid[row][col].color === newColor) return;
 
@@ -69,6 +101,13 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
 
     }
 
+    /**
+     * 
+     * Covers all boxes/LEDs with the color given 
+     * 
+     * @param {String} color The color you want to change all boxes/LEDs to, ex. '#ABCDEF'
+     *
+     */
     function fillGrid(color) {
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
@@ -77,6 +116,15 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
         }
     }
 
+    /**
+     * 
+     * Loads specific colors to each box/LED 
+     * 
+     * @param {Array} drawingData This is a 2D array containing all of the colors for each box
+     *  -each row and column corespond to a row and column in the grid/matrix. a color is of the form 
+     *  '#AABBCC' to represent any RGB value.
+     *
+     */
     function loadDrawingToGrid(drawingData) {
         for (var row = 0; row < drawingData.length; row++) {
             for (var col = 0; col < drawingData[row].length; col++) {
@@ -85,6 +133,11 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
         }
     }
 
+    /**
+     * 
+     * Redraws the canvas on the page and recalculaes the canvas positon on the page. 
+     * This function is usually called when the size of the window has changed.
+     */
     function updateGrid() {
 
         gridWidth = (suggestedGridWidth === undefined) ? 800 : suggestedGridWidth;
@@ -104,6 +157,12 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
 
     }
 
+    /**
+     * 
+     * Recalculates the grid dimentions does not alter the canvas on the page but 
+     * changes the values in the grid data structure used to render the canvas
+     * 
+     */
     function calculateGridDims() {
         for (var row = 0; row < grid.length; row++) {
             for (var col = 0; col < grid[row].length; col++) {
@@ -162,17 +221,17 @@ function initGridGlobals(canvas, suggestedGridWidth, suggestedGridHeight, boxesP
 
 
 /**
- * Creates/Draws a 2d grid on the canvas that is visible on the page
+ * Draws a 2d grid on the canvas and displays it on the page for the user to see
  * 
- * @param {Number} totalGridWidth The total witdth of the grid/canvas
- * @param {Number} totalGridHeight The total height of the grid/canvas
- * @param {Number} boxesPerRow The number of boxes/rectangles you want on each row
- * @param {Number} boxesPerCol The number of boxes/rectangles you want on each column
+ * @param {Object} context The drawing context, used to draw on a canvas (like a paint brush)
+ * @param {Number} gridWidth How wide the grid/matrix is
+ * @param {Number} gridHeight How tall the grid/matrix is
+ * @param {Number} boxWidth How wide each individual box is
+ * @param {Number} boxHeight How high each individual box is
+ * @param {Number} gridLineWidth How thick the little black line that seperates each box is
  */
 function drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineWidth) {
     context.clearRect(0, 0, gridWidth, gridHeight)
-
-    //used to calculate the width and height of each box in the grid given the total height and with of our grid. 
 
     /*creates 'boxesPerRow + 1' vertical lines each having a witdth of boxWidth,
       each iteration we move by one 'boxWidth' unit to the right.*/
@@ -202,14 +261,12 @@ function drawGrid(context, gridWidth, gridHeight, boxWidth, boxHeight, gridLineW
 
 
 /**
- * Creates and initializes an array of arrays with each element  
+ * Creates and initializes a 2D array data structure to store values related to the canvas  
  * consiting of the beggining x and y mouse cordinates for each box and its color.
  * 
- * @param {Number} rows The numner of rows for our 2d array.
- * @param {Number} cols The numner of columns for our 2d array.
- * @param {Number} boxWidth The width each box occupies, used to calculating the mouse x position relative to a canvas.
- * @param {Number} boxHeight The width each box occupies, used to calculating the mouse x position relative to a canvas.
- * @returns {Array} A 2D array each element consiting of the beggining x and y mouse cordinates for each box and its color.
+ * @param {Number} numRows The numner of rows for our 2d array.
+ * @param {Number} numCols The numner of columns for our 2d array.
+ * @param {String} initColor The inital color that each canvas starts with. ex. "#AABBCC"
  */
 function createGridDataStruct(numRows, numCols, initColor) {
 
@@ -238,7 +295,14 @@ function createGridDataStruct(numRows, numCols, initColor) {
 
 
 
-
+/**
+ * This function handles the event where the mouse is on the canvas/grid/matrix
+ * 
+ * @param {Object} globalVars All global variables 
+ *   - 'globalVars.colorPickerVars':  accesses all global variables/functions assosiated with the color picker
+ *   - 'globalVars.gridVars':         accesses all global variables/functions assosiated with the matrix grid
+ *   - 'globalVars.controlVars':      accesses all global variables/functions assosiated with website controls
+ */
 function mouseOnGridEventHandler(globalVars) {
     if (globalVars === undefined || globalVars.gridVars === undefined || globalVars.colorPickerVars === undefined) return;
 
@@ -266,6 +330,7 @@ function mouseOnGridEventHandler(globalVars) {
 
 
 
+    /* Handles when you initally click on the canvas */
     function mouseDownOnGrid(event) {
         isMouseDown = true;
 
@@ -278,7 +343,7 @@ function mouseOnGridEventHandler(globalVars) {
     }
 
 
-
+    /* Handles when you move your mouse on or over the canvas */
     function mouseMoveOnGrid(event) {
 
 
@@ -293,6 +358,7 @@ function mouseOnGridEventHandler(globalVars) {
         updateExtraMouseDebugInfo();
     }
 
+    /* Handles when you release a mouse click on the canvas */
     function mouseUpOnGrid(event) {
         if (isMouseDown) isMouseDown = false;
         lastBoxStartX = -1;
@@ -302,6 +368,7 @@ function mouseOnGridEventHandler(globalVars) {
 
     }
 
+    /* Handles when you move youe mouse out of the canvas view */
     function mouseOutOfGrid(event) {
         if (debug) {
             $('#debug-mouseX-canvas').text("(Canvas)Mouse X: n/a");
@@ -316,6 +383,7 @@ function mouseOnGridEventHandler(globalVars) {
     }
 
 
+    /* Colors the canvas on that specific area where the mouse is */
     function colorCanvasOnMousePos() {
         var grid = globalVars.gridVars.getGrid();
 
@@ -351,7 +419,7 @@ function mouseOnGridEventHandler(globalVars) {
 
     }
 
-
+    /* Debug stuff */
     function updateExtraMouseDebugInfo() {
         if (debug) {
             $('#debug-mouseX-canvas').text("(Canvas)Mouse X: " + mouseX + "px");
