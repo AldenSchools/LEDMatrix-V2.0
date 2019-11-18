@@ -28,6 +28,20 @@
   						</div>
 
   						<ul class="list-group list-group-flush" id="saved-drawings-list">
+
+						  <li class="list-group-item d-none" id="template-list-item">
+						  		<div class="d-flex align-items-center">
+								  	
+                                	<p class="flex-grow-1 drawing-name"></p>
+									
+									<form method="GET" class="load-drawing-form" data-handle-fetch-drawing-url="{% url "fetch_drawing" %}" >
+										{% csrf_token %}
+										<input type="hidden" class="form-control" id="drawing-id" name="drawing" value="">
+                                		<button type="submit" class="load-btn d-flex align-items-center justify-content-center btn btn-primary btn-sm">Load</button>
+                                	</form>
+
+                            	</div>
+							</li>
 						  	
 
 							{% for drawing in drawings %}

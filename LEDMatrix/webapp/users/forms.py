@@ -73,7 +73,7 @@ class CreateDrawingForm(forms.Form):
     widget = forms.TextInput(attrs={"class":"form-control", 'id':'new-drawing-name-input' , "autocomplete":"off","placeholder":"Enter new drawing name here" })
     widget2 = forms.TextInput(attrs={"type":"hidden", 'id':'drawing-data-cached-input' , "value":"",})
     drawing_name = forms.CharField( max_length=120,strip=True, widget=widget)
-    drawing_data = forms.CharField(max_length=1792,strip=True,widget=widget2)
+    drawing_data = forms.CharField(max_length=1792,strip=True,widget=widget2, required=False)
 
 
 class LEDMatrixSettingsForm(forms.ModelForm):

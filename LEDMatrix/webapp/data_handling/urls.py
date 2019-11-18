@@ -16,5 +16,5 @@ urlpatterns = [
     
 ]
 
-# I put this in here because this file (urls.py) django only runs it once and we only want to start our tasks once
-start_tasks()
+# I put this in this file (urls.py) because django only runs it once and we only want to start our tasks once
+#start_tasks()

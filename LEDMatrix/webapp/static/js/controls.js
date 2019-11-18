@@ -82,6 +82,16 @@ function toolboxSelectionHandler(globalVars) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
 function drawingControlsFormHandler(globalVars) {
     console.log("drawingControlHandler");
 
@@ -206,10 +216,12 @@ function drawingControlsFormHandler(globalVars) {
 
 
 
-                var newListElem = $($(".drawing-list-item").get(0)).clone();
-                console.log(newListElem);
+                var newListElem = $($("#template-list-item")).clone();
+                newListElem.removeClass("d-none");
+                newListElem.attr("id", "");
                 newListElem.find("#drawing-id").attr("value", data.new_drawing_id);
                 newListElem.find(".drawing-name").text(data.drawing_name);
+                $('#saved-drawings-list').find("li.active").removeClass('active');
                 newListElem.addClass("active");
 
                 $('#new-drawing-modal').modal('hide');
@@ -220,6 +232,8 @@ function drawingControlsFormHandler(globalVars) {
                 $("#delete-drawing-id-input").attr("value", data.new_drawing_id);
 
                 $("#drawing-data-cached-input").attr("value", "");
+
+                newListElem.find("form").submit(loadDrawing);
 
 
             }
@@ -257,29 +271,39 @@ function drawingControlsFormHandler(globalVars) {
 
 }
 
+
+
+
+
+
+
+
+
+
+
 function adminControlHandlers(globalVars) {
     var currShowingGetDataForms = $(".get-user-drawing-form-curr-showing");
     var newSubGetDataForms = $(".get-user-drawing-form-new-subs");
     var subHisGetDataForms = $(".get-user-drawing-form-sub-his");
-
-    var currShowingRemoveFroms = $(".remove-from-showing-list");
-    var newSubAddToShowListForms = $(".send-to-showing-list-new-subs");
-    var subHisAddToShowListForms = $(".send-to-showing-list-sub-his");
-
-    var matrixSettingsForm = $("#matrix-settings-form");
-    var resetDefaultsForm = $("#reset-defaults-form");
-
     currShowingGetDataForms.submit(getDrawingData);
     newSubGetDataForms.submit(getDrawingData);
     subHisGetDataForms.submit(getDrawingData);
 
+    var currShowingRemoveFroms = $(".remove-from-showing-list");
+    var newSubAddToShowListForms = $(".send-to-showing-list-new-subs");
+    var subHisAddToShowListForms = $(".send-to-showing-list-sub-his");
+    currShowingRemoveFroms.submit(removeFromShowingList);
     newSubAddToShowListForms.submit(addToShowingList);
     subHisAddToShowListForms.submit(addToShowingList);
 
-    currShowingRemoveFroms.submit(removeFromShowingList);
-
+    var matrixSettingsForm = $("#matrix-settings-form");
+    var resetDefaultsForm = $("#reset-defaults-form");
     matrixSettingsForm.submit(updateMatrixSettings);
     resetDefaultsForm.submit(updateMatrixSettings);
+
+
+
+
 
     function getDrawingData(event) {
         console.log("GetDrawingData called");
@@ -291,6 +315,7 @@ function adminControlHandlers(globalVars) {
             dataType: 'json',
             success: function(data) {
                 //delete list element if in new submision list (from the back end only not html wait till refresh to show updated list on html)
+                //Bug Here where it sends data correctly but does not size correctly untill you manually resize the window
                 console.log(data);
                 $('#matrix-preview-modal').modal('show');
 
@@ -314,6 +339,8 @@ function adminControlHandlers(globalVars) {
             success: function(data) {
                 console.log(data);
                 //show success and delete list element if in new submision list (from the back end and in html)
+                //show a confirmation maybe, would it be too annoying if you have to add a lot
+                //definitly show a notice when the limit has been reached 
             }
         });
     }
@@ -329,6 +356,7 @@ function adminControlHandlers(globalVars) {
             success: function(data) {
                 console.log(data);
                 //show success and delete list element if in new submision list (from the back end and in html)
+                //show a confirmation maybe, would it be too annoying if you have to remove a lot
             }
         });
     }
@@ -345,6 +373,8 @@ function adminControlHandlers(globalVars) {
             dataType: 'json',
             success: function(data) {
                 //show success and delete list element if in new submision list (from the back end and in html)
+                //show a confirmation and update values on the html
+                //show a confirmation if the delay between drawings is too short min is 3 secs, letting the user know that it was set to the minimum
                 console.log(data);
             }
         });

@@ -47,10 +47,14 @@ def new_drawing(request):
         if(form.is_valid()):
             drawing_name = form.cleaned_data.get('drawing_name')
             drawing_data = form.cleaned_data.get('drawing_data')
+            print(drawing_name)
+            print(drawing_data)
             if drawing_data is None or drawing_data == "":
                 drawing_data = default_drawing_data()
-            drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=drawing_data, drawing_created=timezone.now(),accepted=False ,user=request.user)
+            drawing = Drawing.objects.create(drawing_name=drawing_name, drawing_data=drawing_data ,user=request.user)
             drawing_id = drawing.id
+        else:
+            print("form is not valid")
 
     return JsonResponse({"new_drawing_id":drawing_id, "drawing_name":drawing_name})
 
@@ -90,6 +94,9 @@ def submit_drawing(request):
                 except (SubmissionsHistory.DoesNotExist, IndexError) as e:
                     new_sub = SubmissionsHistory.objects.create(drawing=drawing)
                     NewSubmission.objects.create(submission=new_sub)
+                user_profile = drawing.user.userprofile
+                user_profile.number_submissions = user_profile.number_submissions + 1
+                user_profile.save()
                 success = True
             except Drawing.DoesNotExist:
                 print("Could not submit because drawing does not exist")
@@ -146,6 +153,9 @@ def add_to_curr_showing_list(request):
                     print("limit has been reached cant add more")
                 else:
                     CurrentlyShowing.objects.create(submission=submission)
+                    user_profile = submission.drawing.user.userprofile
+                    user_profile.number_accepted_submissions = user_profile.number_accepted_submissions +1
+                    user_profile.save()
                     success = True
                     
         except SubmissionsHistory.DoesNotExist:
@@ -181,6 +191,7 @@ def remove_from_new_subms_list(submission_id):
 
 def update_matrix_settings(request):
     success = False
+    drawing_delay_too_short = False
     if(request.user.is_authenticated and request.user.has_perm("users.admin-dash")):
         reset_default = request.POST.get('reset-default', None)
         
@@ -205,6 +216,9 @@ def update_matrix_settings(request):
                 led_matrix_settings.led_on_off_time_enabled = led_on_off_time_enabled
                 led_matrix_settings.led_matrix_on_time = led_matrix_on_time
                 led_matrix_settings.led_matrix_off_time = led_matrix_off_time
+                if(time_between_drawings < 3):
+                    time_between_drawings = 3
+                    drawing_delay_too_short = True
                 led_matrix_settings.time_between_drawings = time_between_drawings
                 led_matrix_settings.currently_showing_limit = currently_showing_limit
                 led_matrix_settings.save()
@@ -212,7 +226,7 @@ def update_matrix_settings(request):
 
             
 
-    return JsonResponse({"success":success})
+    return JsonResponse({"success":success, "drawing_delay_too_short":drawing_delay_too_short})
 
 def set_matrix_defaults():
     try:
