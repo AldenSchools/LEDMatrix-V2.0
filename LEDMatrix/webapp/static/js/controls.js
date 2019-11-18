@@ -2,11 +2,24 @@ $(function() {
 
 });
 
+
+/**
+ * Not implemented because there are no variables that other components need to use form this 
+ *  
+ *  
+ */
 function initControlGlobals() {
 
 }
 
-
+/**
+ * This function sets up the toolbox controls for the canvas/grid on the page.
+ * 
+ * @param {Object} globalVars All global variables 
+ *   - 'globalVars.colorPickerVars':  accesses all global variables/functions assosiated with the color picker
+ *   - 'globalVars.gridVars':         accesses all global variables/functions assosiated with the matrix grid
+ *   - 'globalVars.controlVars':      accesses all global variables/functions assosiated with website controls
+ */
 function toolboxSelectionHandler(globalVars) {
 
     if (globalVars === undefined || globalVars.gridVars === undefined || globalVars.colorPickerVars === undefined) return;
@@ -40,13 +53,14 @@ function toolboxSelectionHandler(globalVars) {
 
     }
 
-
+    /* updates the mode of the color picker to color*/
     function colorMode(event) {
         globalVars.colorPickerVars.setMode("color");
 
         updateNewActiveElem(color);
     }
 
+    /* Colors all boxes, a blank box is a box where the color is set to the default color*/
     function colorAllBlankMode(event) {
         var grid = gridVars.getGrid();
         for (var row = 0; row < grid.length; row++) {
@@ -56,20 +70,24 @@ function toolboxSelectionHandler(globalVars) {
         }
     }
 
+    /* Colors all boxes to the current color in the color picker*/
     function colorAllMode(event) {
         globalVars.gridVars.fillGrid(colorPickerVars.getColorPicker().color.hexString);
     }
 
+    /* A future feature where you can do simle matrix manipulation such as rotating 180,360 etc.. */
     function addEfects(event) {
         console.log("add effects clicked function not implemented");
     }
 
+    /* Sets the color to the default color to act as an eraser */
     function eraserMode(event) {
         colorPickerVars.setMode("eraser");
 
         updateNewActiveElem(eraser);
     }
 
+    /* Clears the grid*/
     function clearGrid(event) {
         globalVars.gridVars.fillGrid(colorPickerVars.getDefaultColor());
 
@@ -91,8 +109,16 @@ function toolboxSelectionHandler(globalVars) {
 
 
 
-
-function drawingControlsFormHandler(globalVars) {
+/**
+ * handles all form POST and GET rquest related to a drawingwhen a user is logged in. Things such as getting a drawing form the database, 
+ * saving a drawing, or creating a new one.
+ * 
+ * @param {Object} globalVars All global variables 
+ *   - 'globalVars.colorPickerVars':  accesses all global variables/functions assosiated with the color picker
+ *   - 'globalVars.gridVars':         accesses all global variables/functions assosiated with the matrix grid
+ *   - 'globalVars.controlVars':      accesses all global variables/functions assosiated with website controls
+ */
+function drawingFormControlHandler(globalVars) {
     console.log("drawingControlHandler");
 
     var loadForms = $(".load-drawing-form");
@@ -109,7 +135,7 @@ function drawingControlsFormHandler(globalVars) {
     submitDrawingForm.submit(submitDrawingForReview);
 
 
-
+    /* get the saved selected drawing and shows it on the canvas */
     function loadDrawing(event) {
         console.log("loadDrawing called");
         event.preventDefault();
@@ -135,7 +161,7 @@ function drawingControlsFormHandler(globalVars) {
 
 
 
-
+    /* Saves the current drawing to the database  */
     function saveCurrentDrawing(event) {
         console.log("save drawing called");
         event.preventDefault();
@@ -167,7 +193,7 @@ function drawingControlsFormHandler(globalVars) {
 
 
 
-
+    /* Deletes a drawing from the database */
     function deleteCurrentDrawing(event) {
         console.log("delete form submitted");
         event.preventDefault();
@@ -198,7 +224,7 @@ function drawingControlsFormHandler(globalVars) {
     }
 
 
-
+    /* Creates a new drawing with a name to load later*/
     function createNewDrawing(event) {
         event.preventDefault();
         console.log("create request ");
@@ -244,7 +270,7 @@ function drawingControlsFormHandler(globalVars) {
 
 
 
-
+    /* Submits drawing to admin dashboard where the admin chooses which drawing to send to the led matrix*/
     function submitDrawingForReview(event) {
         event.preventDefault();
         var dataAsString = globalVars.gridVars.getGridDataAsString();
@@ -282,8 +308,17 @@ function drawingControlsFormHandler(globalVars) {
 
 
 
-
-function adminControlHandlers(globalVars) {
+/**
+ * Handles all form POST and GET request related to the admin dashboard. Things such as moving/removing a submission to the currently showing on matrix,
+ * viewing drawings, and updating matrix settings.
+ * 
+ * 
+ * @param {Object} globalVars All global variables 
+ *   - 'globalVars.colorPickerVars':  accesses all global variables/functions assosiated with the color picker
+ *   - 'globalVars.gridVars':         accesses all global variables/functions assosiated with the matrix grid
+ *   - 'globalVars.controlVars':      accesses all global variables/functions assosiated with website controls
+ */
+function adminFormControlHandler(globalVars) {
     var currShowingGetDataForms = $(".get-user-drawing-form-curr-showing");
     var newSubGetDataForms = $(".get-user-drawing-form-new-subs");
     var subHisGetDataForms = $(".get-user-drawing-form-sub-his");
@@ -306,7 +341,7 @@ function adminControlHandlers(globalVars) {
 
 
 
-
+    /* Gets the drawing data for any given drawing givien its drawing id*/
     function getDrawingData(event) {
         console.log("GetDrawingData called");
         event.preventDefault();
@@ -329,7 +364,7 @@ function adminControlHandlers(globalVars) {
         });
     }
 
-
+    /* Adds a submission to the currently showing list */
     function addToShowingList(event) {
         console.log("addToShowingList called");
         event.preventDefault();
@@ -347,6 +382,7 @@ function adminControlHandlers(globalVars) {
         });
     }
 
+    /* Removes a submissionfrom the currently showing list */
     function removeFromShowingList(event) {
         console.log("removeFromShowingList called");
         event.preventDefault();
@@ -363,9 +399,9 @@ function adminControlHandlers(globalVars) {
         });
     }
 
+
+    /* Called whenever the user saves a new setting for the matrix */
     function updateMatrixSettings(event) {
-
-
         console.log("updateMatrixSettings called");
         event.preventDefault();
         $.ajax({

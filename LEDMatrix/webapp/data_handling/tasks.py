@@ -4,7 +4,9 @@ from .data_send_arduino import send_data_to_arduino
 from threading import Thread
 import time 
 
-
+"""
+TODO: Check if the time is in range before displaying if user has set one.
+"""
 def schedule_drawings():
     while True:
         curr_showing = CurrentlyShowing.objects.all()

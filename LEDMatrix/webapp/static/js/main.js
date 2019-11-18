@@ -136,8 +136,8 @@ function setupEventHandlers(globalVars) {
     mouseOnGridEventHandler(globalVars);
     resizedWindowHandler(globalVars);
     toolboxSelectionHandler(globalVars);
-    drawingControlsFormHandler(globalVars);
-    adminControlHandlers(globalVars);
+    drawingFormControlHandler(globalVars);
+    adminFormControlHandler(globalVars);
 }
 
 
