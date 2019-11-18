@@ -47,13 +47,13 @@ Our target operating system is debian Linux so if your running something other t
 ### Make sure you have Python and Pip
 If you already have python and pip installed you can skip this step. You can check if your system has python install by opening up a terminal and typing in. 
 
-```
+```sh
 your@machine:~$ python --version 
 ```
 
 This should tell you what version of python your machine has, if it does not output anything or it gives an error you dont have python installed on your machine. If you are the latter case then install python on debian with this command.
 
-```
+```sh
 your@machine:~$ sudo apt install python3 
 ```
 
@@ -61,7 +61,7 @@ Now we can install pip. Pip is a package manager for python. If you already have
 
 To install pip type this command
 
-```
+```sh
 your@machine:~$ sudo apt install python3-pip 
 ```
 
@@ -73,18 +73,18 @@ If you already have Pipenv installed you can skip this step.
 It automatically creates and manages a virtualenv for your projects, as well as adds/removes packages from your Pipfile as you install/uninstall packages. It also generates the ever-important Pipfile.lock, which is used to produce deterministic builds. Pipenv is primarily meant to provide users and developers of applications with an easy method to setup a working environment" You can read more about Pipenv [here](https://pipenv.kennethreitz.org/en/latest/) it is a very useful tool to use when working with Python.
 
 To install Pipenv make sure that pip is installed and type this command...
-```
+```sh
 your@machine:~$ pip install pipenv
 ```
 or if the above command gave an error and you are running python2 you might or might not have to type this instead.
-```
+```sh
 your@machine:~$ sudo python -m pip install pipenv
 ```
 ### Make your virtual environment
 We are going to make a virtual environment that works with this project. The files 'Pipfile' and 'Pipfile.lock' on this project are two very important files. Those files tell pipenv how to set up the python virtual  environment and also lets pipenv know what dependencies/packages (ex. Django) this project uses so that everything works out of the box.
 
 To make a virtual environment for this project simply download this project on your machine and go to the projects root folder and type this command
-```
+```sh
 your@machine:~$ pipenv install
 ```
 This will create and install every package that was used in this project it will even install the correct python verson that was used in the project if you dont have it.
@@ -92,13 +92,13 @@ This will create and install every package that was used in this project it will
 
 ### Activate your virtual environment
 Now that you have installed all of this projects dependencies and made a virtual environment you can activate your virtual environment with 
-```
+```sh
 your@machine:~$ pipenv shell
 ```
 This makes a Python virtual environment in the system that you can work. 
 you you should now see a name in parenthesis before your macine name like this 
 
-```
+```sh
 (Your virtual env) your@machine:~$ 
 ```
 
@@ -107,7 +107,7 @@ Now that you have installed all everything you need to run django there are a fe
 
 ### Create setup your database 
 To create a database in django you must first go to the directory where manage.py (in folder LEDMatrix/webapp) and type these commands.
-```
+```sh
 (Your virtual env) your@machine:~$ python manage.py makemigrations
 (Your virtual env) your@machine:~$ python manage.py migrate
 ```
@@ -117,7 +117,7 @@ These commands will crete a sqlite3 databse file named 'db.sqlite3' on the same 
 In order to see what is in the database and to be able to have admin the permision to approve a drawing to send to the LED matrix you must first crate a superuser(admin). 
 
 To create an admin account type in this in in terminal
-```
+```sh
 (Your virtual env) your@machine:~$ python manage.py createsuperuser
 ...
 ...
@@ -129,7 +129,7 @@ Note: Passwords in the datbase are not stored as plain text they are all hashed.
 
 ### Run the django server
 Finally you can run the django server with this command
-```
+```sh
 (Your virtual env) your@machine:~$ python manage.py runserver
 ```
 Type the address that this command outputted into your browser it should be 'localhost:8000' (the same as 127.0.0.1:8000)
