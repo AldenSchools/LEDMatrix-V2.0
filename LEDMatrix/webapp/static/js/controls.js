@@ -154,11 +154,13 @@ function drawingControlsFormHandler(globalVars) {
             dataType: 'json',
             success: function(data) {
                 console.log(data);
-                if (false) {
+                if (data.success) {
+                    $("#id_new_drawing_data").attr("value", "");
+                    displayInfoModal("<span style='color: green;'>Drawing saved</span>", "Your drawing has been saved succesfuly!", false);
+                } else {
                     displayInfoModal("Save Error", "Could not save this drawing at this time. Make sure you have created and selected a new drawing first and try again.", false);
                 }
-                $("#id_new_drawing_data").attr("value", "");
-                displayInfoModal("Drawing saved", "Your drawing has been saved succesfuly!", false);
+
             }
         });
     }
