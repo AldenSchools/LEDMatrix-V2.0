@@ -13,37 +13,23 @@
 	<section class="main-section-content mt-4">
 		<div class="container">
 
-            <div id="drawings-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner" >
-
-
-                    {% for showing in currently_showing %}
-                    <div class="carousel-item">
-			            <div class="title-author text-center ">
-                            <h1>{{ showing.submission.drawing.drawing_name }}</h1>
-                            <h3>By: {{ showing.submission.drawing.user.username }}</h3>
-                        </div>
-		                <!--<div class="d-flex align-items-center justify-content-center order-2" id="grid-div"><canvas class="" id='led-matrix-grid'></canvas></div>-->
-                    </div>
-                    {% endfor %}
-
-
+            
+            <div class=" ">
+			    <div class="title-author-drawing text-center ">
+                    <h2> Now Showing </h2>
+                    <h1 id="drawing-name-text">n/a</h1>
+                    <h3 id="drawing-author-text">By: n/a</h3>
                 </div>
-                
-
-                <a class="carousel-control-prev" href="#drawings-carousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#drawings-carousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div> 
+		        <div class=" d-flex align-items-center justify-content-center order-2 " id="grid-div"><canvas class="" id='led-matrix-grid'></canvas></div>
+            </div>
+            
+    
 
             <div class="row mt-4">
 
-
+                {% if not user.is_authenticated %}
+                
+                
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
@@ -55,19 +41,19 @@
                     </div>
                 </div>
 
+                {% else %}
 
-                <!--<div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Do something</h5>
-                            <p class="card-text">Some Fiiller text</p>
-                            <a class="btn btn-primary" href="#">Good</a>
-                            <a class="btn btn-primary" href="#">Bad</a>
+                            <h5 class="card-title">Create Your Own</h5>
+                            <p class="card-text">Want to have your drawing shown start by creating something.</p>
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#user-login-modal" >Start Creating!</a>
+                            
                         </div>
                     </div>
-                </div>-->
-
-
+                </div>
+                {% endif %}
             </div>
 
 		</div>
