@@ -27,7 +27,7 @@
 							<li class="list-group-item active" id="currently-showing-tab" data-toggle="tab" href="#currently-showing" role="tab" aria-controls="currently-showing" aria-selected="true">
                                 <div class="nav-link d-flex align-items-center" >
                                     <p class="flex-grow-1" id="sketch-name">Currently Showing</p>
-                                    <span class="badge badge-primary">{{ currently_showing|length }} </span>
+                                    <span class="badge badge-primary" id="currently-showing-count">{{ currently_showing|length }}</span>
                                 </div>
                             </li>
 
@@ -36,7 +36,7 @@
 						  		<!--<a class="nav-link" id="new-submissions-tab" data-toggle="pill" href="#new-submissions" role="tab" aria-controls="new-submissions" aria-selected="false"> -->
                                     <div class="nav-link d-flex align-items-center" >
                                 	    <p class="flex-grow-1" id="sketch-name">New Submissions</p>
-                                        <span class="badge badge-primary">{{ new_submissions|length }} </span>
+                                        <span class="badge badge-primary" id="new-submission-count">{{ new_submissions|length }}</span>
                             	    </div>
                                 <!--</a> -->
 
@@ -56,7 +56,7 @@
                                 <div  class="nav-link d-flex align-items-center" >
                                 	<p class="flex-grow-1" id="sketch-name">Registerd Users</p>
                                     {% if  users|length > 0%}
-                                        <span class="badge badge-primary">{{ users|length }} </span>
+                                        <span class="badge badge-primary">{{ users|length }}</span>
                                     {% endif %}	
                                 	
                             	</div>

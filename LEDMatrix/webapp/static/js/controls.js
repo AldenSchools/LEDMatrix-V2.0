@@ -351,16 +351,11 @@ function adminFormControlHandler(globalVars) {
             data: $(this).serialize(),
             dataType: 'json',
             success: function(data) {
-                //delete list element if in new submision list (from the back end only not html wait till refresh to show updated list on html)
-                //Bug Here where it sends data correctly but does not size correctly untill you manually resize the window
                 console.log(data);
                 $('#matrix-preview-modal').modal('show');
-
-
-
                 globalVars.gridVars.loadDrawingToGrid(data.drawing_data);
+
                 $('#matrix-preview-modal').on('shown.bs.modal', function(e) {
-                    // do something...
                     console.log("modal effect donne");
                     globalVars.gridVars.updateGrid();
                     $('#matrix-preview-modal').modal('handleUpdate');
@@ -384,9 +379,19 @@ function adminFormControlHandler(globalVars) {
             dataType: 'json',
             success: function(data) {
                 console.log(data);
-                //show success and delete list element if in new submision list (from the back end and in html)
-                //show a confirmation maybe, would it be too annoying if you have to add a lot
-                //definitly show a notice when the limit has been reached 
+
+                if (data.success) {
+                    displayInfoModal("Drawing has been added to showing list", "", false);
+                    var currShowingCount = String(Number($("#currently-showing-count").text()) + 1);
+                    $("#currently-showing-count").text(currShowingCount);
+                    $(event.target).closest("li").remove();
+
+                } else if (data.limit_reached) {
+                    displayInfoModal("LIMIT REACHED", "You have reached the maxumum number of submission that can be displayed. Please remove some submission from the currently showing list or update maximum limit of the matrix in the prefrences tab.", false);
+                } else {
+                    displayInfoModal("Error", "An unexpected error has occurred. This clould be because the creater of the drawing deleted it and it no longer exists", false);
+                }
+
             }
         });
     }
@@ -402,8 +407,14 @@ function adminFormControlHandler(globalVars) {
             dataType: 'json',
             success: function(data) {
                 console.log(data);
-                //show success and delete list element if in new submision list (from the back end and in html)
-                //show a confirmation maybe, would it be too annoying if you have to remove a lot
+
+                if (data.success) {
+                    displayInfoModal("Drawing Removed showing list", "", false);
+                    $(event.target).closest("li").remove();
+
+                    var currShowingCount = String(Number($("#currently-showing-count").text()) - 1);
+                    $("#currently-showing-count").text(currShowingCount);
+                }
             }
         });
     }
@@ -419,10 +430,12 @@ function adminFormControlHandler(globalVars) {
             data: $(this).serialize(),
             dataType: 'json',
             success: function(data) {
-                //show success and delete list element if in new submision list (from the back end and in html)
-                //show a confirmation and update values on the html
-                //show a confirmation if the delay between drawings is too short min is 3 secs, letting the user know that it was set to the minimum
                 console.log(data);
+                if (data.success) {
+
+                } else if (data.drawing_delay_too_short) {
+
+                }
             }
         });
 

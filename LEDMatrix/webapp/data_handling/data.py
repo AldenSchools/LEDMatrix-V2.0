@@ -153,9 +153,13 @@ def add_to_curr_showing_list(request):
                     print("limit has been reached cant add more")
                 else:
                     CurrentlyShowing.objects.create(submission=submission)
-                    user_profile = submission.drawing.user.userprofile
-                    user_profile.number_accepted_submissions = user_profile.number_accepted_submissions +1
-                    user_profile.save()
+                    remove_from_new_subms_list(submission_id)
+                    try:
+                        user_profile = submission.drawing.user.userprofile
+                        user_profile.number_accepted_submissions = user_profile.number_accepted_submissions +1
+                        user_profile.save()
+                    except UserProfile.DoesNotExist:
+                        print("UserProfile does not exist for this user")
                     success = True
                     
         except SubmissionsHistory.DoesNotExist:
@@ -167,14 +171,16 @@ def add_to_curr_showing_list(request):
 
 @login_required
 def remove_from_showing_list(request):
+    success = False
     if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
         submission_id = request.POST.get('submission',None)
         try:
             showing_submission = CurrentlyShowing.objects.filter(submission__id=submission_id)[0]
             showing_submission.delete()
+            success = True
         except (CurrentlyShowing.DoesNotExist, IndexError) as e:
             print("Could not remove form showing list because this submission does not exist.")
-    return JsonResponse({})
+    return JsonResponse({"success":success})
 
 
 def remove_from_new_subms_list(submission_id):
@@ -184,7 +190,7 @@ def remove_from_new_subms_list(submission_id):
         new_submission.delete()
         success = True
     except (NewSubmission.DoesNotExist, IndexError) as e:
-        print("This submission does not exist")
+        print("Could not remove form new submissions list because, This submission does not exist")
 
     return success
 
@@ -283,7 +289,7 @@ def drawing_data_as_list(drawing_data):
         matrix_list[row] = current_row.split("#")
         drawing_data = drawing_data[112:]
 
-    print(matrix_list)
+    
 
     for row in range(0,len(matrix_list)):
         del matrix_list[row][0]
@@ -291,7 +297,9 @@ def drawing_data_as_list(drawing_data):
              del matrix_list[row][-1] 
         for col in range(0,len(matrix_list[row])):
             matrix_list[row][col] = "#" + matrix_list[row][col]
-
+            
+    
+    print(matrix_list)
     return matrix_list
 
 
