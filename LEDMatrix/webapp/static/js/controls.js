@@ -356,7 +356,16 @@ function adminFormControlHandler(globalVars) {
                 console.log(data);
                 $('#matrix-preview-modal').modal('show');
 
+
+
                 globalVars.gridVars.loadDrawingToGrid(data.drawing_data);
+                $('#matrix-preview-modal').on('shown.bs.modal', function(e) {
+                    // do something...
+                    console.log("modal effect donne");
+                    globalVars.gridVars.updateGrid();
+                    $('#matrix-preview-modal').modal('handleUpdate');
+                })
+
                 // $(event.target).closest("li.active").removeClass('active');
                 // $(event.target).closest("li").addClass("active");
 
