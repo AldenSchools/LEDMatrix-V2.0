@@ -257,8 +257,14 @@
                                         </div>
                                         
                                         {% if not user.1 %}
-                                            <button type="button" class=" btn btn-primary btn-sm">Block</button>
-                                            <button type="button" class=" btn btn-danger btn-sm">Remove User</button>
+                                            <form class="block-user-forms" data-handle-block-user-url="">
+                                                <input type="hidden" name="username" value="{{ user.0.username }}">
+                                                <button type="submit" class=" btn btn-primary btn-sm">Block</button>
+                                            </form>
+                                            <form class="remove-user-forms" data-handle-remove-user-url="">
+                                                <input type="hidden" name="username" value="{{ user.0.username }}">
+                                                <button type="submit" class=" btn btn-danger btn-sm">Remove User</button>
+                                            </form>
                                         {% endif %}
                                         
                                     </div>

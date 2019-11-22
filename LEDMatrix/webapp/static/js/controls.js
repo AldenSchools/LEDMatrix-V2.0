@@ -338,6 +338,11 @@ function adminFormControlHandler(globalVars) {
     matrixSettingsForm.submit(updateMatrixSettings);
     resetDefaultsForm.submit(updateMatrixSettings);
 
+    var blockUserForms = $(".block-user-forms");
+    var removeUserForms = $(".remove-user-forms");
+    blockUserForms.submit(blockUser);
+    removeUserForms.submit(removeUser);
+
 
 
 
@@ -439,6 +444,15 @@ function adminFormControlHandler(globalVars) {
             }
         });
 
+
+    }
+
+
+    function blockUser(event) {
+
+    }
+
+    function removeUser() {
 
     }
 
