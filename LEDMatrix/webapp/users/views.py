@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.http import JsonResponse
 from .forms import *
 
 # Create your views here.
@@ -21,6 +23,50 @@ def admin_login_veiw(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+@login_required 
+def block_user(request):
+    success = False
+    if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
+        username = request.POST.get('username',None)
+        try:
+            user = User.objects.get(pk=username)
+            userprofile = user.userprofile
+            userprofile.is_blocked = True
+            userprofile.save()
+            user.save()
+            success = True
+        except User.DoesNotExist:
+            print("user with username '"+username+"' does not exist")
+    return JsonResponse({"success":success})
+
+@login_required 
+def remove_user(request):
+    success = False
+    if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
+        username = request.POST.get('username',None)
+        try:
+            user = User.objects.get(pk=username)
+            userprofile = user.userprofile
+            userprofile.delete()
+            user.delete()
+            success = True
+        except (User.DoesNotExist, UserProfile.DoesNotExist) as e:
+            print("user with username '"+username+"' does not exist or userprofile does not exist")
+    return JsonResponse({"success":success})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

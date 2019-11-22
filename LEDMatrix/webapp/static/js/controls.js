@@ -437,9 +437,9 @@ function adminFormControlHandler(globalVars) {
             success: function(data) {
                 console.log(data);
                 if (data.success) {
-
+                    displayInfoModal("Settings Saved", "Your settings has been saved", false);
                 } else if (data.drawing_delay_too_short) {
-
+                    displayInfoModal("WARNING", "The delay between drawings is too short. The delay between drawings has been set to the minimum, all other settings have been saved", false);
                 }
             }
         });
@@ -449,11 +449,38 @@ function adminFormControlHandler(globalVars) {
 
 
     function blockUser(event) {
+        console.log("updateMatrixSettings called");
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("data-handle-block-user-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                if (data.success) {
 
+                }
+            }
+        });
     }
 
-    function removeUser() {
+    function removeUser(event) {
 
+        console.log("updateMatrixSettings called");
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("data-handle-remove-user-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                if (data.success) {
+
+                }
+            }
+        });
     }
 
 

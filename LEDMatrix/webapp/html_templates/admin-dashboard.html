@@ -257,11 +257,11 @@
                                         </div>
                                         
                                         {% if not user.1 %}
-                                            <form class="block-user-forms" data-handle-block-user-url="">
+                                            <form class="block-user-forms" data-handle-block-user-url="{% url "block_user" %}">
                                                 <input type="hidden" name="username" value="{{ user.0.username }}">
                                                 <button type="submit" class=" btn btn-primary btn-sm">Block</button>
                                             </form>
-                                            <form class="remove-user-forms" data-handle-remove-user-url="">
+                                            <form class="remove-user-forms" data-handle-remove-user-url="{% url "remove_user" %}">
                                                 <input type="hidden" name="username" value="{{ user.0.username }}">
                                                 <button type="submit" class=" btn btn-danger btn-sm">Remove User</button>
                                             </form>

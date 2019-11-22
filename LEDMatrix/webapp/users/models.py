@@ -6,6 +6,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     number_submissions = models.PositiveIntegerField(default=0)
     number_accepted_submissions = models.PositiveIntegerField(default=0)
+    is_blocked = models.BooleanField(default=False)
 
    
 class LEDMatrixSettings(models.Model):
