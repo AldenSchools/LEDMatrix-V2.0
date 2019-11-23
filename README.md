@@ -1,4 +1,8 @@
 # LEDMatrix-V2.0
+
+[![python-version](https://img.shields.io/github/pipenv/locked/python-version/AldenSchools/LEDMatrix-V2.0)](https://github.com/feross/standard) [![django-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/django)](https://www.djangoproject.com/)  [![pytz-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/pytz)](https://pypi.org/project/pytz/) [![sqlparse-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/sqlparse)](https://pypi.org/project/sqlparse/) [![pillow-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/pillow)](https://pypi.org/project/Pillow/) [![jquery-version](https://img.shields.io/badge/jQuery-v3.4.1-blue)](https://jquery.com/) [![bootstrap-version](https://img.shields.io/badge/bootstrap-v4.3.1-blue)](https://getbootstrap.com/) [![fontawsome-version](https://img.shields.io/badge/fontawsome-v5.10.0-blue)](https://fontawesome.com/) 
+ [![licence-info](https://img.shields.io/badge/licence-MPL2.0-green)](https://www.mozilla.org/en-US/MPL/2.0/) 
+
 LED Matrix lets users to draw on N x N grid that simulates a physical LED matrix of the same dimention N is how many leds per row and column.
 after users draw what they want they can send it for review wehre an administrator with an administrator account can look at all submission and choose which 
 one to send to the physical LED matrix for displaying. The Physical LED matrix will display exactly what the user drew.
@@ -6,28 +10,194 @@ one to send to the physical LED matrix for displaying. The Physical LED matrix w
 ## Motivation
 This project was created for the students of Alden Schools to help them engage with technology and maybe inspire them as well as for fun.
 
-## Code style
-
-
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
  
-## Screenshots
+## Folder Structure Conventions
 
-## Folder structure
+
     .
-    ├── LEDMatrix       # Main project folder
-    ├── .gitignore      # Tells git what files/folder to ignore when you commit  
-    ├── Pipfile         # Describes dependencies that pipenv needs to setup virtual env
-    ├── Pipfile.lock    # Describes detail information for each dependency
-    ├── LICENSE         # This projects licence file
-    |── LICENCE.django  # Djangos licence
-    └── README.md       # This file
+    ├── LEDMatrix               # Main project folder
+    │   ├── 3dfiles             # Files for the 3d printer 
+    │   │   └── ...
+    │   ├── arduino             # Stores all Arduino code and libraries
+    │   │   └── ...
+    │   └── webapp              # The main website application, stores all of the components used on the webapp
+    │       ├── data_handling   # A sub-component of the whole webapp, (more details below)
+    │       │   └── ...
+    │       ├── html_templates  # All of the HTML files used to build the website
+    │       │   └── ...
+    │       ├── manage.py       # A convinience script to run django commands
+    │       ├── pages           # A sub-component of the whole webapp, (more details below)
+    │       │   └── ...
+    │       ├── site_config     # A sub-component of the whole webapp, (more details below)
+    │       │   └── ...
+    │       ├── static          # Stores static files used by the webapp such as CSS/JavaScript/Pictures
+    │       │   └── ...
+    │       └── users           # A sub-component of the whole webapp, (more details below)
+    │           └── ...
+    ├── LICENCE                 # This projects licence file
+    ├── LICENSE.django          # Djangos licence file
+    ├── Pipfile                 # Describes dependencies that pipenv needs to setup virtual env
+    ├── Pipfile.lock            # Describes detail information for each dependency                
+    └── README.md               # This file
+    
+    17 directories, 60 files
 
-## Tech/framework used
-<b>Built with</b>
-- [Django](https://www.djangoproject.com/)
-- [JQuery](https://jquery.com/)
-- [Python 3.7]()
+### 3dfiles folder
+
+    .
+    ├── ...
+    │   ├── 3dfiles
+    │   │   └── DiffuserFull.scad   # The design used for the 3d printer 
+    └──  ...
+
+This file stores scad design for you to be able to 3d print all the parts that we used for this project.
+
+### Arduino folder
+
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── arduino
+    │   │   └── 453arduino.ino  # Code that is running in the arduino 
+    └── ...
+
+This folder stores all code and libraries used on the arduino.
+
+### Webapp folder
+
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── ...
+    │   └── webapp
+    │       ├── data_handling   # A component of the webapp, does everything assosiated with getting/sending/displaying data.
+    │       │   └── ...
+    │       ├── html_templates  # All of the HTML files used to build the webapp structure, used for django templates.
+    │       │   └── ...
+    │       ├── manage.py       # A convinience script to run django commands.
+    │       ├── pages           # A component of the webapp, handles all pages in the webapp.
+    │       │   └── ...
+    │       ├── site_config     # The webapps main component, stores all of the webapps settings and initial url patterns.
+    │       │   └── ...
+    │       ├── static          # Stores static files used by the webapp such as CSS/JavaScript/Pictures.
+    │       │   └── ...
+    │       └── users           # A component of the webapp, handles all user related things such as login/logout/register ect...
+    │           └── ...
+    └── ...
+
+#### Data handling folder
+
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── ...
+    │   └── webapp
+    │       ├── data_handling
+    │       │   ├── __init__.py           # Tells python to treat this folder as a python package.
+    │       │   ├── apps.py               # Tell django that this is an application (or sub-component of the whole webapp).
+    │       │   ├── data.py               # Custom file to handle all incomming and outgoing form data.
+    │       │   ├── data_send_arduino.py  # Handles the sending of data from the raspberry pi to the arduino.   
+    │       │   ├── migrations            # Folder contains all of the database tables that this sub-component used, Automatically populated. 
+    │       │   │   └── __init__.py       # Tells python to treat this folder as a python package.
+    │       │   ├── tasks.py              # Custom file that handles starting tasks that need to run every. X seconds.
+    │       │   └── urls.py               # All of the url patterns for this sub-component/app.
+    │       └── ...
+    └── ...
+
+
+#### Html templates folder
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── ...
+    │   └── webapp
+    │       ├── ...
+    │       ├── html_templates
+    │       │   ├── about.html              # The HTML for an about page (never rendered or used).
+    │       │   ├── admin-dashboard.html    # The HTML for the administrator dashboard.
+    │       │   ├── auth                    # Stores all HTML files assosiated with user authentication. 
+    │       │   │   ├── admin-login.html    # The HTML for an admin login page in this webapp.
+    │       │   │   ├── logout.html         # The HTML for a logout out page (never rendered or used).
+    │       │   │   ├── user-login.html     # The HTML for regular user login in this webapp.
+    │       │   │   └── user-register.html  # The HTML for regular user registration in this webapp.
+    │       │   ├── base.html               # This is the main template every other html file in this folder inherit from this file.
+    │       │   ├── home.html               # The HTML for the main home/landing page in this webapp.
+    │       │   └── matrix.html             # The HTML for the create page in this webapp.
+    │       └── ...
+    └── ...
+
+#### Pages file
+
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── ...
+    │   └── webapp
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       ├── pages
+    │       |   ├── __init__.py     # Tells python to treat this folder as a python package.
+    │       │   ├── admin.py        # Tells Django what to include in djangos default admin page. (localhost:8000/admin).
+    │       │   ├── apps.py         # Tell django that this is an application (or sub-component of the whole webapp).
+    │       │   ├── migrations      # Folder contains all of the database tables that this sub-component used, Automatically populated. 
+    │       │   │   └── __init__.py # Tells python to treat this folder as a python package.
+    │       │   ├── models.py       # Specifies all of the tables that this app/compnent needs in the database.
+    │       │   ├── tests.py        # Used to run tests on this app/compnent. 
+    │       │   ├── urls.py         # All of the url patterns for this sub-component/app.
+    │       │   └── views.py        # Used to actually display/render the HTML page to the user with or without extra information.
+    │       └── ...
+    └── ...
+
+
+#### Site config folder
+
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── ...
+    │   └── webapp
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       ├── site_config
+    |       │   ├── __init__.py     # Tells python to treat this folder as a python package.
+    │       │   ├── settings.py     # Stores all of the settings of the whole webapp.
+    │       │   ├── urls.py         # All of the initial/top-level url patterns for this webapp.
+    │       │   └── wsgi.py         # Used to setup the webserver. 
+    │       └── ...
+    └── ...
+
+#### Users folder
+
+    .
+    ├── ...
+    │   ├── ...
+    │   ├── ...
+    │   └── webapp
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       ├── ...
+    │       └── users
+    │           ├── __init__.py     # Tells python to treat this folder as a python package.
+    │           ├── admin.py        # Tells Django what to include in djangos default admin page. (localhost:8000/admin).
+    │           ├── apps.py         # Tell django that this is an application (or sub-component of the whole webapp).
+    │           ├── auth.py         # A custom autentication backend that allows regular users to login without password.
+    │           ├── forms.py        # Stores all form field data associated with this webapp
+    │           ├── migrations      # Folder contains all of the database tables that this sub-component used, Automatically populated. 
+    │           │   └── __init__.py # Tells python to treat this folder as a python package.
+    │           ├── models.py       # Specifies all of the tables that this app/compnent needs in the database.
+    │           ├── tests.py        # Used to run tests on this app/compnent. 
+    │           ├── urls.py         # All of the url patterns for this sub-component/app.
+    │           └── views.py        # Used to actually display/render the HTML page to the user with or without extra information.
+    └── ...
+
+
+
 
 ## Features
  - Users can login/register.
