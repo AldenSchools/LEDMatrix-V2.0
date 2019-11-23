@@ -176,7 +176,7 @@ function getDrawingHandler(globalVars) {
     if ($("#drawing-name-text").length === 0) return;
 
     console.log("getDrawingHandler");
-    setInterval(getCurrShowingDrawing, 3000);
+    setInterval(getCurrShowingDrawing, 2000);
 
     function getCurrShowingDrawing(event) {
         $.ajax({
