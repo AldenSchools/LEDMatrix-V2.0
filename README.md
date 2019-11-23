@@ -5,7 +5,18 @@
 
 
 
-![Image-of-Project](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/v2.0/home-page-demo.png)
+![Home page](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/v2.0/home-page-demo.png)
+
+![Creating a drawing](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/v2.0/create-page-demo.png)
+
+
+![Admin dashboard](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/v2.0/admin-dash-demo.png)
+
+![Components used](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/Components.jpg)
+
+![Everything together](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/LEDMatrix-Demo.jpg)
+
+
 
 
 LED Matrix lets users to draw on N x N grid that simulates a physical LED matrix of the same dimention N is how many leds per row and column.
