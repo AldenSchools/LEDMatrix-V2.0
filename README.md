@@ -126,7 +126,7 @@ This folder stores all code and libraries used on the arduino.
     │       └── ...
     └── ...
 
-#### Pages file
+#### Pages folder
 
     .
     ├── ...
@@ -200,19 +200,30 @@ This folder stores all code and libraries used on the arduino.
 
 
 ## Features
- - Users can login/register.
- - Users can save and load drawing.
- - Users can submit drawings for review to be sent to the LED matrix.
- - Admin can aprove/deny which drawing to send to send to the physical LED matrix.
- - Admin can remove/bock any user.
- - Admin can change the settings of the LED matrix (on/off, delay, time to start, etc...).
- - Admin can view all submission history for showing anytime.
+ * Authentication
+    * Login/Logout
+    * Register
+    * Hidden admin page for admins, located at http://localhost:8000/admin/admin-dash/login
+ * Users
+    * Create a drawings
+    * Save drawings
+    * Load a saved drawing
+    * Submit a drawing for admin review
+    * Delete a drawing
+    * View drawings currently showing on the physical LED matrix
+  * Admin
+    * Able to do everything a regular user can do
+    * Aprove/Deny drawings to be displayed on the physical LED matrix
+    * Block users (blocking prevents users form submitting drawings but they are still able to create/save drawings)
+    * Remove users
+    * Change the LED matrix settings
+    * View all submission history
 
 
 
 ## Setup/Installation
 
-Our target operating system is debian Linux so if your running something other than that you can still follow along just know that some commands mitght be different. 
+We created this project mainly to run on a Raspberry Pi running a version of linux, however this setup guide should also work if your running some version of debian linux on your system. If your running something other than that you can still follow along just know that some commands might be different. 
 
 ### Make sure you have Python and Pip
 If you already have python and pip installed you can skip this step. You can check if your system has python install by opening up a terminal and typing in. 
@@ -250,7 +261,9 @@ or if the above command gave an error and you are running python2 you might or m
 ```sh
 your@machine:~$ sudo python -m pip install pipenv
 ```
-### Make your virtual environment
+### Install dependencies and make your virtual environment 
+
+
 We are going to make a virtual environment that works with this project. The files 'Pipfile' and 'Pipfile.lock' on this project are two very important files. Those files tell pipenv how to set up the python virtual  environment and also lets pipenv know what dependencies/packages (ex. Django) this project uses so that everything works out of the box.
 
 To make a virtual environment for this project simply download this project on your machine and go to the projects root folder and type this command
@@ -261,6 +274,8 @@ This will create and install every package that was used in this project it will
 
 
 ### Activate your virtual environment
+This step is useful if your using this project to expand and/or development. However, if you you just want to deply it on your target machine feel free to skip this step since there is no need to activate your virtual environment. 
+
 Now that you have installed all of this projects dependencies and made a virtual environment you can activate your virtual environment with 
 ```sh
 your@machine:~$ pipenv shell
@@ -275,7 +290,7 @@ you you should now see a name in parenthesis before your macine name like this
 ## Setup 
 Now that you have installed all everything you need to run django there are a few things we need to setup before we actually run django.
 
-### Create setup your database 
+### Create/Setup your database 
 To create a database in django you must first go to the directory where manage.py (in folder LEDMatrix/webapp) and type these commands.
 ```sh
 (Your virtual env) your@machine:~$ python manage.py makemigrations
@@ -310,9 +325,7 @@ Now that you have setup your environment and installed  everything you need to r
 
 
 ## Credits
- * James Daniel for his awsome [Iro](https://iro.js.org/) color picker
-
-#### Anything else that seems useful
+ * James Daniel for his awsome [Iro](https://iro.js.org/) color picker.
 
 ## License
 This Project is under the Mozzila Public Licence 2.0
