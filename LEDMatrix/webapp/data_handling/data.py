@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from pages.models import *
 from django.contrib.auth.models import User
+from . import tasks
 from users.forms import SubmitDrawingForm, SaveDrawingForm, DeleteDrawingForm, CreateDrawingForm, LEDMatrixSettingsForm
 
 
@@ -249,7 +250,29 @@ def set_matrix_defaults():
 
 
 
-
+def get_drawing_currently_showning(request):
+    success = False
+    json_response = {}
+    
+    drawing_id = tasks.current_drawing_id
+    #print("current drawing id = " + str(drawing_id))
+    
+    if(drawing_id != -1):
+        try:
+            drawing = Drawing.objects.get(pk=drawing_id)
+            #print("\ndrawing data\n"+drawing.drawing_data)
+            matrix_list = drawing_data_as_list(drawing.drawing_data)
+            json_response['drawing_matrix'] = matrix_list
+            json_response['username'] = drawing.user.username
+            json_response['drawing_name'] = drawing.drawing_name
+            success = True
+        except Drawing.DoesNotExist:
+            print("drawing does not exist")
+    
+    print(success)
+    json_response['success'] = success
+    return JsonResponse(json_response)
+        
 
 
 

@@ -138,6 +138,7 @@ function setupEventHandlers(globalVars) {
     toolboxSelectionHandler(globalVars);
     drawingFormControlHandler(globalVars);
     adminFormControlHandler(globalVars);
+    getDrawingHandler(globalVars);
 }
 
 
@@ -167,6 +168,30 @@ function resizedWindowHandler(globalVars) {
         colorPickerVars.setWidth($("#color-picker").width());
         console.log("window resized\n colorPicker div width", $("#color-picker").width(), "\n grid width", $("#grid-div").width());
 
+    }
+}
+
+function getDrawingHandler(globalVars) {
+
+    if ($("#drawing-name-text").length === 0) return;
+
+    console.log("getDrawingHandler");
+    setInterval(getCurrShowingDrawing, 3000);
+
+    function getCurrShowingDrawing(event) {
+        $.ajax({
+            type: "GET",
+            url: $("#curr-drawing-url").attr("get-current-drawing-url"),
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                if (data.success) {
+                    $("#drawing-name-text").text(data.drawing_name);
+                    $("#drawing-author-text").text(data.username);
+                    globalVars.gridVars.loadDrawingToGrid(data.drawing_matrix);
+                }
+            }
+        });
     }
 }
 

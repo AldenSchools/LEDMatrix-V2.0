@@ -17,9 +17,10 @@
             <div class=" ">
 			    <div class="title-author-drawing text-center ">
                     <h2> Now Showing </h2>
-                    <h1 id="drawing-name-text">n/a</h1>
-                    <h3 id="drawing-author-text">By: n/a</h3>
+                    <h1><span id="drawing-name-text">n/a</span></h1>
+                    <h3>By: <span id="drawing-author-text">n/a</span></h3>
                 </div>
+                <span class="d-none" id="curr-drawing-url" get-current-drawing-url="{% url "get_drawing_currently_showning" %}"></span>
 		        <div class=" d-flex align-items-center justify-content-center order-2 " id="grid-div"><canvas class="" id='led-matrix-grid'></canvas></div>
             </div>
             

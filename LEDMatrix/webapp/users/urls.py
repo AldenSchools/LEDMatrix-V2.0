@@ -10,5 +10,4 @@ urlpatterns = [
     path('admin-dash/unblock', unblock_user, name="unblock_user"),
     path('admin-dash/remove', remove_user, name="remove_user"),
 
-      
 ]
