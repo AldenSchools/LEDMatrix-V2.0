@@ -182,7 +182,7 @@ function drawingFormControlHandler(globalVars) {
                 console.log(data);
                 if (data.success) {
                     $("#id_new_drawing_data").attr("value", "");
-                    displayInfoModal("<span style='color: green;'>Drawing saved</span>", "Your drawing has been saved succesfuly!", false);
+                    displayInfoModal("Drawing saved", "Your drawing has been saved succesfuly!", false);
                 } else {
                     displayInfoModal("Save Error", "Could not save this drawing at this time. Make sure you have created and selected a new drawing first and try again.", false);
                 }
@@ -289,8 +289,13 @@ function drawingFormControlHandler(globalVars) {
             success: function(data) {
                 console.log("create request successfuly sent");
                 console.log(data);
-                if (data.success) displayInfoModal("Submit to matrix", "Your request to show this drawing on the LED matrix has been submitted.", false);
-                else displayInfoModal("Submit error", "An error has occurred could not submit for review. Please try again later", false);
+                if (data.success) {
+                    displayInfoModal("Submit to matrix", "Your request to show this drawing on the LED matrix has been submitted.", false);
+                } else if (data.blocked) {
+                    displayInfoModal("BLOCKED! :(", "Sorrry but you cannot submit anything at this time because you have been blocked. To solve this please speak to one of your teachers.", false);
+                } else {
+                    displayInfoModal("Submit error", "An error has occurred could not submit for review. Please try again later.", false);
+                }
             }
         });
 
@@ -339,8 +344,10 @@ function adminFormControlHandler(globalVars) {
     resetDefaultsForm.submit(updateMatrixSettings);
 
     var blockUserForms = $(".block-user-forms");
+    var unblockUserForms = $(".unblock-user-forms");
     var removeUserForms = $(".remove-user-forms");
     blockUserForms.submit(blockUser);
+    unblockUserForms.submit(unblockUser);
     removeUserForms.submit(removeUser);
 
 
@@ -459,7 +466,24 @@ function adminFormControlHandler(globalVars) {
             success: function(data) {
                 console.log(data);
                 if (data.success) {
+                    displayInfoModal("User Blocked", "User '" + data.username + "' has been blocked successfuly. This user can keep drawing but will not be able to submit any drawings.", false);
+                }
+            }
+        });
+    }
 
+    function unblockUser(event) {
+        console.log("updateMatrixSettings called");
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: $(this).attr("data-handle-unblock-user-url"),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                if (data.success) {
+                    displayInfoModal("User Unblocked", "User '" + data.usermame + "' has been unblocked successfuly.", false);
                 }
             }
         });
@@ -477,7 +501,11 @@ function adminFormControlHandler(globalVars) {
             success: function(data) {
                 console.log(data);
                 if (data.success) {
+                    displayInfoModal("User Deleted", "User '" + data.username + "'and all of this users settings and files have been deleted successfuly.", false);
+                    $(event.target).closest("li").remove();
 
+                    var userCount = String(Number($("#user-count").text()) - 1);
+                    $("#user-count").text(userCount);
                 }
             }
         });

@@ -84,7 +84,7 @@ def submit_drawing(request):
     success = False
     if(request.method == "POST"):
         form = SubmitDrawingForm(request.POST)
-        if(form.is_valid()):
+        if(form.is_valid() and not request.user.userprofile.is_blocked):
             drawing_id = form.cleaned_data.get('drawing_id')
             try:
                 drawing = Drawing.objects.get(pk=drawing_id)
@@ -102,7 +102,7 @@ def submit_drawing(request):
                 print("Could not submit because drawing does not exist")
             
     
-    return JsonResponse({"success":success})
+    return JsonResponse({"success":success, "blocked":request.user.userprofile.is_blocked})
         
 
 

@@ -27,10 +27,11 @@ def logout_view(request):
 @login_required 
 def block_user(request):
     success = False
+    username = ""
     if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
         username = request.POST.get('username',None)
         try:
-            user = User.objects.get(pk=username)
+            user = User.objects.get(username=username)
             userprofile = user.userprofile
             userprofile.is_blocked = True
             userprofile.save()
@@ -38,22 +39,40 @@ def block_user(request):
             success = True
         except User.DoesNotExist:
             print("user with username '"+username+"' does not exist")
-    return JsonResponse({"success":success})
+    return JsonResponse({"success":success, "username":username})
+
+@login_required 
+def unblock_user(request):
+    success = False
+    username = ""
+    if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
+        username = request.POST.get('username',None)
+        try:
+            user = User.objects.get(username=username)
+            userprofile = user.userprofile
+            userprofile.is_blocked = False
+            userprofile.save()
+            user.save()
+            success = True
+        except User.DoesNotExist:
+            print("user with username '"+username+"' does not exist")
+    return JsonResponse({"success":success, "username":username})
 
 @login_required 
 def remove_user(request):
     success = False
+    username = ""
     if(request.user.is_authenticated and request.user.has_perm('users.admin-dash')):
         username = request.POST.get('username',None)
         try:
-            user = User.objects.get(pk=username)
+            user = User.objects.get(username=username)
             userprofile = user.userprofile
             userprofile.delete()
             user.delete()
             success = True
         except (User.DoesNotExist, UserProfile.DoesNotExist) as e:
             print("user with username '"+username+"' does not exist or userprofile does not exist")
-    return JsonResponse({"success":success})
+    return JsonResponse({"success":success, "username":username})
 
 
 

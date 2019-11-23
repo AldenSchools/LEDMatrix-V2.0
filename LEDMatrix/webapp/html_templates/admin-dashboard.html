@@ -56,7 +56,7 @@
                                 <div  class="nav-link d-flex align-items-center" >
                                 	<p class="flex-grow-1" id="sketch-name">Registerd Users</p>
                                     {% if  users|length > 0%}
-                                        <span class="badge badge-primary">{{ users|length }}</span>
+                                        <span class="badge badge-primary" id="user-count">{{ users|length }}</span>
                                     {% endif %}	
                                 	
                             	</div>
@@ -253,15 +253,34 @@
                                                 <p class="mb-0" id="sketch-name"><i class="text-muted">Account Type:</i> Administrator</p>
                                             {% else %}
                                                 <p class="mb-0" id="sketch-name"><i class="text-muted">Account Type:</i> Standard User</p>
+                                                {% if user.0.userprofile.is_blocked %}
+                                                    <p class="mb-0" id="sketch-name"><i class="text-muted">Standing:</i> <span style="color: Red;">Blocked</span></p>
+                                                {% else %}
+                                                    <p class="mb-0" id="sketch-name"><i class="text-muted">Standing:</i> <span style="color: green;">Good</span></p>
+                                                {% endif %}
                                             {% endif %}
+
+                                                
                                         </div>
                                         
                                         {% if not user.1 %}
+                                            {% if user.0.userprofile.is_blocked %}
+                                            <form class="unblock-user-forms" data-handle-unblock-user-url="{% url "unblock_user" %}">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="username" value="{{ user.0.username }}">
+                                                <button type="submit" class=" btn btn-success btn-sm">Unblock</button>
+                                            </form>
+                                            {% else %}
                                             <form class="block-user-forms" data-handle-block-user-url="{% url "block_user" %}">
+                                                {% csrf_token %}
                                                 <input type="hidden" name="username" value="{{ user.0.username }}">
                                                 <button type="submit" class=" btn btn-primary btn-sm">Block</button>
                                             </form>
+                                            {% endif %}
+
+
                                             <form class="remove-user-forms" data-handle-remove-user-url="{% url "remove_user" %}">
+                                                {% csrf_token %}
                                                 <input type="hidden" name="username" value="{{ user.0.username }}">
                                                 <button type="submit" class=" btn btn-danger btn-sm">Remove User</button>
                                             </form>
