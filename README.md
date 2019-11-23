@@ -3,6 +3,11 @@
 [![python-version](https://img.shields.io/github/pipenv/locked/python-version/AldenSchools/LEDMatrix-V2.0)](https://github.com/feross/standard) [![django-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/django)](https://www.djangoproject.com/)  [![pytz-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/pytz)](https://pypi.org/project/pytz/) [![sqlparse-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/sqlparse)](https://pypi.org/project/sqlparse/) [![pillow-version](https://img.shields.io/github/pipenv/locked/dependency-version/AldenSchools/LEDMatrix-V2.0/pillow)](https://pypi.org/project/Pillow/) [![jquery-version](https://img.shields.io/badge/jQuery-v3.4.1-blue)](https://jquery.com/) [![bootstrap-version](https://img.shields.io/badge/bootstrap-v4.3.1-blue)](https://getbootstrap.com/) [![fontawsome-version](https://img.shields.io/badge/fontawsome-v5.10.0-blue)](https://fontawesome.com/) 
  [![licence-info](https://img.shields.io/badge/licence-MPL2.0-green)](https://www.mozilla.org/en-US/MPL/2.0/) 
 
+
+
+![Image-of-Project](https://github.com/AldenSchools/pictures-and-media/blob/master/LEDMatrix/v2.0/home-page-demo.png)
+
+
 LED Matrix lets users to draw on N x N grid that simulates a physical LED matrix of the same dimention N is how many leds per row and column.
 after users draw what they want they can send it for review wehre an administrator with an administrator account can look at all submission and choose which 
 one to send to the physical LED matrix for displaying. The Physical LED matrix will display exactly what the user drew.
@@ -249,9 +254,10 @@ your@machine:~$ sudo apt install python3-pip
 ### Setup your virtual environment with Pipenv
 If you already have Pipenv installed you can skip this step. 
 
-"Pipenv is a tool that aims to bring the best of all packaging worlds(bundler, composer, npm, cargo, yarn, etc.) to the Python world.
+>"Pipenv is a tool that aims to bring the best of all packaging worlds(bundler, composer, npm, cargo, yarn, etc.) to the Python world.
+It automatically creates and manages a virtualenv for your projects, as well as adds/removes packages from your Pipfile as you install/uninstall packages. It also generates the ever-important Pipfile.lock, which is used to produce deterministic builds. Pipenv is primarily meant to provide users and developers of applications with an easy method to setup a working environment" 
 
-It automatically creates and manages a virtualenv for your projects, as well as adds/removes packages from your Pipfile as you install/uninstall packages. It also generates the ever-important Pipfile.lock, which is used to produce deterministic builds. Pipenv is primarily meant to provide users and developers of applications with an easy method to setup a working environment" You can read more about Pipenv [here](https://pipenv.kennethreitz.org/en/latest/) it is a very useful tool to use when working with Python.
+You can read more about Pipenv [here](https://pipenv.kennethreitz.org/en/latest/) it is a very useful tool to use when working with Python.
 
 To install Pipenv make sure that pip is installed and type this command...
 ```sh
