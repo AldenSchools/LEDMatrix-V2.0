@@ -7,7 +7,7 @@ one to send to the physical LED matrix for displaying. The Physical LED matrix w
 This project was created for the students of Alden Schools to help them engage with technology and maybe inspire them as well as for fun.
 
 ## Code style
-If you're using any code style like xo, standard etc. That will help others while contributing to your project. Ex. -
+
 
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
  
