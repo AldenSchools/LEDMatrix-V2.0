@@ -219,7 +219,7 @@ This folder stores all code and libraries used on the arduino.
  * Authentication
     * Login/Logout
     * Register
-    * Hidden admin page for admins, located at http://localhost:8000/admin/admin-dash/login
+    * Hidden admin page for admins, located at http://localhost:8000/users/admin-dash/login
  * Users
     * Create a drawings
     * Save drawings

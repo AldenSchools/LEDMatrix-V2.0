@@ -138,12 +138,12 @@ def handle_admin_login_form(request):
         if (form.is_valid()):
             username = form.cleaned_data.get('acct_name')
             password = form.cleaned_data.get('password')
-            print("usrname="+username)
-            print("pass="+password)
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 # Redirect to a success page.
+                
+                check_for_userprofile(user)
                 messages.success(request, f'Hi {username}!')
                 return redirect('/admin-dash')
             else:
@@ -155,3 +155,11 @@ def handle_admin_login_form(request):
         form = AdminLoginForm()
 
     return form
+
+def check_for_userprofile(user):
+    try:
+        UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        print("admin does not have a user profile creating one now")
+        profile = UserProfile.objects.create(user=user)
+        user.userprofile = profile

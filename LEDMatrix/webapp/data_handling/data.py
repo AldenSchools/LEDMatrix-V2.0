@@ -6,6 +6,7 @@ from pages.models import *
 from django.contrib.auth.models import User
 from . import tasks
 from users.forms import SubmitDrawingForm, SaveDrawingForm, DeleteDrawingForm, CreateDrawingForm, LEDMatrixSettingsForm
+from users.views import check_for_userprofile
 
 
 @login_required
@@ -95,6 +96,7 @@ def submit_drawing(request):
                 except (SubmissionsHistory.DoesNotExist, IndexError) as e:
                     new_sub = SubmissionsHistory.objects.create(drawing=drawing)
                     NewSubmission.objects.create(submission=new_sub)
+                check_for_userprofile(request.user)
                 user_profile = drawing.user.userprofile
                 user_profile.number_submissions = user_profile.number_submissions + 1
                 user_profile.save()
