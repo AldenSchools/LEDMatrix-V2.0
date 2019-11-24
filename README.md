@@ -348,7 +348,7 @@ Type the address that this command outputted into your browser it should be 'loc
 ## Deployment
 When getting ready to deploy this webapp make sure you do a couple things 
 1. Make sure debug is set to off, leaving this on will give detailed stacktraces and all of the available urls in the website when an error occurs. To set debug to off go to this file [LEDMatrix/webapp/site_settings/settings.py](LEDMatrix/webapp/site_config/settings.py) find DEBUG variable and set it to False.
-2. It is reccomended to change the private key of the website, this private key is used to generate hashes so its pretty important. Depending on your situation you might need or might not need to generate a new key. To change the privat key go to this file [LEDMatrix/webapp/site_settings/settings.py](LEDMatrix/webapp/site_config/settings.py) find the PRIVATE_KEY variable and use a generator a custom program to generate a new SHA256 hash and place it in the mentioned variable.
+2. It is reccomended to change the private key of the website, this private key is used to generate hashes so its pretty important. Depending on your situation you might need or might not need to generate a new key. To change the private key go to this file [LEDMatrix/webapp/site_settings/settings.py](LEDMatrix/webapp/site_config/settings.py) find the SECRET_KEY variable and use a generator a custom program to generate a new SHA256 hash and place it in the mentioned variable.
 
 ## How to use?
 Now that you have setup your environment and installed  everything you need to run django here is how to use it. 
