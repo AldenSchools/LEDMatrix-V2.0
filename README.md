@@ -289,6 +289,15 @@ your@machine:~$ pipenv install
 ```
 This will create and install every package that was used in this project it will even install the correct python verson that was used in the project if you dont have it.
 
+NOTE: 
+    
+If you get an error trying to install Pillow simply install a package called libjpeg-dev to your system and try this step again
+if you are running a debian based distribution just type this. 
+
+```sh
+your@machine:~$ sudo apt install libjpeg-dev
+```
+
 
 ### Activate your virtual environment
 This step is useful if your using this project to expand and/or development. However, if you you just want to deply it on your target machine feel free to skip this step since there is no need to activate your virtual environment. 
