@@ -43,7 +43,7 @@
  * 
  */
 $(function() {
-
+    selectCurrentPageActive();
 
     //The variables below
     var _debug = false;
@@ -77,6 +77,7 @@ $(function() {
 
     setupEventHandlers(globalVars);
     adminOptionsCurrentlyActive();
+
 
 
     if (_debug) {
@@ -193,6 +194,23 @@ function getDrawingHandler(globalVars) {
             }
         });
     }
+}
+
+
+function selectCurrentPageActive() {
+
+    $("#main-nav").find("li.active").removeClass("active");
+    var path = window.location.pathname;
+    //console.log("path: " + path);
+    //console.log("page: " + page);
+    if (path === "/create/") {
+        $("#create-page-li").addClass("active");
+    } else if (path === "/admin-dash/") {
+        $("#admin-page-li").addClass("active");
+    } else {
+        $("#home-page-li").addClass("active");
+    }
+
 }
 
 
