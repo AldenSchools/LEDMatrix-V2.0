@@ -50,16 +50,38 @@ function toolboxSelectionHandler(globalVars) {
         addEffects.on("click", addEfects);
         eraser.on("click", eraserMode);
         clearAll.on("click", clearGrid);
-
+				
+        setSimpleButtons();
     }
 
-    /* updates the mode of the color picker to color*/
+    /* Updates the mode of the color picker to color*/
     function colorMode(event) {
         globalVars.colorPickerVars.setMode("color");
 
         updateNewActiveElem(color);
     }
 
+    /* Set functions of all simple color boxes */
+    function setSimpleButtons(){
+      $("#simpleRed").on("click",{simpleColor:"#ff0000"},simpleColorButton);
+      $("#simpleGreen").on("click",{simpleColor:"#00ff00"},simpleColorButton);
+      $("#simpleBlue").on("click",{simpleColor:"#0000ff"},simpleColorButton);
+      $("#simpleYellow").on("click",{simpleColor:"#ffff00"},simpleColorButton);
+      $("#simpleOrange").on("click",{simpleColor:"#ffa500"},simpleColorButton);
+      $("#simpleBrown").on("click",{simpleColor:"#8B4513"},simpleColorButton);
+      $("#simpleCyan").on("click",{simpleColor:"#00ffff"},simpleColorButton);
+      $("#simplePink").on("click",{simpleColor:"#ff69b4"},simpleColorButton);
+      $("#simplePurple").on("click",{simpleColor:"#800080"},simpleColorButton);
+      $("#simpleWhite").on("click",{simpleColor:"#ffffff"},simpleColorButton);
+      $("#simpleBlack").on("click",{simpleColor:"#000000"},simpleColorButton);
+      $("#simpleGrey").on("click",{simpleColor:"#808080"},simpleColorButton);
+    }
+
+    /* Set current drawing color to color of clicked simple color box */
+    function simpleColorButton(event){
+      globalVars.colorPickerVars.getColorPicker().color.hexString = event.data.simpleColor;
+    }
+		
     /* Colors all boxes, a blank box is a box where the color is set to the default color*/
     function colorAllBlankMode(event) {
         var grid = gridVars.getGrid();
