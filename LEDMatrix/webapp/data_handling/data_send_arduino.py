@@ -2,7 +2,7 @@
     This file handles all operatins related to arduino
 
 """
-
+import serial
 
 def send_data_to_arduino(drawing_data):
     ser = serial.Serial(
